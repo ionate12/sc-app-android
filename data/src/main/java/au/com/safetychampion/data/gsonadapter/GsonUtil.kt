@@ -1,7 +1,6 @@
 package au.com.safetychampion.data.gsonadapter
 
-import au.com.safetychampion.data.domain.TierType
-import com.google.gson.Gson
+import au.com.safetychampion.data.domain.models.TierType
 import com.google.gson.GsonBuilder
 
 object GsonUtil {
@@ -12,4 +11,3 @@ object GsonUtil {
 }
 
 fun gson() = GsonUtil.gsonBuilder.create()
-

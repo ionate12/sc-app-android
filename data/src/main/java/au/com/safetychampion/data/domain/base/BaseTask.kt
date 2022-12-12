@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.domain.base
 
-import au.com.safetychampion.data.domain.Tier
+import au.com.safetychampion.data.domain.models.Tier
 import java.time.OffsetDateTime
 
 interface BaseTask {

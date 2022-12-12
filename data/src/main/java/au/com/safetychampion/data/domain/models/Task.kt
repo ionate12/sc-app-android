@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain
+package au.com.safetychampion.data.domain.models
 
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.base.BaseTask
