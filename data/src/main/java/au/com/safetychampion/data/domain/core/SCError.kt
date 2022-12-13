@@ -1,15 +1,22 @@
 package au.com.safetychampion.data.domain.core
 
-import au.com.safetychampion.data.network.APIResponse
-
 sealed class SCError(val code: String, val errDescription: String) {
-    object Unknown : SCError("unknown_error", "Unknown error has occurred.")
-    object EmptyResult : SCError("success_no_result", "Succeed but empty result.")
+    class Failure(detailsMsg: List<String> = emptyList()) : SCError(
+        code = "backend_response_error",
+        errDescription = "You can not perform this action because: $detailsMsg"
+    )
+    object EmptyResult : SCError(
+        code = "success_no_result",
+        errDescription = "Succeed but empty result."
+    )
 
-    companion object {
-        fun fromApiError(apiError: APIResponse.APIError): SCError {
-            // TODO: Map APIError to SC Error
-            return SCError.Unknown
-        }
-    }
+    object Unknown : SCError(
+        code = "unknown_error",
+        errDescription = "Unknown error has occurred."
+    )
+
+    class JsonSyntaxException(detailsMsg: String) : SCError(
+        code = detailsMsg,
+        errDescription = "Data not available"
+    )
 }

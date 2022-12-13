@@ -3,14 +3,12 @@ package au.com.safetychampion.data.network
 import au.com.safetychampion.data.gsonadapter.GsonUtil
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
     private const val BASE_URL = "https://api.dev.safetychampion.tech"
     fun getRetrofit(): Retrofit {
-
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(headersInterceptor())
             .build()
@@ -31,7 +29,6 @@ object RetrofitClient {
         return ""
     }
 
-
     private fun headersInterceptor(): Interceptor = Interceptor { chain ->
         val request = chain.request()
             .newBuilder()
@@ -40,5 +37,4 @@ object RetrofitClient {
             .build()
         chain.proceed(request)
     }
-
 }
