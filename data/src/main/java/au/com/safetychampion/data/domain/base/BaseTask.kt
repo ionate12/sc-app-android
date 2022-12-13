@@ -1,7 +1,6 @@
 package au.com.safetychampion.data.domain.base
 
 import au.com.safetychampion.data.domain.models.Tier
-import java.time.OffsetDateTime
 
 interface BaseTask {
     val _id: String
@@ -10,7 +9,7 @@ interface BaseTask {
     val tier: Tier
     val title: String
     val description: String
-    val dateDue: OffsetDateTime
+    val dateDue: String
     val complete: Boolean
     val inExecution: Boolean
 }

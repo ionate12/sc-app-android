@@ -1,6 +1,10 @@
 package au.com.safetychampion.data.domain.core
 
 sealed class SCError(val code: String, val errDescription: String) {
+    override fun toString(): String {
+        return "An error has occurred: $code \n $errDescription"
+    }
+
     class Failure(detailsMsg: List<String> = emptyList()) : SCError(
         code = "backend_response_error",
         errDescription = "You can not perform this action because: $detailsMsg"

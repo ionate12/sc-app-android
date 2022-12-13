@@ -1,42 +1,35 @@
 package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.gsonadapter.gson
 import au.com.safetychampion.data.network.APIResponse
-import com.google.gson.reflect.TypeToken
 
-abstract class BaseRepository {
+abstract class BaseRepository : BaseRepositoryExtensions {
 
-    /** Gets the result of [APIResponse] as object [T] or List<`T`> wrapped in [Result], with the given key
-     * @param responseObjName the object name
+    /**
+     * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as [T]
+     * @param call
+     * Any suspend function returns APIResponse
+     * @param tClass
+     * the Java class of T
+     * @see get
      */
-
-    private fun <T> APIResponse.get(responseObjName: String = "item"): Result<T> {
-        return if (success) {
-            if (result == null) {
-                Result.Error(SCError.EmptyResult)
-            }
-
-            val type = object : TypeToken<T>() {}.type
-            try {
-                Result.Success(gson().fromJson(result!![responseObjName], type))
-            } catch (ex: Exception) {
-                Result.Error(SCError.JsonSyntaxException(ex.message ?: ""))
-            }
-        } else {
-            Result.Error(SCError.Failure(error?.message ?: listOf("Unknown Reason")))
-        }
-    }
-
-    suspend fun <T> call(call: suspend () -> APIResponse): Result<T> {
-        return when (val result = call.invoke().get<T>("item")) {
+    suspend fun <T> call(call: suspend () -> APIResponse, tClass: Class<T>): Result<T> {
+        return when (val result: Result<T> = call.invoke().get(tClass)) {
             is Result.Success -> result
             is Result.Error -> handleError(result.err)
         }
     }
 
-    suspend fun <T> callAsList(call: suspend () -> APIResponse): Result<List<T>> {
-        return when (val result = call.invoke().get<List<T>>("items")) {
+    /**
+     * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as List<[T]>
+     * @param call
+     * A suspend function returns APIResponse
+     * @param tClass
+     * the Java class of T
+     * @see getAsList
+     */
+    suspend fun <T> callAsList(call: suspend () -> APIResponse, tClass: Class<T>): Result<List<T>> {
+        return when (val result: Result<List<T>> = call.invoke().getAsList(tClass)) {
             is Result.Success -> result
             is Result.Error -> handleError(result.err)
         }
