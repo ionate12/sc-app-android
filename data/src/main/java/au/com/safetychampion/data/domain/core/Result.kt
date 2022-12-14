@@ -24,7 +24,7 @@ fun Result<*>.getError(): SCError? {
 
 /**
  * Performs the given action if this is [Result.Success] and data != null,
- * @return true if this is [Result.Success] and data != null
+ * @return true if the action is performed,
  * false otherwise
  */
 
@@ -35,14 +35,11 @@ fun <T> Result<T>.doOnSucceed(action: T.() -> Unit): Boolean {
 
 /**
  * Performs the given action if this is [Result.Error]
- * @return true if this is [Result.Error]
+ * @return true if the action is performed,
  * false otherwise
  */
 
 fun <T> Result<T>.doOnFailure(action: SCError.() -> Unit): Boolean {
-    if (this is Result.Error) {
-        action(err)
-        return true
-    }
-    return false
+    getError()?.let(action) ?: return false
+    return true
 }

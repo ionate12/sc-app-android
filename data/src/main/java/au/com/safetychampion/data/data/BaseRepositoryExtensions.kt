@@ -22,7 +22,7 @@ internal interface BaseRepositoryExtensions {
                 .get("item")
                 .asT(tClass)
         } else {
-            return Result.Error(SCError.Failure(error?.message ?: listOf("Unknown Reason")))
+            return Result.Error(handleError(error))
         }
     }
 
@@ -40,7 +40,16 @@ internal interface BaseRepositoryExtensions {
                 .get("items")
                 .asListT(tClass)
         } else {
-            return Result.Error(SCError.Failure(error?.message ?: listOf("Unknown Reason")))
+            return Result.Error(
+                handleError(error)
+            )
+        }
+    }
+
+    private fun handleError(err: APIResponse.APIError?): SCError {
+        return when {
+            err?.code?.contains("authorization_token_expired") == true -> SCError.LoginTokenExpired()
+            else -> SCError.Failure(err?.message ?: listOf("Unknown Reason"))
         }
     }
 }

@@ -23,4 +23,14 @@ sealed class SCError(val code: String, val errDescription: String) {
         code = detailsMsg,
         errDescription = "Data not available"
     )
+
+    class LoginTokenExpired() : SCError(
+        code = "authorization_token_expired",
+        errDescription = "Your LOGIN SESSION has expired. Re-login is required"
+    )
+
+    class NoInternetConnection() : SCError(
+        code = "no_internet_connection",
+        errDescription = "No Internet. Please check your internet connection"
+    )
 }

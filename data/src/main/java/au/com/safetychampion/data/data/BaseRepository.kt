@@ -1,22 +1,30 @@
 package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.extensions.BaseRepositoryExtensions
 import au.com.safetychampion.data.network.APIResponse
+import java.net.UnknownHostException
 
 abstract class BaseRepository : BaseRepositoryExtensions {
 
     /**
      * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as [T]
      * @param call
-     * Any suspend function returns APIResponse
+     * A suspend function returns APIResponse
      * @param tClass
      * the Java class of T
      * @see get
      */
+
     suspend fun <T> call(call: suspend () -> APIResponse, tClass: Class<T>): Result<T> {
-        return when (val result: Result<T> = call.invoke().get(tClass)) {
-            is Result.Success -> result
-            is Result.Error -> handleError(result.err)
+        return try {
+            call
+                .invoke()
+                .get(tClass)
+        } catch (e: UnknownHostException) {
+            Result.Error(SCError.NoInternetConnection())
+        } catch (e: Exception) {
+            Result.Error(SCError.Failure(listOf(e.message!!)))
         }
     }
 
@@ -29,14 +37,15 @@ abstract class BaseRepository : BaseRepositoryExtensions {
      * @see getAsList
      */
     suspend fun <T> callAsList(call: suspend () -> APIResponse, tClass: Class<T>): Result<List<T>> {
-        return when (val result: Result<List<T>> = call.invoke().getAsList(tClass)) {
-            is Result.Success -> result
-            is Result.Error -> handleError(result.err)
+        return try {
+            call
+                .invoke()
+                .getAsList(tClass)
+        } catch (e: UnknownHostException) {
+            Result.Error(SCError.NoInternetConnection())
+        } catch (e: Exception) {
+            Result.Error(SCError.Failure(listOf(e.message!!)))
         }
-    }
-
-    fun handleError(err: SCError): Result.Error {
-        return Result.Error(err)
     }
 }
 
