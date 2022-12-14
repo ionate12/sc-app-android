@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
-    private val sampleData = AssertManager(this)
+    private val sampleData = AssetsManager(this)
     private val listUseCase = listOf(
         "Get Active Task (tasks/list/active)" to { viewModel.loadActiveTasks() },
         "Load Active Tasks ReViewPlan (tasks/list/active)" to { viewModel.loadActiveTasksReViewPlan() },

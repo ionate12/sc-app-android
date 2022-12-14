@@ -22,7 +22,37 @@ fun <T> JsonElement.asT(tClass: Class<T>): au.com.safetychampion.data.domain.cor
     }
 }
 
+fun <T> String.asT(tClass: Class<T>): au.com.safetychampion.data.domain.core.Result<T> {
+    val gson = Gson() // inject
+    return try {
+        val data: T = gson.fromJson(this, tClass)
+        au.com.safetychampion.data.domain.core.Result.Success(data)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        au.com.safetychampion.data.domain.core.Result.Error(
+            SCError.JsonSyntaxException(
+                detailsMsg = e.message!!
+            )
+        )
+    }
+}
+
 fun <T> JsonElement.asListT(tClass: Class<T>): au.com.safetychampion.data.domain.core.Result<List<T>> {
+    val gson = Gson() // inject
+    return try {
+        val data: List<T> = gson.fromJson(this, TypeToken.getParameterized(List::class.java, tClass).type)
+        au.com.safetychampion.data.domain.core.Result.Success(data)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        au.com.safetychampion.data.domain.core.Result.Error(
+            SCError.JsonSyntaxException(
+                detailsMsg = e.message!!
+            )
+        )
+    }
+}
+
+fun <T> String.asListT(tClass: Class<T>): au.com.safetychampion.data.domain.core.Result<List<T>> {
     val gson = Gson() // inject
     return try {
         val data: List<T> = gson.fromJson(this, TypeToken.getParameterized(List::class.java, tClass).type)
