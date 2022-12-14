@@ -18,3 +18,5 @@ interface BaseModule {
     val _id: String
     val type: String
 }
+
+class BaseModuleImpl(override val _id: String, override val type: String) : BaseModule

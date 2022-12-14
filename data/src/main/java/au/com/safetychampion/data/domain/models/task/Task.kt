@@ -1,13 +1,15 @@
 package au.com.safetychampion.data.domain.models.task
 
-import au.com.safetychampion.data.domain.base.BaseModule
+import au.com.safetychampion.data.domain.base.BaseModuleImpl
 import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.models.Tier
+import com.google.gson.annotations.SerializedName
 
 data class Task(
     override val _id: String,
     override val type: String,
-    override val _for: BaseModule,
+    @SerializedName("for")
+    override val _for: BaseModuleImpl,
     override val tier: Tier,
     override val title: String,
     override val description: String,

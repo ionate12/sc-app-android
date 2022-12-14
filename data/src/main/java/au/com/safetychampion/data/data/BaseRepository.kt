@@ -53,6 +53,7 @@ abstract class BaseRepository : BaseRepositoryExtensions {
         } catch (e: UnknownHostException) {
             Result.Error(SCError.NoInternetConnection())
         } catch (e: Exception) {
+            e.printStackTrace()
             Result.Error(SCError.Failure(listOf(e.message!!)))
         }
     }

@@ -1,0 +1,19 @@
+{
+  "for": {
+    "type": "core.module.action",
+    "_id": "5efbec7cc6bac31619e11e21"
+  },
+  "_id": "5efbec7cc6bac31619e11e20",
+  "complete": false,
+  "dateDue": "Jul 3, 2020 12:00:00 AM",
+  "description": "facilis quod veniam",
+  "inExecution": false,
+  "state": -1,
+  "tier": {
+    "type": "core.tier.T4",
+    "_id": "5efbeba3c6bac31619e11be0"
+  },
+  "title": "Corrective Action: ACT0048",
+  "type": "core.module.task",
+  "userId": "5efbeba4c6bac31619e11be4"
+}

@@ -10,7 +10,29 @@ class TaskPayload {
         val _for: CreatedBy,
         var to: AssignUser? = null,
         var task: TaskInfo? = null
-    )
+    ) {
+        constructor(
+            task: Task,
+            userId: String? = null,
+            notes: String? = null,
+            moduleName: String? = null,
+            dateDue: String? = null
+        ) : this(
+            _id = task._id,
+            _for = CreatedBy(
+                type = task._for.type ?: "",
+                _id = task._for._id
+            ),
+            to = userId?.let { AssignUser(it) },
+            task = if (userId == null) null else TaskInfo(
+                dateDue = dateDue ?: "",
+                notes = notes,
+                title = task.title,
+                description = task.description,
+                module = moduleName ?: ""
+            )
+        )
+    }
 
     data class TaskInfo(
         val title: String,

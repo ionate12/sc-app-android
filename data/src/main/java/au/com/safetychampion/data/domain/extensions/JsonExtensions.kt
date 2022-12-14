@@ -2,6 +2,7 @@ package au.com.safetychampion.data.domain.extensions
 
 import au.com.safetychampion.data.domain.core.SCError
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -36,16 +37,6 @@ fun <T> JsonElement.asListT(tClass: Class<T>): au.com.safetychampion.data.domain
     }
 }
 
-fun Any.asJson(): String? {
-    val gson = Gson() // inject
-    return try {
-        gson.toJson(this)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
-    }
-}
-
 fun jsonObjectOf(jsonString: String): JsonObject? {
     val gson = Gson() // inject
     return try {
@@ -60,6 +51,44 @@ fun jsonObjectOf(obj: Any): JsonObject? {
     val gson = Gson() // inject
     return try {
         gson.toJsonTree(obj).asJsonObject
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+
+fun jsonObjectOf(vararg pair: Pair<String, JsonElement?>): JsonObject {
+    val jsonObj = JsonObject()
+    pair.forEach {
+        jsonObj.add(it.first, it.second)
+    }
+    return jsonObj
+}
+
+fun jsonArrayOf(list: List<Any>): JsonArray? {
+    val gson = Gson() // inject
+    return try {
+        gson.toJsonTree(list).asJsonArray
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+
+fun jsonArrayOf(jsonArrString: String): JsonArray? {
+    val gson = Gson() // inject
+    return try {
+        gson.fromJson(jsonArrString, JsonArray::class.java).asJsonArray
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+
+fun Any.asJson(): String? {
+    val gson = Gson() // inject
+    return try {
+        gson.toJson(this)
     } catch (e: Exception) {
         e.printStackTrace()
         null

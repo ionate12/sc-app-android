@@ -9,12 +9,12 @@ import com.google.gson.JsonObject
 class GetAllActiveTaskUseCase(
     private val activeTaskRepository: TaskRepository
 ) {
-    suspend operator fun invoke(moduleName: String?): Result<List<Task>> {
+    suspend operator fun invoke(moduleName: String?): Pair<String, Result<List<Task>>> {
         val body = if (moduleName == null) {
             JsonObject()
         } else {
             jsonObjectOf("{\"filter\":{\"modules\":[\"${moduleName}\"]}}")!!
         }
-        return activeTaskRepository.getAllActiveTask(body)
+        return body.toString() to activeTaskRepository.getAllActiveTask(body)
     }
 }
