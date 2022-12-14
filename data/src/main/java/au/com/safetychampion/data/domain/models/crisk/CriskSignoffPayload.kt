@@ -3,10 +3,10 @@ package au.com.safetychampion.data.domain.models.crisk
 import au.com.safetychampion.data.domain.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.ForTask
-import au.com.safetychampion.data.domain.models.Task
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.customvalues.CusvalPojo
+import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import com.google.gson.annotations.SerializedName
 

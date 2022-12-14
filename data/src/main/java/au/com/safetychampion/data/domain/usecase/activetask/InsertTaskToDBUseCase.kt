@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.domain.usecase.activetask
 
 import au.com.safetychampion.data.data.common.TaskDAO
-import au.com.safetychampion.data.domain.models.Task
+import au.com.safetychampion.data.domain.models.task.Task
 
 class InsertTaskToDBUseCase(
     private val repository: TaskDAO

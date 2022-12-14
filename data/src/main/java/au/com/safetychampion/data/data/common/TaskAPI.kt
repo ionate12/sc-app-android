@@ -10,4 +10,9 @@ interface TaskAPI {
     suspend fun active(
         @Body body: JsonObject
     ): APIResponse
+
+    @POST("tasks/assign/status")
+    suspend fun assignTaskStatus(
+        @Body body: JsonObject
+    ): APIResponse
 }

@@ -55,3 +55,13 @@ fun jsonObjectOf(jsonString: String): JsonObject? {
         null
     }
 }
+
+fun jsonObjectOf(obj: Any): JsonObject? {
+    val gson = Gson() // inject
+    return try {
+        gson.toJsonTree(obj).asJsonObject
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}

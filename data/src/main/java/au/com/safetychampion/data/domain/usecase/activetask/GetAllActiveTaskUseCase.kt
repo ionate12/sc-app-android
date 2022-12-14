@@ -3,7 +3,7 @@ package au.com.safetychampion.data.domain.usecase.activetask
 import au.com.safetychampion.data.data.common.TaskRepository
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.extensions.jsonObjectOf
-import au.com.safetychampion.data.domain.models.Task
+import au.com.safetychampion.data.domain.models.task.Task
 import com.google.gson.JsonObject
 
 class GetAllActiveTaskUseCase(

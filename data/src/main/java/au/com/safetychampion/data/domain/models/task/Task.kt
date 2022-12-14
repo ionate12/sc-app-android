@@ -1,7 +1,8 @@
-package au.com.safetychampion.data.domain.models
+package au.com.safetychampion.data.domain.models.task
 
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.base.BaseTask
+import au.com.safetychampion.data.domain.models.Tier
 
 data class Task(
     override val _id: String,

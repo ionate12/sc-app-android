@@ -26,7 +26,7 @@ object RetrofitClient {
     }
 
     private fun token(): String {
-        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzA5MTQ1ODUsImV4cCI6MTY3MTAwMDk4NX0.ts4YXtk2BMDclAwwDDae-T-7u7DsFfs0ocg5ymSFRS8"
+        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzEwMDI4MzksImV4cCI6MTY3MTA4OTIzOX0.HsCSMmdCDDVnysS07td5zdU2oFRGsoADprY4JKesVnc"
     }
 
     private fun headersInterceptor(): Interceptor = Interceptor { chain ->

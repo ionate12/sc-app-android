@@ -1,9 +1,7 @@
-package au.com.safetychampion.data.data
+package au.com.safetychampion.data.domain.extensions
 
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
-import au.com.safetychampion.data.domain.extensions.asListT
-import au.com.safetychampion.data.domain.extensions.asT
 import au.com.safetychampion.data.network.APIResponse
 
 internal interface BaseRepositoryExtensions {
