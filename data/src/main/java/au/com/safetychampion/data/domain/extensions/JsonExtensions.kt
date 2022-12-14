@@ -1,20 +1,22 @@
 package au.com.safetychampion.data.domain.extensions
 
+import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import timber.log.Timber
 
-fun <T> JsonElement.asT(tClass: Class<T>): au.com.safetychampion.data.domain.core.Result<T> {
+fun <T> JsonElement.asT(tClass: Class<T>): Result<T> {
     val gson = Gson() // inject
     return try {
         val data: T = gson.fromJson(this, tClass)
-        au.com.safetychampion.data.domain.core.Result.Success(data)
+        Result.Success(data)
     } catch (e: Exception) {
         e.printStackTrace()
-        au.com.safetychampion.data.domain.core.Result.Error(
+        Result.Error(
             SCError.JsonSyntaxException(
                 detailsMsg = e.message!!
             )
@@ -22,14 +24,14 @@ fun <T> JsonElement.asT(tClass: Class<T>): au.com.safetychampion.data.domain.cor
     }
 }
 
-fun <T> String.asT(tClass: Class<T>): au.com.safetychampion.data.domain.core.Result<T> {
+fun <T> String.asT(tClass: Class<T>): Result<T> {
     val gson = Gson() // inject
     return try {
         val data: T = gson.fromJson(this, tClass)
-        au.com.safetychampion.data.domain.core.Result.Success(data)
+        Result.Success(data)
     } catch (e: Exception) {
         e.printStackTrace()
-        au.com.safetychampion.data.domain.core.Result.Error(
+        Result.Error(
             SCError.JsonSyntaxException(
                 detailsMsg = e.message!!
             )
@@ -37,14 +39,28 @@ fun <T> String.asT(tClass: Class<T>): au.com.safetychampion.data.domain.core.Res
     }
 }
 
-fun <T> JsonElement.asListT(tClass: Class<T>): au.com.safetychampion.data.domain.core.Result<List<T>> {
+// Thử follow theo cách này
+// Ko cần Result vì ko cần thiết JsonSyntaxException thường sẽ ko xảy ra trừ khi code lỗi.
+// Reified T để đưa thêm reflection vào sẽ dùng được typeToken
+inline fun <reified T> JsonElement.listOrEmpty(): List<T> {
+    val gson = Gson() // Inject
+    val type = object : TypeToken<List<T>>() {}.type
+    return try {
+        gson.fromJson(this, type)
+    } catch (e: Exception) {
+        Timber.e(e) // Dùng timber thay vì Logd hoặc stacktrace
+        emptyList()
+    }
+}
+
+fun <T> JsonElement.asListT(tClass: Class<T>): Result<List<T>> {
     val gson = Gson() // inject
     return try {
         val data: List<T> = gson.fromJson(this, TypeToken.getParameterized(List::class.java, tClass).type)
-        au.com.safetychampion.data.domain.core.Result.Success(data)
+        Result.Success(data)
     } catch (e: Exception) {
         e.printStackTrace()
-        au.com.safetychampion.data.domain.core.Result.Error(
+        Result.Error(
             SCError.JsonSyntaxException(
                 detailsMsg = e.message!!
             )
@@ -52,14 +68,14 @@ fun <T> JsonElement.asListT(tClass: Class<T>): au.com.safetychampion.data.domain
     }
 }
 
-fun <T> String.asListT(tClass: Class<T>): au.com.safetychampion.data.domain.core.Result<List<T>> {
+fun <T> String.asListT(tClass: Class<T>): Result<List<T>> {
     val gson = Gson() // inject
     return try {
         val data: List<T> = gson.fromJson(this, TypeToken.getParameterized(List::class.java, tClass).type)
-        au.com.safetychampion.data.domain.core.Result.Success(data)
+        Result.Success(data)
     } catch (e: Exception) {
         e.printStackTrace()
-        au.com.safetychampion.data.domain.core.Result.Error(
+        Result.Error(
             SCError.JsonSyntaxException(
                 detailsMsg = e.message!!
             )

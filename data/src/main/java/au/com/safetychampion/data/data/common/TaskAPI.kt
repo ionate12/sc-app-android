@@ -1,5 +1,7 @@
 package au.com.safetychampion.data.data.common
 
+import au.com.safetychampion.data.domain.payload.AssignTaskStatusManyPL
+import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
 import au.com.safetychampion.data.network.APIResponse
 import com.google.gson.JsonObject
 import retrofit2.http.Body
@@ -13,6 +15,11 @@ interface TaskAPI {
 
     @POST("tasks/assign/status")
     suspend fun assignTaskStatus(
-        @Body body: JsonObject
+        @Body body: AssignTaskStatusPL
+    ): APIResponse
+
+    @POST("tasks/assign/status")
+    suspend fun assignTaskStatusMany(
+        @Body body: AssignTaskStatusManyPL
     ): APIResponse
 }

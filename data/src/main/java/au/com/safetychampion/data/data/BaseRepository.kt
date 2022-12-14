@@ -2,6 +2,7 @@ package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.extensions.BaseRepositoryExtensions
+import au.com.safetychampion.data.domain.extensions.listOrEmpty
 import au.com.safetychampion.data.network.APIResponse
 import java.net.UnknownHostException
 
@@ -55,6 +56,30 @@ abstract class BaseRepository : BaseRepositoryExtensions {
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(SCError.Failure(listOf(e.message!!)))
+        }
+    }
+
+    inline fun <reified T> APIResponse.toItems(): Result<List<T>> {
+        return when (success) {
+            true -> {
+                if (result == null) {
+                    Result.Error(SCError.EmptyResult)
+                } else {
+                    Result.Success(result["items"].listOrEmpty())
+                }
+            }
+            false -> {
+                return Result.Error(
+                    handleError(error)
+                )
+            }
+        }
+    }
+
+    fun handleError(err: APIResponse.APIError?): SCError {
+        return when {
+            err?.code?.contains("authorization_token_expired") == true -> SCError.LoginTokenExpired()
+            else -> SCError.Failure(err?.message ?: listOf("Unknown Reason"))
         }
     }
 }
