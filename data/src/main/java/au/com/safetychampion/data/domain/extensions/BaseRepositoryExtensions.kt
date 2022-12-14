@@ -6,18 +6,18 @@ import au.com.safetychampion.data.network.APIResponse
 
 internal interface BaseRepositoryExtensions {
 
-    /** Gets the result of [APIResponse] as object T (wrapped in "item" object).
+    /** Gets the result of [APIResponse] as [T] (wrapped in [keyItem] object).
      * @return [Result.Success], [Result.Error]
      * @see asT
      */
 
-    fun <T> APIResponse.get(tClass: Class<T>): Result<T> {
+    fun <T> APIResponse.get(keyItem: String, tClass: Class<T>): Result<T> {
         if (success) {
             if (result == null) {
                 return Result.Error(SCError.EmptyResult)
             }
             return result
-                .get("item")
+                .get(keyItem)
                 .asT(tClass)
         } else {
             return Result.Error(handleError(error))

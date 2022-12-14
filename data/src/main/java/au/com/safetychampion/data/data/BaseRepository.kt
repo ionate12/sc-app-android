@@ -11,16 +11,25 @@ abstract class BaseRepository : BaseRepositoryExtensions {
      * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as [T]
      * @param call
      * A suspend function returns APIResponse
-     * @param tClass
-     * the Java class of T
+     * @param classOfT
+     * the Java class of [T]
+     * @param keyItem
+     * default value is "item"
      * @see get
      */
 
-    suspend fun <T> call(call: suspend () -> APIResponse, tClass: Class<T>): Result<T> {
+    suspend fun <T> call(
+        call: suspend () -> APIResponse,
+        classOfT: Class<T>,
+        keyItem: String = "item"
+    ): Result<T> {
         return try {
             call
                 .invoke()
-                .get(tClass)
+                .get(
+                    keyItem = keyItem,
+                    tClass = classOfT
+                )
         } catch (e: UnknownHostException) {
             Result.Error(SCError.NoInternetConnection())
         } catch (e: Exception) {
@@ -33,7 +42,7 @@ abstract class BaseRepository : BaseRepositoryExtensions {
      * @param call
      * A suspend function returns APIResponse
      * @param tClass
-     * the Java class of T
+     * the Java class of [T]
      * @see getAsList
      */
     suspend fun <T> callAsList(call: suspend () -> APIResponse, tClass: Class<T>): Result<List<T>> {
