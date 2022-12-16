@@ -1,6 +1,7 @@
 package au.com.safetychampion.data.domain.payload
 
 import au.com.safetychampion.data.domain.base.BaseModuleImpl
+import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.task.Task
 import com.google.gson.annotations.SerializedName
 

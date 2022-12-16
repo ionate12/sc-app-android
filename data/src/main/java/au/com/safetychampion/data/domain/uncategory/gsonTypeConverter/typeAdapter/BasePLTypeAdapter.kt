@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter
 
-import au.com.safetychampion.data.domain.payload.BasePL
+import au.com.safetychampion.data.domain.base.BasePL
 import com.google.gson.JsonElement
 import com.google.gson.JsonNull
 import com.google.gson.JsonSerializationContext

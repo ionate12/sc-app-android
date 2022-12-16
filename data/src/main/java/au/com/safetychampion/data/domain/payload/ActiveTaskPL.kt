@@ -1,14 +1,9 @@
 package au.com.safetychampion.data.domain.payload
 
-import com.google.gson.JsonElement
+import au.com.safetychampion.data.domain.base.BasePL
 
 data class ActiveTaskPL(
     private val filter: Modules? = null
 ) : BasePL() {
-
-    override fun toJsonElement(): JsonElement {
-        return if (filter == null) SCEmptyJsonPrimitive else super.toJsonElement()
-    }
-
     data class Modules(val modules: List<String?>?)
 }

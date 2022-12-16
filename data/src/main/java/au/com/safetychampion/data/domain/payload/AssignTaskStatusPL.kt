@@ -1,5 +1,6 @@
 package au.com.safetychampion.data.domain.payload
 
+import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.task.Task
 import com.google.gson.annotations.SerializedName
@@ -10,7 +11,7 @@ class AssignTaskStatusPL(
     val _for: CreatedBy,
     var to: AssignUser? = null,
     var task: TaskInfo? = null
-) {
+) : BasePL() {
     constructor(
         task: Task,
         userId: String? = null,
