@@ -32,16 +32,15 @@ class MainViewModel : ViewModel() {
     private val _payload = MutableStateFlow<String?>(null)
     val payload = _payload.asStateFlow()
 
-    private suspend fun onAPIcall(payload: String, result: Result<*>) {
+    private suspend fun onAPIcall(result: Result<*>) {
         _apiCallStatus.emit(result)
-        _payload.emit(payload)
     }
 
     fun loadActiveTasks() {
         viewModelScope.launch(Dispatchers.IO) {
             _apiCallStatus.emit(Result.Loading)
             val result = getActiveTaskUseCase.invoke(null)
-            onAPIcall(result.first, result.second)
+            onAPIcall(result)
         }
     }
 
@@ -49,7 +48,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _apiCallStatus.emit(Result.Loading)
             val result = getActiveTaskUseCase.invoke("core.module.reviewplan")
-            onAPIcall(result.first, result.second)
+            onAPIcall(result)
         }
     }
 
@@ -57,7 +56,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             _apiCallStatus.emit(Result.Loading)
             val result = assignTaskStatusItem.invoke(task, null, null, null, null)
-            onAPIcall(result.first, result.second)
+            onAPIcall(result)
         }
     }
 
@@ -65,7 +64,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             _apiCallStatus.emit(Result.Loading)
             val result = assignTasksStatusItem.invoke(task)
-            onAPIcall(result.first, result.second)
+            onAPIcall(result)
         }
     }
 }

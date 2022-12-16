@@ -2,10 +2,9 @@ package au.com.safetychampion.data.domain.usecase.assigntaskstatus
 
 import au.com.safetychampion.data.data.common.TaskRepository
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.extensions.jsonObjectOf
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.domain.models.task.TaskPayload
+import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
 
 class AssignTaskStatusItemUseCase(
     private val activeTaskRepository: TaskRepository
@@ -16,16 +15,14 @@ class AssignTaskStatusItemUseCase(
         notes: String? = null,
         moduleName: String?,
         dateDue: String?
-    ): Pair<String, Result<List<TaskAssignStatusItem>>> {
-        val body = jsonObjectOf(
-            TaskPayload.AssignTask(
-                task = task,
-                userId = userId,
-                notes = notes,
-                moduleName = moduleName,
-                dateDue = dateDue
-            )
+    ): Result<List<TaskAssignStatusItem>> {
+        val body = AssignTaskStatusPL(
+            task = task,
+            userId = userId,
+            notes = notes,
+            moduleName = moduleName,
+            dateDue = dateDue
         )
-        return body.toString() to activeTaskRepository.assignTaskStatus(body!!)
+        return activeTaskRepository.assignTaskStatus(body)
     }
 }
