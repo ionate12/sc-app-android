@@ -1,9 +1,7 @@
-package au.com.safetychampion
+package au.com.safetychampion.utils
 
 import android.content.Context
 import android.content.res.AssetManager
-import au.com.safetychampion.data.domain.extensions.itemOrNull
-import au.com.safetychampion.data.domain.extensions.listOrEmpty
 import au.com.safetychampion.data.domain.models.task.Task
 
 private fun AssetManager.readAssetsFile(fileName: String): String = open(fileName).bufferedReader().use { it.readText() }

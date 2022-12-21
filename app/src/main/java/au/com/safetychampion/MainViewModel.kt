@@ -2,15 +2,11 @@ package au.com.safetychampion
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import au.com.safetychampion.data.data.common.TaskAPI
-import au.com.safetychampion.data.data.common.TaskRepository
-import au.com.safetychampion.data.data.common.TaskRepositoryImpl
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
-import au.com.safetychampion.data.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,13 +14,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    private val api = RetrofitClient.getRetrofit().create(TaskAPI::class.java)
-    private val taskRepository: TaskRepository = TaskRepositoryImpl(api)
-    private val getActiveTaskUseCase = GetAllActiveTaskUseCase(taskRepository)
-
-    private val assignTaskStatusItem = AssignTaskStatusItemUseCase(taskRepository)
-    private val assignTasksStatusItem = AssignManyTasksStatusItemUseCase(taskRepository)
+class MainViewModel(
+    private val getActiveTaskUseCase: GetAllActiveTaskUseCase,
+    private val assignTaskStatusItem: AssignTaskStatusItemUseCase,
+    private val assignTasksStatusItem: AssignManyTasksStatusItemUseCase
+) : ViewModel() {
 
     private val _apiCallStatus = MutableSharedFlow<Result<*>>()
     val apiCallStatus = _apiCallStatus.asSharedFlow()

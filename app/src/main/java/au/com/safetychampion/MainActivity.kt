@@ -8,18 +8,19 @@ import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.extensions.asJson
 import au.com.safetychampion.databinding.ActivityMainBinding
+import au.com.safetychampion.utils.AssetsManager
+import au.com.safetychampion.utils.asJson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel by inject<MainViewModel>()
     private val sampleData = AssetsManager(this)
     private val listUseCase = listOf(
         "Get Active Task (tasks/list/active)" to { viewModel.loadActiveTasks() },

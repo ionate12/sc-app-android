@@ -16,7 +16,7 @@ data class AssignTaskStatusManyPL(
 
     companion object {
         fun fromTasks(tasks: List<Task>): AssignTaskStatusManyPL {
-            return tasks.map { Info(it._for, it._id) }.let { AssignTaskStatusManyPL(it) }
+            return AssignTaskStatusManyPL(tasks.map { Info(it._for, it._id) })
         }
     }
 }

@@ -1,21 +1,10 @@
 package au.com.safetychampion.data.domain.base
 
-import au.com.safetychampion.data.gsonadapter.gson
+import com.google.gson.Gson
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
 
 abstract class BasePL {
-    companion object {
-        fun createJsonObject(jsonString: String): JsonObject? {
-            return try {
-                gson().fromJson(jsonString, JsonObject::class.java)
-            } catch (e: Exception) {
-                null
-            }
-        }
-    }
-    open fun toJsonElement(): JsonElement {
-        val gson = gson()
+    open fun toJsonElement(gson: Gson): JsonElement {
         return gson.toJsonTree(this)
     }
 }
