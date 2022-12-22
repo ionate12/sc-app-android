@@ -17,27 +17,13 @@ abstract class BaseAppDataStore {
     protected abstract val store: DataStore<Preferences>
     private val dispatchers: IDispatchers by koinInject()
 
-    @Suppress("UNCHECKED_CAST")
     suspend fun <T : Any> store(storeKey: StoreKey<T>, value: T?) {
         store.edit {
             if (value == null) {
                 it.remove(storeKey.prefKey())
                 return@edit
             }
-            when (storeKey) {
-                is StoreKey.StringKey -> {
-                    it[storeKey.prefKey()] = value as String
-                }
-                is StoreKey.BooleanKey -> {
-                    it[storeKey.prefKey()] = value as Boolean
-                }
-                is StoreKey.IntKey -> {
-                    it[storeKey.prefKey()] = value as Int
-                }
-                is StoreKey.StringSetKey -> {
-                    it[storeKey.prefKey()] = value as Set<String>
-                }
-            }
+            it[storeKey.prefKey()] = value
         }
     }
 
