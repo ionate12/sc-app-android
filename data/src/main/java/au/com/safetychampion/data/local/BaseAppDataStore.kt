@@ -5,14 +5,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import au.com.safetychampion.data.util.IDispatchers
-import au.com.safetychampion.utils.injectKoin
+import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
 abstract class BaseAppDataStore {
     protected abstract val store: DataStore<Preferences>
-    private val dispatchers: IDispatchers by injectKoin()
+    private val dispatchers: IDispatchers by koinInject()
 
     @Suppress("UNCHECKED_CAST")
     suspend fun <T : Any> store(storeKey: StoreKey<T>, value: T?) {

@@ -12,12 +12,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.uncategory.AppToken
+import au.com.safetychampion.data.util.ITokenManager
+import au.com.safetychampion.data.util.dispatchers
 import au.com.safetychampion.databinding.ActivityMainBinding
 import au.com.safetychampion.util.asJson
+import au.com.safetychampion.util.koinGet
 import au.com.safetychampion.utils.AssetsManager
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzE2OTQzODMsImV4cCI6MTY3MTc4MDc4M30.GAjUJ9ZnVvES2mYoGUobZlpFnUAahlX3oQ7Qm3eaJ-M"
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -32,6 +39,10 @@ class MainActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Append Token Manually
+        CoroutineScope(dispatchers().main).launch {
+            koinGet<ITokenManager>().updateToken(AppToken.Authed(getToken()))
+        }
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

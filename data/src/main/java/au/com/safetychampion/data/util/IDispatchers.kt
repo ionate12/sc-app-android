@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.util
 
-import au.com.safetychampion.utils.getKoinInstance
+import au.com.safetychampion.util.koinGet
 import kotlinx.coroutines.CoroutineDispatcher
 
 interface IDispatchers {
@@ -9,4 +9,4 @@ interface IDispatchers {
     val default: CoroutineDispatcher
 }
 
-fun dispatchers(): IDispatchers = getKoinInstance()
+fun dispatchers(): IDispatchers = koinGet()

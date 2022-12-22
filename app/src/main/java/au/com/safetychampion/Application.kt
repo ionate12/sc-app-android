@@ -1,7 +1,7 @@
 package au.com.safetychampion
 
+import au.com.safetychampion.data.di.dataModule
 import au.com.safetychampion.di.appModules
-import au.com.safetychampion.di.dataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
