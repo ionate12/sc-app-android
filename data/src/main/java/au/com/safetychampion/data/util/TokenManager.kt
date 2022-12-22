@@ -6,32 +6,31 @@ import au.com.safetychampion.data.local.StoreKey
 import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.SortedSet
 
 interface ITokenManager {
-    fun getToken(): AppToken?
-    fun updateToken(token: AppToken)
+    suspend fun getToken(): AppToken?
+    suspend fun updateToken(token: AppToken)
 }
 internal class TokenManager : ITokenManager {
     private lateinit var tokens: SortedSet<AppToken>
     private val dataStore: BaseAppDataStore by koinInject()
-    override fun getToken(): AppToken? {
+    override suspend fun getToken(): AppToken? {
         initTokensIfNeeded()
         return tokens.firstOrNull()
     }
 
-    override fun updateToken(token: AppToken) {
+    override suspend fun updateToken(token: AppToken) {
         initTokensIfNeeded()
         tokens.removeIf { it.priority == token.priority }
         tokens.add(token)
         storeTokenIfNeeded(token)
     }
 
-    private fun initTokensIfNeeded() {
+    private suspend fun initTokensIfNeeded() {
         // lazy init
         if (!this::tokens.isInitialized) {
-            tokens = runBlocking(dispatchers().io) { getStoredTokens() }
+            tokens = getStoredTokens()
         }
     }
 

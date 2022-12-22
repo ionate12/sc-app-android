@@ -1,6 +1,8 @@
 package au.com.safetychampion.util
 
 import au.com.safetychampion.data.util.ITokenManager
+import au.com.safetychampion.data.util.dispatchers
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,8 +24,8 @@ internal class NetworkManager() : INetworkManager {
                 val builder = chain.request()
                     .newBuilder()
                     .addHeader("Content-Type", "application/json")
-
-                tokenManager.getToken()?.let {
+                // RunBlocking is a must here to getToken. Cancellation will be handled by RequestTimeoutException
+                runBlocking(dispatchers().io) { tokenManager.getToken() }?.let {
                     builder.addHeader("Authorization", it.value)
                 }
                 val request = builder.build()

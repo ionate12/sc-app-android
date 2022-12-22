@@ -11,9 +11,5 @@ class AppDataStore(context: Context) : BaseAppDataStore() {
         private val Context.appDataStore by preferencesDataStore(name = "SCDataStore")
     }
 
-    override val store: DataStore<Preferences>
-
-    init {
-        store = context.appDataStore
-    }
+    override val store: DataStore<Preferences> = context.appDataStore
 }
