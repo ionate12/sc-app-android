@@ -1,61 +1,58 @@
 package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.extensions.BaseRepositoryExtensions
-import au.com.safetychampion.data.domain.extensions.listOrEmpty
 import au.com.safetychampion.data.network.APIResponse
-import java.net.UnknownHostException
+import au.com.safetychampion.util.itemOrNull
+import au.com.safetychampion.util.listOrEmpty
 
-abstract class BaseRepository : BaseRepositoryExtensions {
+abstract class BaseRepository {
 
     /**
-     * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as [T]
-     * @param call
-     * A suspend function returns APIResponse
-     * @param classOfT
-     * the Java class of [T]
-     * @param keyItem
-     * default value is "item"
-     * @see get
+     * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as List<[T]>
+     * @param call A suspend function returns APIResponse
+     * @see toItems
      */
 
-    suspend fun <T> call(
-        call: suspend () -> APIResponse,
-        classOfT: Class<T>,
-        keyItem: String = "item"
-    ): Result<T> {
+    suspend inline fun <reified T> callAsList(crossinline call: suspend () -> APIResponse): Result<List<T>> {
         return try {
-            call
-                .invoke()
-                .get(
-                    keyItem = keyItem,
-                    tClass = classOfT
-                )
-        } catch (e: UnknownHostException) {
-            Result.Error(SCError.NoInternetConnection())
+            call.invoke().toItems()
         } catch (e: Exception) {
-            Result.Error(SCError.Failure(listOf(e.message!!)))
+            handleRetrofitException(e)
         }
     }
 
     /**
-     * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as List<[T]>
-     * @param call
-     * A suspend function returns APIResponse
-     * @param tClass
-     * the Java class of [T]
-     * @see getAsList
+     * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as [T]
+     * @param call A suspend function returns APIResponse
+     * @param responseObjName the object name of json object, default value is "item"
+     * @see toItems
      */
-    suspend fun <T> callAsList(call: suspend () -> APIResponse, tClass: Class<T>): Result<List<T>> {
+
+    suspend inline fun <reified T> call(
+        responseObjName: String = "item",
+        crossinline call: suspend () -> APIResponse
+    ): Result<T> {
         return try {
-            call
-                .invoke()
-                .getAsList(tClass)
-        } catch (e: UnknownHostException) {
-            Result.Error(SCError.NoInternetConnection())
+            call.invoke().toItem()
         } catch (e: Exception) {
-            e.printStackTrace()
-            Result.Error(SCError.Failure(listOf(e.message!!)))
+            handleRetrofitException(e)
+        }
+    }
+
+    inline fun <reified T> APIResponse.toItem(responseObjName: String = "item"): Result<T> {
+        return when (this.success) {
+            true -> {
+                if (this.result == null) {
+                    Result.Error(SCError.EmptyResult)
+                } else {
+                    Result.Success(result[responseObjName].itemOrNull())
+                }
+            }
+            false -> {
+                return Result.Error(
+                    handleAPIError(error)
+                )
+            }
         }
     }
 
@@ -70,17 +67,21 @@ abstract class BaseRepository : BaseRepositoryExtensions {
             }
             false -> {
                 return Result.Error(
-                    handleError(error)
+                    handleAPIError(error)
                 )
             }
         }
     }
 
-    fun handleError(err: APIResponse.APIError?): SCError {
+    fun handleAPIError(err: APIResponse.APIError?): SCError {
         return when {
             err?.code?.contains("authorization_token_expired") == true -> SCError.LoginTokenExpired()
             else -> SCError.Failure(err?.message ?: listOf("Unknown Reason"))
         }
+    }
+
+    fun handleRetrofitException(e: Exception): Result.Error {
+        return Result.Error(SCError.Failure(listOf(e.message!!)))
     }
 }
 

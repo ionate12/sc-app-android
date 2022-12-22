@@ -8,25 +8,27 @@ import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.extensions.asJson
 import au.com.safetychampion.databinding.ActivityMainBinding
+import au.com.safetychampion.util.asJson
+import au.com.safetychampion.utils.AssetsManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel by viewModel<MainViewModel>()
     private val sampleData = AssetsManager(this)
     private val listUseCase = listOf(
         "Get Active Task (tasks/list/active)" to { viewModel.loadActiveTasks() },
         "Load Active Tasks ReViewPlan (tasks/list/active)" to { viewModel.loadActiveTasksReViewPlan() },
         "Assign Task Status (tasks/assign/status)" to { viewModel.assignTaskStatus(sampleData.getSampleTask()) },
-        "Assign Task Status Many (tasks/assign/status)" to { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask()) }
-
+        "Assign Task Status Many (tasks/assign/status)" to { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask()) },
+        "Assign Task" to { viewModel.assignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) },
+        "UnAssign Task" to { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

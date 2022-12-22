@@ -1,28 +1,27 @@
-package au.com.safetychampion.data.domain.usecase.assigntaskstatus
+package au.com.safetychampion.data.domain.usecase.activetask
 
 import au.com.safetychampion.data.data.common.TaskRepository
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
 
-class AssignTaskStatusItemUseCase(
+class UnAssignTaskUseCase(
     private val activeTaskRepository: TaskRepository
 ) {
     suspend operator fun invoke(
         task: Task,
-        userId: String? = null,
-        notes: String? = null,
+        toUserId: String,
+        notes: String?,
         moduleName: String?,
-        dateDue: String?
-    ): Result<List<TaskAssignStatusItem>> {
+        dateDue: String
+    ): Result<Task> {
         val body = AssignTaskStatusPL(
             task = task,
-            userId = userId,
+            userId = toUserId,
             notes = notes,
             moduleName = moduleName,
             dateDue = dateDue
         )
-        return activeTaskRepository.assignTaskStatus(body)
+        return activeTaskRepository.unAssignTask(body)
     }
 }

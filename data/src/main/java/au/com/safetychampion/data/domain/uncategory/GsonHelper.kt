@@ -48,7 +48,7 @@ class GsonHelper {
 
         @JvmStatic
         fun getGson(): Gson {
-            return getGsonBuilder().create()
+            TODO("this function will be removed")
         }
 
         @JvmStatic
@@ -60,5 +60,5 @@ class GsonHelper {
     }
 }
 
-fun getGson() = GsonHelper.getGson()
+fun getGson(): Gson = TODO("this function will be removed")
 fun getGsonSerializeNulls() = GsonHelper.getGsonSerializeNulls()

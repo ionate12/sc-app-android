@@ -4,36 +4,30 @@ import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.payload.ActiveTaskPL
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusManyPL
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
-import com.google.gson.JsonObject
 
 class TaskRepositoryImpl(
     private val api: TaskAPI
-) : BaseRepository(), TaskRepository, TaskDAO {
-    override suspend fun getAllActiveTask(body: JsonObject): Result<List<Task>> {
-        return callAsList(
-            call = { api.active(body) },
-            tClass = Task::class.java
-        )
+) : BaseRepository(), TaskRepository {
+    override suspend fun getAllActiveTask(body: ActiveTaskPL): Result<List<Task>> {
+        return callAsList { api.active(body) }
     }
 
-    override suspend fun assignTaskStatus(body: JsonObject): Result<List<TaskAssignStatusItem>> {
-        return callAsList(
-            call = { api.assignTaskStatus(body) },
-            tClass = TaskAssignStatusItem::class.java
-        )
-    }
-
-    override suspend fun assignTaskStatus2(body: AssignTaskStatusPL): Result<List<TaskAssignStatusItem>> {
-        return api.assignTaskStatus(body).toItems()
+    override suspend fun assignTaskStatus(body: AssignTaskStatusPL): Result<List<TaskAssignStatusItem>> {
+        return callAsList { api.assignTaskStatus(body) }
     }
 
     override suspend fun assignTaskStatusMany(body: AssignTaskStatusManyPL): Result<List<TaskAssignStatusItem>> {
-        return api.assignTaskStatusMany(body).toItems()
+        return callAsList { api.assignTaskStatusMany(body) }
     }
 
-    override fun insert(vararg tasks: Task?) {
-        println("Inserted Tasks Not Implemented: ${tasks.size}")
+    override suspend fun assignTask(body: AssignTaskStatusPL): Result<Task> {
+        return call { api.assignTask(body) }
+    }
+
+    override suspend fun unAssignTask(body: AssignTaskStatusPL): Result<Task> {
+        return call { api.unassignTask(body) }
     }
 }
