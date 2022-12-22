@@ -11,4 +11,6 @@ interface TaskRepository {
     suspend fun getAllActiveTask(body: ActiveTaskPL): Result<List<Task>>
     suspend fun assignTaskStatus(body: AssignTaskStatusPL): Result<List<TaskAssignStatusItem>>
     suspend fun assignTaskStatusMany(body: AssignTaskStatusManyPL): Result<List<TaskAssignStatusItem>>
+    suspend fun assignTask(body: AssignTaskStatusPL): Result<Task>
+    suspend fun unAssignTask(body: AssignTaskStatusPL): Result<Task>
 }

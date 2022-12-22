@@ -22,4 +22,14 @@ interface TaskAPI {
     suspend fun assignTaskStatusMany(
         @Body body: AssignTaskStatusManyPL
     ): APIResponse
+
+    @POST("tasks/assign")
+    suspend fun assignTask(
+        @Body body: AssignTaskStatusPL?
+    ): APIResponse
+
+    @POST("tasks/unassign")
+    suspend fun unassignTask(
+        @Body body: AssignTaskStatusPL?
+    ): APIResponse
 }

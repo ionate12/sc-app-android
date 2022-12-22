@@ -1,8 +1,7 @@
 package au.com.safetychampion
 
-import au.com.safetychampion.data.di.retrofit.commonModule
 import au.com.safetychampion.di.appModules
-import au.com.safetychampion.di.usecases.useCasesModule
+import au.com.safetychampion.di.dataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -14,9 +13,7 @@ class Application : android.app.Application() {
         startKoin {
             androidContext(this@Application)
             modules(
-                appModules,
-                useCasesModule,
-                commonModule
+                appModules + dataModule
             )
         }
         plant(Timber.DebugTree())

@@ -22,4 +22,12 @@ class TaskRepositoryImpl(
     override suspend fun assignTaskStatusMany(body: AssignTaskStatusManyPL): Result<List<TaskAssignStatusItem>> {
         return callAsList { api.assignTaskStatusMany(body) }
     }
+
+    override suspend fun assignTask(body: AssignTaskStatusPL): Result<Task> {
+        return call { api.assignTask(body) }
+    }
+
+    override suspend fun unAssignTask(body: AssignTaskStatusPL): Result<Task> {
+        return call { api.unassignTask(body) }
+    }
 }
