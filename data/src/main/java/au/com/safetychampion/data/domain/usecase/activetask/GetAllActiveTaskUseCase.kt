@@ -9,6 +9,7 @@ class GetAllActiveTaskUseCase(
     private val activeTaskRepository: TaskRepository
 ) {
     suspend operator fun invoke(moduleName: String?): Result<List<Task>> {
+//        TODO("Use enum as moduleName instead String")
         val body = ActiveTaskPL(
             moduleName?.let { ActiveTaskPL.Modules(listOf(it)) }
         )
