@@ -19,5 +19,7 @@ inline fun <reified T : Any> koinInject(
     mode: LazyThreadSafetyMode = LazyThreadSafetyMode.SYNCHRONIZED,
     noinline parameters: ParametersDefinition? = null
 ) = lazy(mode) {
-    koinGet<T>()
+    object : KoinComponent {
+        val value = get<T>(qualifier, parameters)
+    }.value
 }
