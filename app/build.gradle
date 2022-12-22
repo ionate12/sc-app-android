@@ -62,6 +62,9 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
 
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+    implementation 'androidx.datastore:datastore:1.0.0'
+
     // Koin for Tests
     testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
     testImplementation 'org.mockito:mockito-core:4.5.0'
