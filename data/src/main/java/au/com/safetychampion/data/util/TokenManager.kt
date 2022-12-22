@@ -37,10 +37,10 @@ internal class TokenManager : ITokenManager {
 
     private suspend fun getStoredTokens(): SortedSet<AppToken> {
         val set: SortedSet<AppToken> = sortedSetOf()
-        dataStore.get(StoreKey.StringKey.TokenAuthed)?.let {
+        dataStore.get(StoreKey.AsString.TokenAuthed)?.let {
             set.add(AppToken.Authed(it))
         }
-        dataStore.get(StoreKey.StringKey.TokenMorphed)?.let {
+        dataStore.get(StoreKey.AsString.TokenMorphed)?.let {
             set.add(AppToken.Morphed(it))
         }
         return set
@@ -49,8 +49,8 @@ internal class TokenManager : ITokenManager {
     private fun storeTokenIfNeeded(token: AppToken) {
         CoroutineScope(dispatchers().io).launch {
             when (token) {
-                is AppToken.Morphed -> dataStore.store(StoreKey.StringKey.TokenMorphed, token.value)
-                is AppToken.Authed -> dataStore.store(StoreKey.StringKey.TokenAuthed, token.value)
+                is AppToken.Morphed -> dataStore.store(StoreKey.AsString.TokenMorphed, token.value)
+                is AppToken.Authed -> dataStore.store(StoreKey.AsString.TokenAuthed, token.value)
                 else -> Unit
             }
         }

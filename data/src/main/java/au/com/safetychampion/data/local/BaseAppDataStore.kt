@@ -40,22 +40,22 @@ abstract class BaseAppDataStore {
 
 sealed class StoreKey<T : Any>(protected open val key: String) {
     abstract fun prefKey(): Preferences.Key<T>
-    sealed class StringKey(override val key: String) : StoreKey<String>(key) {
+    sealed class AsString(override val key: String) : StoreKey<String>(key) {
         override fun prefKey(): Preferences.Key<String> = stringPreferencesKey(key)
 
-        object TokenAuthed : StringKey("token_authed")
-        object TokenMorphed : StringKey("token_morphed")
+        object TokenAuthed : AsString("token_authed")
+        object TokenMorphed : AsString("token_morphed")
     }
 
-    sealed class BooleanKey(override val key: String) : StoreKey<Boolean>(key) {
+    sealed class AsBoolean(override val key: String) : StoreKey<Boolean>(key) {
         override fun prefKey(): Preferences.Key<Boolean> = booleanPreferencesKey(key)
         // To add more boolean value
     }
-    sealed class IntKey(override val key: String) : StoreKey<Int>(key) {
+    sealed class AsInt(override val key: String) : StoreKey<Int>(key) {
         override fun prefKey(): Preferences.Key<Int> = intPreferencesKey(key)
         // To add more Int Value
     }
-    sealed class StringSetKey(override val key: String) : StoreKey<Set<String>>(key) {
+    sealed class AsStringSet(override val key: String) : StoreKey<Set<String>>(key) {
         override fun prefKey(): Preferences.Key<Set<String>> = stringSetPreferencesKey(key)
         // To add more String Set Value
     }
