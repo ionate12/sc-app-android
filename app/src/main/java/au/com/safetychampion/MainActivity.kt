@@ -26,8 +26,9 @@ class MainActivity : AppCompatActivity() {
         "Get Active Task (tasks/list/active)" to { viewModel.loadActiveTasks() },
         "Load Active Tasks ReViewPlan (tasks/list/active)" to { viewModel.loadActiveTasksReViewPlan() },
         "Assign Task Status (tasks/assign/status)" to { viewModel.assignTaskStatus(sampleData.getSampleTask()) },
-        "Assign Task Status Many (tasks/assign/status)" to { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask()) }
-
+        "Assign Task Status Many (tasks/assign/status)" to { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask()) },
+        "Assign Task" to { viewModel.assignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) },
+        "UnAssign Task" to { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

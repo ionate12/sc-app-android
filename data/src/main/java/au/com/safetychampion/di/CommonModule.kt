@@ -4,6 +4,7 @@ import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.TierType
 import au.com.safetychampion.utils.gsonadapters.BasePLTypeAdapter
 import au.com.safetychampion.utils.gsonadapters.TierTypeConverter
+import au.com.safetychampion.utils.koinGet
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -16,7 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzE1OTQ5MjcsImV4cCI6MTY3MTY4MTMyN30.Deq2bJn5mfnKFX4fD6JkBhaU0QvcNNc2qOwgGBvQAYE"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzE2OTQzODMsImV4cCI6MTY3MTc4MDc4M30.GAjUJ9ZnVvES2mYoGUobZlpFnUAahlX3oQ7Qm3eaJ-M"
 private const val BASE_URL = "https://api.dev.safetychampion.tech"
 
 val commonModule = module {
@@ -45,7 +46,7 @@ val commonModule = module {
                 .readTimeout(2, TimeUnit.MINUTES)
                 .writeTimeout(2, TimeUnit.MINUTES)
                 .build(),
-            converterFactory = GsonConverterFactory.create(get())
+            converterFactory = GsonConverterFactory.create(koinGet<IGsonManager>().gson)
         )
     }
 }

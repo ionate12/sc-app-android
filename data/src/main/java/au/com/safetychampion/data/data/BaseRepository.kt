@@ -31,7 +31,7 @@ abstract class BaseRepository {
     suspend inline fun <reified T> call(
         responseObjName: String = "item",
         crossinline call: suspend () -> APIResponse
-    ): Result<List<T>> {
+    ): Result<T> {
         return try {
             call.invoke().toItem()
         } catch (e: Exception) {

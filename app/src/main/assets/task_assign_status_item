@@ -1,0 +1,12 @@
+{
+  "_id": "5efbeba4c6bac31619e11be4",
+  "assigned": true,
+  "isCommentActivated": false,
+  "name": "Nadia Gorczany (Melbourne)",
+  "tier": {
+    "_id": "5efbeb98c6bac31619e11bc9",
+    "name": "ABC Warehousing",
+    "type": "core.tier.T3"
+  },
+  "type": "core.user"
+}

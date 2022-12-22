@@ -2,6 +2,7 @@ package au.com.safetychampion.utils
 
 import android.content.Context
 import android.content.res.AssetManager
+import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.task.Task
 
 private fun AssetManager.readAssetsFile(fileName: String): String = open(fileName).bufferedReader().use { it.readText() }
@@ -19,5 +20,12 @@ class AssetsManager(private val context: Context) {
             .assets
             .readAssetsFile("tasks")
             .listOrEmpty()
+    }
+
+    fun getSampleTaskAssignStatusItem(): TaskAssignStatusItem {
+        return context
+            .assets
+            .readAssetsFile("task_assign_status_item")
+            .itemOrNull<TaskAssignStatusItem>()!!
     }
 }
