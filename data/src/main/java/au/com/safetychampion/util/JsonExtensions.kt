@@ -1,6 +1,5 @@
-package au.com.safetychampion.utils
+package au.com.safetychampion.util
 
-import au.com.safetychampion.data.di.retrofit.IGsonManager
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 import timber.log.Timber

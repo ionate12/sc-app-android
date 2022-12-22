@@ -1,5 +1,6 @@
 package au.com.safetychampion.di
 
+import au.com.safetychampion.data.di.dataModule
 import org.junit.Test
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules

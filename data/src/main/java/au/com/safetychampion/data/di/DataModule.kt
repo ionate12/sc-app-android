@@ -1,4 +1,4 @@
-package au.com.safetychampion.di
+package au.com.safetychampion.data.di
 
 import au.com.safetychampion.data.di.retrofit.commonModule
 

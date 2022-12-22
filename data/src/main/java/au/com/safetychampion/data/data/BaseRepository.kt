@@ -2,8 +2,8 @@ package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.network.APIResponse
-import au.com.safetychampion.utils.itemOrNull
-import au.com.safetychampion.utils.listOrEmpty
+import au.com.safetychampion.util.itemOrNull
+import au.com.safetychampion.util.listOrEmpty
 
 abstract class BaseRepository {
 

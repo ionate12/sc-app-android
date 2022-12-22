@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.AssetManager
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.util.itemOrNull
+import au.com.safetychampion.util.listOrEmpty
 
 private fun AssetManager.readAssetsFile(fileName: String): String = open(fileName).bufferedReader().use { it.readText() }
 

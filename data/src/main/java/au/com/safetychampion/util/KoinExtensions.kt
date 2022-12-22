@@ -1,4 +1,4 @@
-package au.com.safetychampion.utils
+package au.com.safetychampion.util
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get

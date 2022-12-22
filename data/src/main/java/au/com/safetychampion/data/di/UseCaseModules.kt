@@ -1,22 +1,22 @@
-package au.com.safetychampion.di
+package au.com.safetychampion.data.di
 
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
-import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val useCasesModule = module {
 
-    singleOf(::AssignManyTasksStatusItemUseCase)
+    factoryOf(::AssignManyTasksStatusItemUseCase)
 
-    singleOf(::AssignTaskStatusItemUseCase)
+    factoryOf(::AssignTaskStatusItemUseCase)
 
-    singleOf(::GetAllActiveTaskUseCase)
+    factoryOf(::GetAllActiveTaskUseCase)
 
-    singleOf(::AssignTaskUseCase)
+    factoryOf(::AssignTaskUseCase)
 
-    singleOf(::UnAssignTaskUseCase)
+    factoryOf(::UnAssignTaskUseCase)
 }

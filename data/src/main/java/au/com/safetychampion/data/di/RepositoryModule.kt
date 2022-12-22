@@ -1,9 +1,9 @@
-package au.com.safetychampion.di
+package au.com.safetychampion.data.di
 
 import au.com.safetychampion.data.data.common.TaskAPI
 import au.com.safetychampion.data.data.common.TaskRepository
 import au.com.safetychampion.data.data.common.TaskRepositoryImpl
-import au.com.safetychampion.data.di.retrofit.INetworkManager
+import au.com.safetychampion.util.INetworkManager
 import org.koin.dsl.module
 
 internal val repositoryModule = module {
