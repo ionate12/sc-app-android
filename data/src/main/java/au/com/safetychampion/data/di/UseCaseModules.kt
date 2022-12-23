@@ -8,7 +8,7 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStat
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
-val useCasesModule = module {
+internal val useCasesModule = module {
 
     factoryOf(::AssignManyTasksStatusItemUseCase)
 
