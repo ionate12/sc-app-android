@@ -25,6 +25,7 @@ internal class NetworkManager() : INetworkManager {
                     .newBuilder()
                     .addHeader("Content-Type", "application/json")
                 // RunBlocking is a must here to getToken. Cancellation will be handled by RequestTimeoutException
+                // TODO: Should not use runblocking here. too risky!!
                 runBlocking(dispatchers().io) { tokenManager.getToken() }?.let {
                     builder.addHeader("Authorization", it.value)
                 }
