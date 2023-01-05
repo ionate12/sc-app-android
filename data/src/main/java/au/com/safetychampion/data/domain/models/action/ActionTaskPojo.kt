@@ -4,6 +4,7 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.UpdateLog
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.login.LoginUser
+import au.com.safetychampion.data.domain.payload.ActionPojo
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
@@ -32,6 +33,6 @@ data class ActionTaskPojo(
     var editComments: List<UpdateLog> = emptyList(),
     var cusvals: List<CustomValue> = emptyList(),
     var links: List<ActionLink> = emptyList(),
-    var newActions: List<ActionBody> = emptyList(),
+    var newActions: List<ActionPojo> = emptyList(),
     var changedImplemented: Boolean? = null
 )

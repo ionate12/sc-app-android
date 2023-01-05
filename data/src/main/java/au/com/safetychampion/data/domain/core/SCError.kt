@@ -29,7 +29,7 @@ sealed class SCError(val code: String, val errDescription: String) {
         errDescription = "Your LOGIN SESSION has expired. Re-login is required"
     )
 
-    class NoInternetConnection() : SCError(
+    class NoNetwork() : SCError(
         code = "no_internet_connection",
         errDescription = "No Internet. Please check your internet connection"
     )

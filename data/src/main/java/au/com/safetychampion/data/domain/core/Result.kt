@@ -1,27 +1,31 @@
 package au.com.safetychampion.data.domain.core
 
+import kotlin.reflect.KClass
+
 sealed class Result<out R> {
     data class Success<out T>(val data: T?) : Result<T>()
     data class Error(val err: SCError) : Result<Nothing>()
     object Loading : Result<Nothing>()
 }
 
-fun <T> Result<T>.getData(): T? {
+fun <T> Result<T>.dataOrNull(): T? {
     return (this as? Result.Success)?.data
 }
 
-fun Result<*>.getError(): SCError? {
+fun Result<*>.errorOrNull(): SCError? {
     return (this as? Result.Error)?.err
 }
 
-// fun <T, M> Result<T>.flatMap(function: (T?) -> M?): Result<M> {
-//    val data = function(getData())
-//    return when {
-//        data != null -> Result.Success(data)
-//        this is Result.Success -> Result.Error(SCError.EmptyResult)
-//        else -> this as Result.Error
-//    }
-// }
+suspend fun <T : Any> Result<T>.flatMapError(
+    expectedError: KClass<out SCError>,
+    action: suspend (SCError) -> Result<T>?
+): Result<T> {
+    return if (this is Result.Error && errorOrNull()!!::class == expectedError) {
+        action.invoke(err) ?: this
+    } else {
+        this
+    }
+}
 
 /**
  * Performs the given action if this is [Result.Success] and data != null,
@@ -30,7 +34,7 @@ fun Result<*>.getError(): SCError? {
  */
 
 fun <T> Result<T>.doOnSucceed(action: T.() -> Unit): Boolean {
-    getData()?.let(action) ?: return false
+    dataOrNull()?.let(action) ?: return false
     return true
 }
 
@@ -41,6 +45,6 @@ fun <T> Result<T>.doOnSucceed(action: T.() -> Unit): Boolean {
  */
 
 fun <T> Result<T>.doOnFailure(action: SCError.() -> Unit): Boolean {
-    getError()?.let(action) ?: return false
+    errorOrNull()?.let(action) ?: return false
     return true
 }

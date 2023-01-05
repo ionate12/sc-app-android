@@ -1,9 +1,8 @@
-package au.com.safetychampion.data.data.common
+package au.com.safetychampion.data.network
 
 import au.com.safetychampion.data.domain.payload.ActiveTaskPL
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusManyPL
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
-import au.com.safetychampion.data.network.APIResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 

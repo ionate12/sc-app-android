@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.di.retrofit
+package au.com.safetychampion.data.di
 
 import au.com.safetychampion.data.util.IDispatchers
 import au.com.safetychampion.data.util.ITokenManager
@@ -17,7 +17,7 @@ internal val commonModule = module {
     singleOf<IGsonManager>(::GsonManager)
 
     singleOf<INetworkManager> (::NetworkManager)
-    single<ITokenManager> { TokenManager() }
+    singleOf<ITokenManager> (::TokenManager)
     single<IDispatchers> {
         object : IDispatchers {
             override val main: CoroutineDispatcher

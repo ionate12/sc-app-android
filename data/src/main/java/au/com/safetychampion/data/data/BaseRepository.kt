@@ -1,9 +1,12 @@
 package au.com.safetychampion.data.data
 
-import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.core.SCError
+import au.com.safetychampion.data.domain.core.flatMapError
 import au.com.safetychampion.data.network.APIResponse
-import au.com.safetychampion.util.itemOrNull
-import au.com.safetychampion.util.listOrEmpty
+import au.com.safetychampion.data.network.toItem
+import au.com.safetychampion.data.network.toItems
+import au.com.safetychampion.util.* // ktlint-disable no-wildcard-imports
 
 abstract class BaseRepository {
 
@@ -13,8 +16,13 @@ abstract class BaseRepository {
      * @see toItems
      */
 
-    suspend inline fun <reified T> callAsList(crossinline call: suspend () -> APIResponse): Result<List<T>> {
+    suspend inline fun <reified T> apiCallAsList(
+        crossinline call: suspend () -> APIResponse
+    ): Result<List<T>> {
         return try {
+            if (!NetworkManager.internetAvailable()) {
+                return Result.Error(SCError.NoNetwork())
+            }
             call.invoke().toItems()
         } catch (e: Exception) {
             handleRetrofitException(e)
@@ -28,86 +36,70 @@ abstract class BaseRepository {
      * @see toItems
      */
 
-    suspend inline fun <reified T> call(
+    suspend inline fun <reified T> apiCall(
         responseObjName: String = "item",
         crossinline call: suspend () -> APIResponse
     ): Result<T> {
         return try {
-            call.invoke().toItem()
+            if (!NetworkManager.internetAvailable()) {
+                return Result.Error(SCError.NoNetwork())
+            }
+            call.invoke().toItem(responseObjName)
         } catch (e: Exception) {
             handleRetrofitException(e)
         }
     }
 
-    inline fun <reified T> APIResponse.toItem(responseObjName: String = "item"): Result<T> {
-        return when (this.success) {
-            true -> {
-                if (this.result == null) {
-                    Result.Error(SCError.EmptyResult)
-                } else {
-                    Result.Success(result[responseObjName].itemOrNull())
-                }
+    /**
+     * Trying to fetch data from the remote datasource, with the [remote] as the parameter of [apiCall] function,
+     * If [apiCall] is failed, and it returns a [SCError.NoNetwork] wrapped in [Result.Error], then invokes the [local] as the fallback.
+     * @param remote Remote datasource: an API request returns APIResponse
+     * @param local Local datasource: using as a fallback and only be invoked if we have a SCError.NoNetwork from [apiCall]
+     * @return [Result.Success] if [remote] is [Result.Success] || [remote] is [Result.Error] but [local].invokes() != null,
+     * [Result.Error] otherwise
+     * @see flatMapError
+     */
+
+    suspend inline fun <reified T : Any> remoteOrLocalOrError(
+        crossinline remote: suspend () -> APIResponse,
+        crossinline local: suspend (SCError) -> T?
+    ): Result<T> {
+        return apiCall<T>(
+            call = remote
+        ).flatMapError(
+            expectedError = SCError.NoNetwork::class,
+            action = { scError ->
+                local.invoke(scError)?.let { Result.Success(it) } ?: Result.Error(scError)
             }
-            false -> {
-                return Result.Error(
-                    handleAPIError(error)
-                )
-            }
-        }
+        )
     }
 
-    inline fun <reified T> APIResponse.toItems(): Result<List<T>> {
-        return when (success) {
-            true -> {
-                if (result == null) {
-                    Result.Error(SCError.EmptyResult)
-                } else {
-                    Result.Success(result["items"].listOrEmpty())
-                }
-            }
-            false -> {
-                return Result.Error(
-                    handleAPIError(error)
-                )
-            }
-        }
-    }
+    /**
+     * @see remoteOrLocalOrError
+     */
 
-    fun handleAPIError(err: APIResponse.APIError?): SCError {
-        return when {
-            err?.code?.contains("authorization_token_expired") == true -> SCError.LoginTokenExpired()
-            else -> SCError.Failure(err?.message ?: listOf("Unknown Reason"))
-        }
-    }
-
-    fun handleRetrofitException(e: Exception): Result.Error {
-        return Result.Error(SCError.Failure(listOf(e.message!!)))
+    suspend inline fun <reified T : Any> remoteOrLocalOrErrorAsList(
+        crossinline remote: suspend () -> APIResponse,
+        crossinline local: suspend (SCError) -> List<T>?
+    ): Result<List<T>> {
+        return apiCallAsList<T>(
+            call = remote
+        ).flatMapError(
+            expectedError = SCError.NoNetwork::class,
+            action = { scError ->
+                local.invoke(scError)?.let { Result.Success(it) } ?: Result.Error(scError)
+            }
+        )
     }
 }
 
-interface BaseSignoffPayload
-
-data class ActionSignoffPayload(val data: Any) : BaseSignoffPayload
-
-abstract class SignoffUseCase<T : BaseSignoffPayload> {
-    //    val offlineRepo
-//    val repo: BaseRepo
-    val isOnline = true
-    val hasOfflineTask = false
-    suspend operator fun invoke(pl: T): Result<Any> {
-        return when {
-            hasOfflineTask -> overWriteOffline()
-            isOnline -> toServer()
-            else -> toOffline()
-        }
-    }
-    abstract suspend fun toServer(): Result<Any>
-    private suspend fun toOffline(): Result<Any> = Result.Success("")
-    private suspend fun overWriteOffline(): Result<Any> = Result.Success("")
+fun handleRetrofitException(e: Exception): Result.Error {
+    return Result.Error(SCError.Failure(listOf(e.message ?: "")))
 }
 
-class ActionSignoffUseCase : SignoffUseCase<ActionSignoffPayload>() {
-    override suspend fun toServer(): Result<Any> {
-        TODO("Not yet implemented")
+fun handleAPIError(err: APIResponse.APIError?): SCError {
+    return when {
+        err?.code?.contains("authorization_token_expired") == true -> SCError.LoginTokenExpired()
+        else -> SCError.Failure(err?.message ?: listOf("Unknown Reason"))
     }
 }

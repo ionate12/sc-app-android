@@ -1,6 +1,9 @@
 package au.com.safetychampion.util
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
 import com.google.gson.reflect.TypeToken
 import timber.log.Timber
 
@@ -44,10 +47,20 @@ inline fun <reified T> String.listOrEmpty(): List<T> {
     }
 }
 
-fun Any.asJson(): String? {
+fun Any.toJsonString(): String? {
     return try {
         gson.toJsonTree(this).toString()
     } catch (e: Exception) {
         null
+    }
+}
+
+fun JsonElement?.isNullOrEmpty(): Boolean {
+    if (this == null) return true
+    return when (this) {
+        is JsonPrimitive -> asString.trim().isEmpty()
+        is JsonArray -> asJsonArray.isEmpty
+        is JsonObject -> asJsonObject.entrySet().isEmpty()
+        else -> true
     }
 }

@@ -1,0 +1,127 @@
+{
+  "date": "2022-12-23",
+  "tzDateCreated": "Asia/Saigon",
+  "cusvals": [
+    {
+      "_id": "x-OQf4Yti",
+      "title": "Action Description",
+      "type": "text",
+      "value": "trtrt"
+    },
+    {
+      "_id": "uH_rEM7ks",
+      "title": "Special Char Test edit",
+      "type": "text",
+      "value": "545"
+    },
+    {
+      "_id": "lmJM_oPT8",
+      "title": "SELECT *",
+      "type": "text",
+      "value": "3"
+    }
+  ],
+  "attachments": [],
+  "dateIdentified": "2022-12-13",
+  "personReporting": "T. K",
+  "overview": "Brief",
+  "category": "Repair and Maintenance",
+  "dateDue": "2022-12-21",
+  "personResponsible": "545",
+  "personResponsibleEmail": "a@gmail.com",
+  "description": "54",
+  "tz": "Asia/Saigon",
+  "categoryCusvals": [
+    {
+      "_id": "exng8pFoQS",
+      "title": "Text",
+      "type": "text",
+      "value": "54"
+    },
+    {
+      "_id": "w5cczreVfs",
+      "title": "Email",
+      "type": "email",
+      "value": "F@GMAIL.COM"
+    },
+    {
+      "_id": "o9VO8HA_pk",
+      "title": "Telephone",
+      "type": "tel",
+      "value": "54"
+    },
+    {
+      "_id": "WTDNcGnOkH",
+      "title": "Number",
+      "type": "number",
+      "value": 54
+    },
+    {
+      "_id": "ejMGrro1CmK",
+      "title": "Date",
+      "type": "date",
+      "value": "2022-12-29"
+    },
+    {
+      "_id": "P-WX4ItgcCv",
+      "title": "Time",
+      "type": "time",
+      "value": {
+        "hours": 5,
+        "minutes": 54
+      }
+    },
+    {
+      "_id": "eXnHHPFZKxq",
+      "title": "Color",
+      "type": "color",
+      "value": "#000000"
+    },
+    {
+      "_id": "Uwzj3Chb2H4",
+      "title": "Url",
+      "type": "url",
+      "value": "https://g.com"
+    },
+    {
+      "_id": "rthcIeYxhAK",
+      "title": "Checkbox",
+      "type": "checkbox",
+      "value": [
+        "Yes",
+        "No",
+        "NA"
+      ]
+    },
+    {
+      "_id": "T5lgBkAw7-S",
+      "title": "Single Select",
+      "type": "select_single",
+      "value": [
+        [
+          "No"
+        ]
+      ]
+    },
+    {
+      "_id": "dC4OCcxrhAD",
+      "title": "Multiple Select",
+      "type": "select_multiple",
+      "value": [
+        [
+          "1st Flow",
+          "Dev team"
+        ]
+      ]
+    },
+    {
+      "_id": "0ktNr46Qu5e",
+      "title": "Money",
+      "type": "currency",
+      "value": {
+        "amount": 545,
+        "code": "AUD"
+      }
+    }
+  ]
+}

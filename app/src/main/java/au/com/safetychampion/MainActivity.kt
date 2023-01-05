@@ -16,15 +16,15 @@ import au.com.safetychampion.data.domain.uncategory.AppToken
 import au.com.safetychampion.data.util.ITokenManager
 import au.com.safetychampion.data.util.dispatchers
 import au.com.safetychampion.databinding.ActivityMainBinding
-import au.com.safetychampion.util.asJson
 import au.com.safetychampion.util.koinGet
+import au.com.safetychampion.util.toJsonString
 import au.com.safetychampion.utils.AssetsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzE2OTQzODMsImV4cCI6MTY3MTc4MDc4M30.GAjUJ9ZnVvES2mYoGUobZlpFnUAahlX3oQ7Qm3eaJ-M"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzI4MzEyNjksImV4cCI6MTY3MjkxNzY2OX0.t3TZuaSsiS-xxocRgXsd5V__k1dOSX6VP6sWQwonmA8"
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -35,7 +35,11 @@ class MainActivity : AppCompatActivity() {
         "Assign Task Status (tasks/assign/status)" to { viewModel.assignTaskStatus(sampleData.getSampleTask()) },
         "Assign Task Status Many (tasks/assign/status)" to { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask()) },
         "Assign Task" to { viewModel.assignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) },
-        "UnAssign Task" to { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) }
+        "UnAssign Task" to { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) },
+        "Create new action" to { viewModel.createNewAction(payload = sampleData.getNewAction(), attachments = emptyList()) },
+        "List Action" to { viewModel.getListAction() },
+        "Get Action SignOff" to { viewModel.getActionSignOff(actionId = sampleData.getActionId()) },
+        "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,12 +58,6 @@ class MainActivity : AppCompatActivity() {
         val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         binding.copy.setOnClickListener {
             val clip = ClipData.newPlainText("text", binding.result.text)
-            clipboard.setPrimaryClip(clip)
-            Toast.makeText(this, "Copied", Toast.LENGTH_LONG).show()
-        }
-
-        binding.copypayload.setOnClickListener {
-            val clip = ClipData.newPlainText("text", viewModel.payload.value)
             clipboard.setPrimaryClip(clip)
             Toast.makeText(this, "Copied", Toast.LENGTH_LONG).show()
         }
@@ -85,20 +83,14 @@ class MainActivity : AppCompatActivity() {
 
                     it is Result.Success -> {
                         binding.status.text = "This is Result.Success"
-                        binding.result.text = it.data?.asJson()
+                        binding.result.text = it.data?.toJsonString()
                         binding.count.text = "[${(it.data as? List<*>)?.size}]"
                     }
                 }
             }
         }
 
-        lifecycleScope.launch {
-            viewModel.payload.collectLatest {
-                binding.payload.text = it
-            }
-        }
-
-        binding.payload.setMovementMethod(ScrollingMovementMethod())
-        binding.result.setMovementMethod(ScrollingMovementMethod())
+        binding.payload.movementMethod = ScrollingMovementMethod()
+        binding.result.movementMethod = ScrollingMovementMethod()
     }
 }

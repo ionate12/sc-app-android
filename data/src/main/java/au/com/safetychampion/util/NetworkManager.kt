@@ -2,12 +2,18 @@ package au.com.safetychampion.util
 
 import au.com.safetychampion.data.util.ITokenManager
 import au.com.safetychampion.data.util.dispatchers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.net.InetSocketAddress
+import java.net.Socket
+import java.net.SocketAddress
 import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://api.dev.safetychampion.tech"
@@ -16,7 +22,24 @@ internal interface INetworkManager {
     val retrofit: Retrofit
 }
 
-internal class NetworkManager() : INetworkManager {
+class NetworkManager() : INetworkManager {
+    companion object {
+        suspend fun internetAvailable(): Boolean {
+            return withContext(Dispatchers.Default) {
+                try {
+                    val sock = Socket()
+                    val sockAddress: SocketAddress = InetSocketAddress("8.8.8.8", 53)
+                    sock.use {
+                        it.connect(sockAddress, 3000)
+                    } // This will block no more than timeoutMs
+                    true
+                } catch (e: IOException) {
+                    false
+                }
+            }
+        }
+    }
+
     private val baseUrl: String = BASE_URL
     private val httpClient: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(
