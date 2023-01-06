@@ -1,0 +1,620 @@
+{
+  "_id": "63b65df997f7ee1e8d3d63ae",
+  "type": "core.module.action",
+  "tier": {
+    "type": "core.tier.T3",
+    "_id": "5efbeb98c6bac31619e11bc9"
+  },
+  "overview": "24",
+  "description": "2323",
+  "personReporting": "434",
+  "personResponsible": "23",
+  "personResponsibleEmail": null,
+  "attachments": [],
+  "cusvals": [
+    {
+      "_id": "x-OQf4Yti",
+      "title": "Action Description",
+      "type": "text",
+      "value": null
+    },
+    {
+      "_id": "uH_rEM7ks",
+      "title": "Special Char Test edit",
+      "type": "text",
+      "value": "434"
+    },
+    {
+      "_id": "lmJM_oPT8",
+      "title": "SELECT *",
+      "type": "text",
+      "value": "4434"
+    }
+  ],
+  "categoryCusvals": [
+    {
+      "_id": "3Mt8dXsfT",
+      "title": "6",
+      "type": "number",
+      "value": null
+    },
+    {
+      "_id": "PmxUX3XXn",
+      "title": "5",
+      "type": "select_multiple",
+      "value": null
+    },
+    {
+      "_id": "VL-dAwEis",
+      "title": "4",
+      "type": "select_single",
+      "value": null
+    },
+    {
+      "_id": "2QPgBtWxq0",
+      "title": "3",
+      "type": "select_single",
+      "value": null
+    },
+    {
+      "_id": "fjcTFwU-wr",
+      "title": "2",
+      "type": "select_multiple",
+      "value": null
+    },
+    {
+      "_id": "tkTOuekiY",
+      "title": "1",
+      "type": "select_multiple",
+      "value": null
+    },
+    {
+      "_id": "exng8pFoQS",
+      "title": "Text",
+      "type": "text",
+      "value": "323"
+    },
+    {
+      "_id": "w5cczreVfs",
+      "title": "Email",
+      "type": "email",
+      "value": "F@GMAIL.COM"
+    },
+    {
+      "_id": "o9VO8HA_pk",
+      "title": "Telephone",
+      "type": "tel",
+      "value": "32323232323"
+    },
+    {
+      "_id": "WTDNcGnOkH",
+      "title": "Number",
+      "type": "number",
+      "value": 1
+    },
+    {
+      "_id": "ejMGrro1CmK",
+      "title": "Date",
+      "type": "date",
+      "value": "2023-01-25"
+    },
+    {
+      "_id": "P-WX4ItgcCv",
+      "title": "Time",
+      "type": "time",
+      "value": {
+        "hours": 22,
+        "minutes": 22
+      }
+    },
+    {
+      "_id": "eXnHHPFZKxq",
+      "title": "Color",
+      "type": "color",
+      "value": "#000000"
+    },
+    {
+      "_id": "Uwzj3Chb2H4",
+      "title": "Url",
+      "type": "url",
+      "value": null
+    },
+    {
+      "_id": "rthcIeYxhAK",
+      "title": "Checkbox",
+      "type": "checkbox",
+      "value": []
+    },
+    {
+      "_id": "T5lgBkAw7-S",
+      "title": "Single Select",
+      "type": "select_single",
+      "value": [
+        [
+          "Yes"
+        ]
+      ]
+    },
+    {
+      "_id": "dC4OCcxrhAD",
+      "title": "Multiple Select",
+      "type": "select_multiple",
+      "value": [
+        [
+          "1st Flow",
+          "Dev team"
+        ]
+      ]
+    },
+    {
+      "_id": "0ktNr46Qu5e",
+      "title": "Money",
+      "type": "currency",
+      "value": {
+        "amount": 234,
+        "code": "AUD"
+      }
+    }
+  ],
+  "category": "Workplace Inspection",
+  "categoryOther": null,
+  "dateIdentified": "2023-01-05",
+  "dateDue": "2023-01-12",
+  "createdBy": {
+    "type": "core.user",
+    "_id": "5efbeba4c6bac31619e11be4",
+    "name": "Nadia Gorczany (Melbourne)",
+    "email": "demomanager@safetychampion.online"
+  },
+  "tzDateCreated": "Asia/Saigon",
+  "dateCreated": "2023-01-05",
+  "reference": "ACT1112",
+  "closed": false,
+  "severity": null,
+  "categoryConfig": {
+    "title": "Repair and Maintenance",
+    "description": "",
+    "options": [
+      {
+        "opt": "WORKER_GROUP_ACCESS"
+      }
+    ],
+    "cusvals": [
+      {
+        "title": "Text",
+        "description": "Text",
+        "type": "text",
+        "required": true,
+        "_id": "exng8pFoQS"
+      },
+      {
+        "title": "Email",
+        "description": "Email",
+        "type": "email",
+        "required": false,
+        "_id": "w5cczreVfs"
+      },
+      {
+        "title": "Telephone",
+        "description": null,
+        "type": "tel",
+        "required": true,
+        "_id": "o9VO8HA_pk"
+      },
+      {
+        "title": "Number",
+        "description": null,
+        "type": "number",
+        "required": true,
+        "_id": "WTDNcGnOkH"
+      },
+      {
+        "title": "Date",
+        "description": null,
+        "type": "date",
+        "required": false,
+        "_id": "ejMGrro1CmK"
+      },
+      {
+        "title": "Time",
+        "description": null,
+        "type": "time",
+        "required": false,
+        "_id": "P-WX4ItgcCv"
+      },
+      {
+        "title": "Color",
+        "description": null,
+        "type": "color",
+        "required": true,
+        "_id": "eXnHHPFZKxq"
+      },
+      {
+        "title": "Url",
+        "description": "Url",
+        "type": "url",
+        "required": false,
+        "_id": "Uwzj3Chb2H4"
+      },
+      {
+        "title": "Checkbox",
+        "description": null,
+        "type": "checkbox",
+        "required": false,
+        "options": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          },
+          {
+            "name": "NA"
+          }
+        ],
+        "_id": "rthcIeYxhAK"
+      },
+      {
+        "title": "Single Select",
+        "description": null,
+        "type": "select_single",
+        "required": false,
+        "options": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          }
+        ],
+        "_id": "T5lgBkAw7-S"
+      },
+      {
+        "title": "Multiple Select",
+        "description": null,
+        "type": "select_multiple",
+        "required": true,
+        "options": [
+          {
+            "icon": "blind",
+            "name": "1st Flow",
+            "options": [
+              {
+                "name": "Dev team"
+              },
+              {
+                "name": "Test Team"
+              }
+            ]
+          },
+          {
+            "icon": "arrow alternate circle up outline",
+            "name": "2nd Floor",
+            "options": [
+              {
+                "name": "Craig"
+              },
+              "SEPARATOR",
+              {
+                "name": "Anna"
+              },
+              {
+                "static": "Good"
+              },
+              {
+                "name": "Jake"
+              }
+            ]
+          }
+        ],
+        "_id": "dC4OCcxrhAD"
+      },
+      {
+        "title": "Money",
+        "description": null,
+        "type": "currency",
+        "required": false,
+        "options": [
+          "AUD",
+          "USD"
+        ],
+        "_id": "0ktNr46Qu5e"
+      }
+    ],
+    "isWorkerGroupAccess": true
+  },
+  "_origin": {
+    "_id": "63b65df997f7ee1e8d3d63ae",
+    "type": "core.module.action",
+    "tier": {
+      "type": "core.tier.T3",
+      "_id": "5efbeb98c6bac31619e11bc9"
+    },
+    "overview": "24",
+    "description": "2323",
+    "personReporting": "434",
+    "personResponsible": "23",
+    "personResponsibleEmail": null,
+    "attachments": [],
+    "cusvals": [
+      {
+        "_id": "x-OQf4Yti",
+        "value": null,
+        "type": "text",
+        "title": "Action Description"
+      },
+      {
+        "_id": "uH_rEM7ks",
+        "value": "434",
+        "type": "text",
+        "title": "Special Char Test edit"
+      },
+      {
+        "_id": "lmJM_oPT8",
+        "value": "4434",
+        "type": "text",
+        "title": "SELECT *"
+      }
+    ],
+    "categoryCusvals": [
+      {
+        "_id": "exng8pFoQS",
+        "value": "323",
+        "type": "text",
+        "title": "Text"
+      },
+      {
+        "_id": "w5cczreVfs",
+        "value": "F@GMAIL.COM",
+        "type": "email",
+        "title": "Email"
+      },
+      {
+        "_id": "o9VO8HA_pk",
+        "value": "32323232323",
+        "type": "tel",
+        "title": "Telephone"
+      },
+      {
+        "_id": "WTDNcGnOkH",
+        "value": 1,
+        "type": "number",
+        "title": "Number"
+      },
+      {
+        "_id": "ejMGrro1CmK",
+        "value": "2023-01-25T00:00:00.000Z",
+        "type": "date",
+        "title": "Date"
+      },
+      {
+        "_id": "P-WX4ItgcCv",
+        "value": {
+          "hours": 22,
+          "minutes": 22
+        },
+        "type": "time",
+        "title": "Time"
+      },
+      {
+        "_id": "eXnHHPFZKxq",
+        "value": "#000000",
+        "type": "color",
+        "title": "Color"
+      },
+      {
+        "_id": "Uwzj3Chb2H4",
+        "value": null,
+        "type": "url",
+        "title": "Url"
+      },
+      {
+        "_id": "rthcIeYxhAK",
+        "value": [],
+        "type": "checkbox",
+        "title": "Checkbox"
+      },
+      {
+        "_id": "T5lgBkAw7-S",
+        "value": [
+          [
+            "Yes"
+          ]
+        ],
+        "type": "select_single",
+        "title": "Single Select"
+      },
+      {
+        "_id": "dC4OCcxrhAD",
+        "value": [
+          [
+            "1st Flow",
+            "Dev team"
+          ]
+        ],
+        "type": "select_multiple",
+        "title": "Multiple Select"
+      },
+      {
+        "_id": "0ktNr46Qu5e",
+        "value": {
+          "amount": 234,
+          "code": "AUD"
+        },
+        "type": "currency",
+        "title": "Money"
+      }
+    ],
+    "category": "Repair and Maintenance",
+    "categoryOther": null,
+    "dateIdentified": "2023-01-05",
+    "dateDue": "2023-01-12",
+    "createdBy": {
+      "type": "core.user",
+      "_id": "5efbeba4c6bac31619e11be4",
+      "name": "Nadia Gorczany (Melbourne)",
+      "email": "demomanager@safetychampion.online"
+    },
+    "tzDateCreated": "Asia/Saigon",
+    "dateCreated": "2023-01-05",
+    "reference": "ACT1112",
+    "closed": false,
+    "severity": null,
+    "categoryConfig": {
+      "title": "Repair and Maintenance",
+      "description": "",
+      "options": [
+        {
+          "opt": "WORKER_GROUP_ACCESS"
+        }
+      ],
+      "cusvals": [
+        {
+          "title": "Text",
+          "description": "Text",
+          "type": "text",
+          "required": true,
+          "_id": "exng8pFoQS"
+        },
+        {
+          "title": "Email",
+          "description": "Email",
+          "type": "email",
+          "required": false,
+          "_id": "w5cczreVfs"
+        },
+        {
+          "title": "Telephone",
+          "description": null,
+          "type": "tel",
+          "required": true,
+          "_id": "o9VO8HA_pk"
+        },
+        {
+          "title": "Number",
+          "description": null,
+          "type": "number",
+          "required": true,
+          "_id": "WTDNcGnOkH"
+        },
+        {
+          "title": "Date",
+          "description": null,
+          "type": "date",
+          "required": false,
+          "_id": "ejMGrro1CmK"
+        },
+        {
+          "title": "Time",
+          "description": null,
+          "type": "time",
+          "required": false,
+          "_id": "P-WX4ItgcCv"
+        },
+        {
+          "title": "Color",
+          "description": null,
+          "type": "color",
+          "required": true,
+          "_id": "eXnHHPFZKxq"
+        },
+        {
+          "title": "Url",
+          "description": "Url",
+          "type": "url",
+          "required": false,
+          "_id": "Uwzj3Chb2H4"
+        },
+        {
+          "title": "Checkbox",
+          "description": null,
+          "type": "checkbox",
+          "required": false,
+          "options": [
+            {
+              "name": "Yes"
+            },
+            {
+              "name": "No"
+            },
+            {
+              "name": "NA"
+            }
+          ],
+          "_id": "rthcIeYxhAK"
+        },
+        {
+          "title": "Single Select",
+          "description": null,
+          "type": "select_single",
+          "required": false,
+          "options": [
+            {
+              "name": "Yes"
+            },
+            {
+              "name": "No"
+            }
+          ],
+          "_id": "T5lgBkAw7-S"
+        },
+        {
+          "title": "Multiple Select",
+          "description": null,
+          "type": "select_multiple",
+          "required": true,
+          "options": [
+            {
+              "icon": "blind",
+              "name": "1st Flow",
+              "options": [
+                {
+                  "name": "Dev team"
+                },
+                {
+                  "name": "Test Team"
+                }
+              ]
+            },
+            {
+              "icon": "arrow alternate circle up outline",
+              "name": "2nd Floor",
+              "options": [
+                {
+                  "name": "Craig"
+                },
+                "SEPARATOR",
+                {
+                  "name": "Anna"
+                },
+                {
+                  "static": "Good"
+                },
+                {
+                  "name": "Jake"
+                }
+              ]
+            }
+          ],
+          "_id": "dC4OCcxrhAD"
+        },
+        {
+          "title": "Money",
+          "description": null,
+          "type": "currency",
+          "required": false,
+          "options": [
+            "AUD",
+            "USD"
+          ],
+          "_id": "0ktNr46Qu5e"
+        }
+      ],
+      "isWorkerGroupAccess": true
+    }
+  },
+  "date": "2023-01-05",
+  "newComment": "êr",
+  "tz": "Asia/Saigon",
+  "comment": "êr"
+}
