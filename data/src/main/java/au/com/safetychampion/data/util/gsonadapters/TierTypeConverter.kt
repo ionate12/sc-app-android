@@ -1,4 +1,4 @@
-package au.com.safetychampion.util.gsonadapter // ktlint-disable filename
+package au.com.safetychampion.data.util.gsonadapters // ktlint-disable filename
 
 import au.com.safetychampion.data.domain.models.TierType
 import com.google.gson.JsonDeserializationContext

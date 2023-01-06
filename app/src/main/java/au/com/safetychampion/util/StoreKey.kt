@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.local
+package au.com.safetychampion.util
 
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey

@@ -1,18 +1,13 @@
-package au.com.safetychampion.data.util
+package au.com.safetychampion.util
 
 import au.com.safetychampion.data.domain.uncategory.AppToken
-import au.com.safetychampion.data.local.BaseAppDataStore
-import au.com.safetychampion.data.local.StoreKey
-import au.com.safetychampion.util.koinInject
+import au.com.safetychampion.data.util.ITokenManager
+import au.com.safetychampion.dispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.SortedSet
+import java.util.*
 
-interface ITokenManager {
-    suspend fun getToken(): AppToken?
-    suspend fun updateToken(token: AppToken)
-}
-internal class TokenManager : ITokenManager {
+class TokenManager : ITokenManager {
     private lateinit var tokens: SortedSet<AppToken>
     private val dataStore: BaseAppDataStore by koinInject()
     override suspend fun getToken(): AppToken? {

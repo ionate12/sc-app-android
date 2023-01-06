@@ -1,10 +1,8 @@
-package au.com.safetychampion.data.network
+package au.com.safetychampion.data.domain.core
 
 import au.com.safetychampion.data.data.handleAPIError
-import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.SCError
-import au.com.safetychampion.util.itemOrNull
-import au.com.safetychampion.util.listOrEmpty
+import au.com.safetychampion.data.util.extension.itemOrNull
+import au.com.safetychampion.data.util.extension.listOrEmpty
 import com.google.gson.JsonObject
 
 data class APIResponse(

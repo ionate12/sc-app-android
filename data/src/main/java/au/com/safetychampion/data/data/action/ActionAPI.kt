@@ -1,6 +1,7 @@
-package au.com.safetychampion.data.network
+package au.com.safetychampion.data.data.action
 
 import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.core.APIResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.* // ktlint-disable no-wildcard-imports

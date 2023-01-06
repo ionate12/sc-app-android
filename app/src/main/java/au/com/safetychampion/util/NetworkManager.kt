@@ -1,7 +1,7 @@
 package au.com.safetychampion.util
 
-import au.com.safetychampion.data.util.ITokenManager
-import au.com.safetychampion.data.util.dispatchers
+import au.com.safetychampion.data.util.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.dispatchers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -16,31 +16,10 @@ import java.net.Socket
 import java.net.SocketAddress
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = "https://api.dev.safetychampion.tech"
-
-internal interface INetworkManager {
-    val retrofit: Retrofit
-}
-
-class NetworkManager() : INetworkManager {
-    companion object {
-        suspend fun internetAvailable(): Boolean {
-            return withContext(Dispatchers.Default) {
-                try {
-                    val sock = Socket()
-                    val sockAddress: SocketAddress = InetSocketAddress("8.8.8.8", 53)
-                    sock.use {
-                        it.connect(sockAddress, 3000)
-                    } // This will block no more than timeoutMs
-                    true
-                } catch (e: IOException) {
-                    false
-                }
-            }
-        }
-    }
-
-    private val baseUrl: String = BASE_URL
+class NetworkManager(
+    private val gsonManager: IGsonManager,
+    private val tokenManager: ITokenManager
+) : INetworkManager {
     private val httpClient: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(
             Interceptor { chain ->
@@ -64,16 +43,30 @@ class NetworkManager() : INetworkManager {
         .readTimeout(2, TimeUnit.MINUTES)
         .writeTimeout(2, TimeUnit.MINUTES)
         .build()
-    private val gsonManager by koinInject<IGsonManager>()
-    private val tokenManager by koinInject<ITokenManager>()
+
+    override val baseUrl: String = "https://api.dev.safetychampion.tech"
 
     override val retrofit: Retrofit by lazy {
-
         Retrofit
             .Builder()
             .baseUrl(baseUrl)
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(gsonManager.gson))
             .build()
+    }
+
+    override suspend fun isNetworkAvailable(): Boolean {
+        return withContext(Dispatchers.Default) {
+            try {
+                val sock = Socket()
+                val sockAddress: SocketAddress = InetSocketAddress("8.8.8.8", 53)
+                sock.use {
+                    it.connect(sockAddress, 5000)
+                } // This will block no more than timeoutMs
+                true
+            } catch (e: IOException) {
+                false
+            }
+        }
     }
 }

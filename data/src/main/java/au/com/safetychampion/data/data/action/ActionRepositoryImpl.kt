@@ -8,8 +8,7 @@ import au.com.safetychampion.data.domain.models.action.ActionSignOffPL
 import au.com.safetychampion.data.domain.models.action.ActionTaskPojo
 import au.com.safetychampion.data.domain.payload.ActionPojo
 import au.com.safetychampion.data.domain.toMultipartBody
-import au.com.safetychampion.data.network.ActionAPI
-import au.com.safetychampion.util.IFileManager
+import au.com.safetychampion.data.util.IFileManager
 
 class ActionRepositoryImpl(
     private val api: ActionAPI,

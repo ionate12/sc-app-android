@@ -1,8 +1,8 @@
 package au.com.safetychampion.data.domain.base
 
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
-import au.com.safetychampion.util.isNullOrEmpty
-import au.com.safetychampion.util.toJsonString
+import au.com.safetychampion.data.util.extension.isNullOrEmpty
+import au.com.safetychampion.data.util.extension.toJsonString
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

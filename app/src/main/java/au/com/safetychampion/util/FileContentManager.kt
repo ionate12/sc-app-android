@@ -1,26 +1,17 @@
 package au.com.safetychampion.util
 
-import android.content.Context
+import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.net.Uri
 import android.provider.MediaStore
+import au.com.safetychampion.data.util.IFileManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 
-interface IFileManager {
-    fun open(uri: Uri): InputStream?
-    fun takePersistableUriPermission(
-        uri: Uri,
-        flags: Int
-    )
-    suspend fun getDisplayNameFromURI(vararg uris: Uri?): List<String>
-}
-
 class FileContentManager(
-    context: Context
+    private val contentResolver: ContentResolver
 ) : IFileManager {
-    private val contentResolver by lazy { context.contentResolver }
-
     override fun open(uri: Uri): InputStream? {
         return contentResolver.openInputStream(uri)
     }
@@ -29,6 +20,7 @@ class FileContentManager(
         contentResolver.takePersistableUriPermission(uri, flags)
     }
 
+    @SuppressLint("Range")
     override suspend fun getDisplayNameFromURI(vararg uris: Uri?): List<String> {
         return withContext(Dispatchers.IO) {
             uris.indices.map { i ->

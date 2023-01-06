@@ -1,23 +1,21 @@
-package au.com.safetychampion.data.di
+package au.com.safetychampion.di
 
-import au.com.safetychampion.data.util.IDispatchers
-import au.com.safetychampion.data.util.ITokenManager
-import au.com.safetychampion.data.util.TokenManager
-import au.com.safetychampion.util.GsonManager
-import au.com.safetychampion.util.IGsonManager
-import au.com.safetychampion.util.INetworkManager
-import au.com.safetychampion.util.NetworkManager
+import au.com.safetychampion.data.util.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.local.AppDataStore
+import au.com.safetychampion.util.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 internal val commonModule = module {
-
     singleOf<IGsonManager>(::GsonManager)
 
-    singleOf<INetworkManager> (::NetworkManager)
+    singleOf<INetworkManager, IGsonManager, ITokenManager>(::NetworkManager)
+
     singleOf<ITokenManager> (::TokenManager)
+
     single<IDispatchers> {
         object : IDispatchers {
             override val main: CoroutineDispatcher
@@ -28,4 +26,8 @@ internal val commonModule = module {
                 get() = Dispatchers.Default
         }
     }
+
+    single<BaseAppDataStore> { AppDataStore(androidApplication()) }
+
+    single<IFileManager> { FileContentManager(androidApplication().contentResolver) }
 }

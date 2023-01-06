@@ -7,7 +7,6 @@ import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.payload.ActiveTaskPL
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusManyPL
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
-import au.com.safetychampion.data.network.TaskAPI
 
 class TaskRepositoryImpl(
     private val api: TaskAPI

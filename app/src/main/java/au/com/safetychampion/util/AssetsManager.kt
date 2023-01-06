@@ -1,4 +1,4 @@
-package au.com.safetychampion.utils
+package au.com.safetychampion.util
 
 import android.content.Context
 import android.content.res.AssetManager
@@ -7,8 +7,8 @@ import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.payload.ActionPojo
-import au.com.safetychampion.util.itemOrNull
-import au.com.safetychampion.util.listOrEmpty
+import au.com.safetychampion.data.util.extension.itemOrNull
+import au.com.safetychampion.data.util.extension.listOrEmpty
 
 private fun AssetManager.readAssetsFile(fileName: String): String = open(fileName).bufferedReader().use { it.readText() }
 

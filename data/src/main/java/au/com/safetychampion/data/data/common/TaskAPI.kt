@@ -1,5 +1,6 @@
-package au.com.safetychampion.data.network
+package au.com.safetychampion.data.data.common
 
+import au.com.safetychampion.data.domain.core.APIResponse
 import au.com.safetychampion.data.domain.payload.ActiveTaskPL
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusManyPL
 import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
