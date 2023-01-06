@@ -9,9 +9,11 @@ import au.com.safetychampion.data.domain.models.action.ActionTaskPojo
 import au.com.safetychampion.data.domain.payload.ActionPojo
 import au.com.safetychampion.data.domain.toMultipartBody
 import au.com.safetychampion.data.network.ActionAPI
+import au.com.safetychampion.util.IFileManager
 
 class ActionRepositoryImpl(
-    private val api: ActionAPI
+    private val api: ActionAPI,
+    private val fileContentManager: IFileManager
 ) : BaseRepository(), ActionRepository {
 
     override suspend fun createNewAction(
@@ -22,7 +24,9 @@ class ActionRepositoryImpl(
             call = {
                 api.newAction(
                     body = payload.toRequestBody(),
-                    photos = attachments.toMultipartBody()
+                    photos = attachments.toMultipartBody(
+                        fileManager = fileContentManager
+                    )
                 )
             }
         )
@@ -41,7 +45,9 @@ class ActionRepositoryImpl(
             api.editAction(
                 taskId = taskId,
                 body = payload.toRequestBody(),
-                photos = attachments.toMultipartBody()
+                photos = attachments.toMultipartBody(
+                    fileManager = fileContentManager
+                )
             )
         }
     }
@@ -63,7 +69,9 @@ class ActionRepositoryImpl(
             api.signOff(
                 actionId = actionId,
                 body = payload.toRequestBody(),
-                photos = photos.toMultipartBody()
+                photos = photos.toMultipartBody(
+                    fileManager = fileContentManager
+                )
             )
         }
     }

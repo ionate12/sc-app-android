@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzI4MzEyNjksImV4cCI6MTY3MjkxNzY2OX0.t3TZuaSsiS-xxocRgXsd5V__k1dOSX6VP6sWQwonmA8"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzI5ODg3MTcsImV4cCI6MTY3MzA3NTExN30.Q6kaRRsUF8ihkihAUripjEs2bW3g7UFKs-TFHhKsrLA"
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()

@@ -51,7 +51,7 @@ abstract class BaseRepository {
     }
 
     /**
-     * Trying to fetch data from the remote datasource, with the [remote] as the parameter of [apiCall] function,
+     * Trying to fetch data from the remote datasource, with [remote] as the parameter of [apiCall] function,
      * If [apiCall] is failed, and it returns a [SCError.NoNetwork] wrapped in [Result.Error], then invokes the [local] as the fallback.
      * @param remote Remote datasource: an API request returns APIResponse
      * @param local Local datasource: using as a fallback and only be invoked if we have a SCError.NoNetwork from [apiCall]
