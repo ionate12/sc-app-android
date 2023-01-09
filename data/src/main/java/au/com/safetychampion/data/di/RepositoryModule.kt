@@ -6,8 +6,8 @@ import au.com.safetychampion.data.data.action.ActionRepositoryImpl
 import au.com.safetychampion.data.data.common.TaskAPI
 import au.com.safetychampion.data.data.common.TaskRepository
 import au.com.safetychampion.data.data.common.TaskRepositoryImpl
-import au.com.safetychampion.data.util.IFileManager
-import au.com.safetychampion.data.util.INetworkManager
+import au.com.safetychampion.data.domain.manager.IFileManager
+import au.com.safetychampion.data.domain.manager.INetworkManager
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

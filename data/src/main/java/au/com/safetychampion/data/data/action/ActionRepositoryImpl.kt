@@ -4,11 +4,11 @@ import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.manager.IFileManager
+import au.com.safetychampion.data.domain.models.action.ActionPojo
 import au.com.safetychampion.data.domain.models.action.ActionSignOffPL
 import au.com.safetychampion.data.domain.models.action.ActionTaskPojo
-import au.com.safetychampion.data.domain.payload.ActionPojo
 import au.com.safetychampion.data.domain.toMultipartBody
-import au.com.safetychampion.data.util.IFileManager
 
 class ActionRepositoryImpl(
     private val api: ActionAPI,

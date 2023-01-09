@@ -3,7 +3,7 @@ package au.com.safetychampion.util
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import au.com.safetychampion.data.util.IDispatchers
+import au.com.safetychampion.data.domain.manager.IDispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking

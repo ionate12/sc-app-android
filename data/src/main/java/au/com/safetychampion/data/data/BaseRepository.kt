@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.util.INetworkManager
+import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.util.koinGet
 
 abstract class BaseRepository {

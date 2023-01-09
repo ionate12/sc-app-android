@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.payload
+package au.com.safetychampion.data.domain.models.action
 
 import au.com.safetychampion.data.domain.base.CustomValuePL
 import au.com.safetychampion.data.domain.models.CreatedBy

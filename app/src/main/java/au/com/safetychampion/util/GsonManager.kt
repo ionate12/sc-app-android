@@ -1,8 +1,8 @@
 package au.com.safetychampion.util
 
 import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.models.TierType
-import au.com.safetychampion.data.util.IGsonManager
 import au.com.safetychampion.data.util.gsonadapters.BasePLTypeAdapter
 import au.com.safetychampion.data.util.gsonadapters.TierTypeConverter
 import com.google.gson.Gson

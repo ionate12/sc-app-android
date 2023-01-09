@@ -5,7 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import au.com.safetychampion.data.domain.models.ExternalBodyPojo
 import au.com.safetychampion.data.domain.models.action.ActionLink
-import au.com.safetychampion.data.domain.payload.ActionPojo
+import au.com.safetychampion.data.domain.models.action.ActionPojo
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import au.com.safetychampion.data.domain.uncategory.ObservableNullableBoolean

@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.GeoLatLng
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.TimeField
-import au.com.safetychampion.data.domain.payload.ActionPojo
+import au.com.safetychampion.data.domain.models.action.ActionPojo
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import com.google.gson.annotations.SerializedName
 

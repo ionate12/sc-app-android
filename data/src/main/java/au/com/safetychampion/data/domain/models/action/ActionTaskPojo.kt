@@ -4,7 +4,6 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.UpdateLog
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.login.LoginUser
-import au.com.safetychampion.data.domain.payload.ActionPojo
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName

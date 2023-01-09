@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.util.gsonadapters
 
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.util.IGsonManager
+import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.util.koinGet
 import com.google.gson.JsonElement
 import com.google.gson.JsonNull

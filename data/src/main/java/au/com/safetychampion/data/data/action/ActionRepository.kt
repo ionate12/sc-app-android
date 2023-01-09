@@ -2,9 +2,9 @@ package au.com.safetychampion.data.data.action
 
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.models.action.ActionPojo
 import au.com.safetychampion.data.domain.models.action.ActionSignOffPL
 import au.com.safetychampion.data.domain.models.action.ActionTaskPojo
-import au.com.safetychampion.data.domain.payload.ActionPojo
 
 interface ActionRepository {
     suspend fun createNewAction(

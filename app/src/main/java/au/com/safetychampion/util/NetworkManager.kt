@@ -1,6 +1,8 @@
 package au.com.safetychampion.util
 
-import au.com.safetychampion.data.util.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.manager.IGsonManager
+import au.com.safetychampion.data.domain.manager.INetworkManager
+import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.dispatchers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking

@@ -5,8 +5,8 @@ import android.content.res.AssetManager
 import android.net.Uri
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
+import au.com.safetychampion.data.domain.models.action.ActionPojo
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.domain.payload.ActionPojo
 import au.com.safetychampion.data.util.extension.itemOrNull
 import au.com.safetychampion.data.util.extension.listOrEmpty
 

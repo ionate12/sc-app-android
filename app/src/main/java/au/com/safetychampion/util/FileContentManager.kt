@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.MediaStore
-import au.com.safetychampion.data.util.IFileManager
+import au.com.safetychampion.data.domain.manager.IFileManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream

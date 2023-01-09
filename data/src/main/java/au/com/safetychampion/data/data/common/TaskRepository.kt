@@ -2,10 +2,10 @@ package au.com.safetychampion.data.data.common
 
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
+import au.com.safetychampion.data.domain.models.action.ActiveTaskPL
+import au.com.safetychampion.data.domain.models.action.AssignTaskStatusManyPL
+import au.com.safetychampion.data.domain.models.action.AssignTaskStatusPL
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.domain.payload.ActiveTaskPL
-import au.com.safetychampion.data.domain.payload.AssignTaskStatusManyPL
-import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
 
 interface TaskRepository {
     suspend fun getAllActiveTask(body: ActiveTaskPL): Result<List<Task>>

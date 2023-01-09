@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.util
+package au.com.safetychampion.data.domain.manager
 
 import android.net.Uri
 import java.io.InputStream

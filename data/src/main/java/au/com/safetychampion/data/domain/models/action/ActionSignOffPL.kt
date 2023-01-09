@@ -1,7 +1,6 @@
 package au.com.safetychampion.data.domain.models.action
 
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.payload.ActionPojo
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 

@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.util
+package au.com.safetychampion.data.domain.manager
 
 import kotlinx.coroutines.CoroutineDispatcher
 

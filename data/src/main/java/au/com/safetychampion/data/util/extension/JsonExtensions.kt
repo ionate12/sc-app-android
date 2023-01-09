@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.util.extension
 
-import au.com.safetychampion.data.util.IGsonManager
+import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.util.koinGet
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
