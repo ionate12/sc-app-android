@@ -2,7 +2,7 @@ package au.com.safetychampion.data.data.common
 
 import au.com.safetychampion.data.domain.core.APIResponse
 import au.com.safetychampion.data.domain.models.action.payload.ActiveTaskPL
-import au.com.safetychampion.data.domain.models.action.payload.AssignTaskStatus
+import au.com.safetychampion.data.domain.models.action.payload.AssignTaskStatusPL
 import au.com.safetychampion.data.domain.models.action.payload.AssignTaskStatusManyPL
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -15,7 +15,7 @@ interface TaskAPI {
 
     @POST("tasks/assign/status")
     suspend fun assignTaskStatus(
-        @Body body: AssignTaskStatus
+        @Body body: AssignTaskStatusPL
     ): APIResponse
 
     @POST("tasks/assign/status")
@@ -25,11 +25,11 @@ interface TaskAPI {
 
     @POST("tasks/assign")
     suspend fun assignTask(
-        @Body body: AssignTaskStatus?
+        @Body body: AssignTaskStatusPL?
     ): APIResponse
 
     @POST("tasks/unassign")
     suspend fun unassignTask(
-        @Body body: AssignTaskStatus?
+        @Body body: AssignTaskStatusPL?
     ): APIResponse
 }

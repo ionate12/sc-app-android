@@ -5,7 +5,7 @@ import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.task.Task
 import com.google.gson.annotations.SerializedName
 
-class AssignTaskStatus(
+class AssignTaskStatusPL(
     val _id: String,
     @SerializedName("for")
     val _for: CreatedBy,
