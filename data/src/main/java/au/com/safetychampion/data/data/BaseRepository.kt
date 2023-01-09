@@ -7,7 +7,7 @@ import au.com.safetychampion.util.koinInject
 
 abstract class BaseRepository {
 
-    val networkManager = koinInject<INetworkManager>()
+    val networkManager: INetworkManager by koinInject()
     protected val fileContentManager: IFileManager by koinInject()
 
     /**
@@ -20,7 +20,7 @@ abstract class BaseRepository {
         crossinline call: suspend () -> APIResponse
     ): Result<List<T>> {
         return try {
-            if (!networkManager.value.isNetworkAvailable()) {
+            if (!networkManager.isNetworkAvailable()) {
                 return Result.Error(SCError.NoNetwork())
             }
             call.invoke().toItems()
@@ -41,7 +41,7 @@ abstract class BaseRepository {
         crossinline call: suspend () -> APIResponse
     ): Result<T> {
         return try {
-            if (!networkManager.value.isNetworkAvailable()) {
+            if (!networkManager.isNetworkAvailable()) {
                 return Result.Error(SCError.NoNetwork())
             }
             call.invoke().toItem(responseObjName)
