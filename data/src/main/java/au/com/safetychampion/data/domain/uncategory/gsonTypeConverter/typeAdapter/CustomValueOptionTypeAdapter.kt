@@ -1,9 +1,9 @@
 package au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter
 
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueOption
+import au.com.safetychampion.data.domain.uncategory.GsonHelper
 import au.com.safetychampion.data.domain.uncategory.JsonConverter
 import au.com.safetychampion.data.domain.uncategory.JsonUtils
-import au.com.safetychampion.data.domain.uncategory.GsonHelper
 import com.google.gson.* // ktlint-disable no-wildcard-imports
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type

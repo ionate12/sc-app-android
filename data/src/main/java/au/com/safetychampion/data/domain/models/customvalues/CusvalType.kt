@@ -1,17 +1,23 @@
 package au.com.safetychampion.data.domain.models.customvalues
 
-object CusvalType {
-    const val TEXT = "text"
-    const val EMAIL = "email"
-    const val TELEPHONE = "tel"
-    const val NUMBER = "number"
-    const val DATE = "date"
-    const val TIME = "time"
-    const val COLOR = "color"
-    const val URL = "url"
-    const val SINGLE_DROP = "select_single"
-    const val MULTIPLE_DROP = "select_multiple"
-    const val CHECKBOX = "checkbox"
-    const val RADIO = "radio"
-    const val CURRENCY = "currency"
+enum class CusvalType(val value: String) {
+    Text("text"),
+    Email("email"),
+    Telephone("tel"),
+    Number("number"),
+    Date("date"),
+    Time("time"),
+    Color("color"),
+    Url("url"),
+    SingleDrop("select_single"),
+    MultipleDrop("select_multiple"),
+    Checkbox("checkbox"),
+    Radio("radio"),
+    Currency("currency");
+
+    companion object {
+        fun fromString(value: String): CusvalType? {
+            return values().firstOrNull { it.value == value }
+        }
+    }
 }

@@ -14,7 +14,6 @@ data class ActionSignOffPL(
 ) : BasePL() {
 
     override fun toJsonElement(gson: Gson): JsonElement {
-        body?.removeNullValueInCustomValues()
         return super.toJsonElement(gson)
     }
 }

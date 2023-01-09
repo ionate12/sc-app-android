@@ -49,7 +49,7 @@ inline fun <reified T> String.listOrEmpty(): List<T> {
 
 fun Any.toJsonString(): String? {
     return try {
-        gson.toJsonTree(this).toString()
+        gson.toJson(this)
     } catch (e: Exception) {
         null
     }
