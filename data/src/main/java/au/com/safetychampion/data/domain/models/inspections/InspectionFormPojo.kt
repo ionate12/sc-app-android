@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.GeoLatLng
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.TimeField
-import au.com.safetychampion.data.domain.models.action.ActionPojo
+import au.com.safetychampion.data.domain.models.action.payload.Action
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import com.google.gson.annotations.SerializedName
 
@@ -36,7 +36,7 @@ data class InspectionFormPojo(
     var dateDueFrom: String? = null,
     var tz: String? = null,
     var offlineRequest: InspectionOfflineSubTask? = null,
-    var newActions: MutableList<ActionPojo> = mutableListOf()
+    var newActions: MutableList<Action> = mutableListOf()
 ) {
     data class Signature(
         val _id: String,

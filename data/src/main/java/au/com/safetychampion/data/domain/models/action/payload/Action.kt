@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.models.action
+package au.com.safetychampion.data.domain.models.action.payload
 
 import au.com.safetychampion.data.domain.base.CustomValuePL
 import au.com.safetychampion.data.domain.models.CreatedBy
@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
-data class ActionPojo(
+data class Action(
     val attachments: MutableList<DocAttachment>,
     val category: String,
     val date: String,
@@ -30,7 +30,6 @@ data class ActionPojo(
     val severity: String,
     val tier: Tier,
     val _id: String?,
-
     override val categoryCusvals: MutableList<CustomValue>,
     override val cusvals: MutableList<CustomValue>
 ) : CustomValuePL()

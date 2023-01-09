@@ -3,7 +3,7 @@ package au.com.safetychampion.data.domain.usecase.assigntaskstatus
 import au.com.safetychampion.data.data.common.TaskRepository
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
-import au.com.safetychampion.data.domain.models.action.AssignTaskStatusPL
+import au.com.safetychampion.data.domain.models.action.payload.AssignTaskStatus
 import au.com.safetychampion.data.domain.models.task.Task
 
 class AssignTaskStatusItemUseCase(
@@ -16,7 +16,7 @@ class AssignTaskStatusItemUseCase(
         moduleName: String?,
         dateDue: String?
     ): Result<List<TaskAssignStatusItem>> {
-        val body = AssignTaskStatusPL(
+        val body = AssignTaskStatus(
             task = task,
             userId = userId,
             notes = notes,

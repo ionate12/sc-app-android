@@ -1,11 +1,11 @@
-package au.com.safetychampion.data.domain.models.action
+package au.com.safetychampion.data.domain.models.action.payload
 
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.task.Task
 import com.google.gson.annotations.SerializedName
 
-class AssignTaskStatusPL(
+class AssignTaskStatus(
     val _id: String,
     @SerializedName("for")
     val _for: CreatedBy,

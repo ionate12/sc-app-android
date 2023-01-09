@@ -2,13 +2,14 @@ package au.com.safetychampion.data.domain.models.action
 
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.UpdateLog
+import au.com.safetychampion.data.domain.models.action.payload.Action
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.login.LoginUser
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
-data class ActionTaskPojo(
+data class ActionSignOffForm(
     var complete: Boolean = false,
     var dateCompleted: String? = null,
     var completionNotes: String? = null,
@@ -32,6 +33,6 @@ data class ActionTaskPojo(
     var editComments: List<UpdateLog> = emptyList(),
     var cusvals: List<CustomValue> = emptyList(),
     var links: List<ActionLink> = emptyList(),
-    var newActions: List<ActionPojo> = emptyList(),
+    var newActions: List<Action> = emptyList(),
     var changedImplemented: Boolean? = null
 )

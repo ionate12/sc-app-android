@@ -2,8 +2,8 @@ package au.com.safetychampion.data.domain.usecase.action
 
 import au.com.safetychampion.data.data.action.ActionRepository
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.action.ActionPojo
-import au.com.safetychampion.data.domain.models.action.ActionSignOffPL
+import au.com.safetychampion.data.domain.models.action.payload.Action
+import au.com.safetychampion.data.domain.models.action.payload.ActionSignOff
 
 class SignOffActionUseCase(
     private val repository: ActionRepository
@@ -11,10 +11,10 @@ class SignOffActionUseCase(
     suspend operator fun invoke(
         actionId: String,
         taskId: String,
-        actionPL: ActionPojo,
-        signOffPL: ActionSignOffPL
+        actionPL: Action,
+        signOffPL: ActionSignOff
 
-    ): Result<List<ActionPojo>> {
+    ): Result<List<Action>> {
         TODO()
 //        repository.signOff(
 //            actionId = actionId,

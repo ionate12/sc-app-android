@@ -2,7 +2,7 @@ package au.com.safetychampion.data.domain.usecase.activetask
 
 import au.com.safetychampion.data.data.common.TaskRepository
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.action.AssignTaskStatusPL
+import au.com.safetychampion.data.domain.models.action.payload.AssignTaskStatus
 import au.com.safetychampion.data.domain.models.task.Task
 
 class AssignTaskUseCase(
@@ -15,7 +15,7 @@ class AssignTaskUseCase(
         moduleName: String?,
         dateDue: String?
     ): Result<Task> {
-        val body = AssignTaskStatusPL(
+        val body = AssignTaskStatus(
             task = task,
             userId = toUserId,
             notes = notes,

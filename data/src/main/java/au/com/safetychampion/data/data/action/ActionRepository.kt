@@ -2,35 +2,35 @@ package au.com.safetychampion.data.data.action
 
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.models.action.ActionPojo
-import au.com.safetychampion.data.domain.models.action.ActionSignOffPL
-import au.com.safetychampion.data.domain.models.action.ActionTaskPojo
+import au.com.safetychampion.data.domain.models.action.payload.Action
+import au.com.safetychampion.data.domain.models.action.payload.ActionSignOff
+import au.com.safetychampion.data.domain.models.action.ActionSignOffForm
 
 interface ActionRepository {
     suspend fun createNewAction(
-        payload: ActionPojo,
+        payload: Action,
         attachments: List<Attachment>
-    ): au.com.safetychampion.data.domain.core.Result<ActionPojo>
+    ): au.com.safetychampion.data.domain.core.Result<Action>
 
     suspend fun fetchAction(
         taskId: String?
-    ): au.com.safetychampion.data.domain.core.Result<ActionPojo>
+    ): au.com.safetychampion.data.domain.core.Result<Action>
 
     suspend fun editAction(
         taskId: String?,
-        payload: ActionPojo,
+        payload: Action,
         attachments: List<Attachment>
     ): au.com.safetychampion.data.domain.core.Result<Unit>
 
     suspend fun task(
         taskId: String?
-    ): au.com.safetychampion.data.domain.core.Result<ActionTaskPojo>
+    ): au.com.safetychampion.data.domain.core.Result<ActionSignOffForm>
 
-    suspend fun list(body: BasePL?): au.com.safetychampion.data.domain.core.Result<List<ActionPojo>>
+    suspend fun list(body: BasePL?): au.com.safetychampion.data.domain.core.Result<List<Action>>
 
     suspend fun signOff(
         actionId: String?,
-        payload: ActionSignOffPL,
+        payload: ActionSignOff,
         photos: List<Attachment>?
     ): au.com.safetychampion.data.domain.core.Result<Unit>
 }
