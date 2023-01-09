@@ -1,3 +1,3 @@
 package au.com.safetychampion.data.di
 
-val dataModule = commonModule + repositoryModule + useCasesModule
+val dataModule = repositoryModule + useCasesModule

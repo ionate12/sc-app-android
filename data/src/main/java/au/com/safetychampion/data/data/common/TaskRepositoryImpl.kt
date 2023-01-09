@@ -3,15 +3,14 @@ package au.com.safetychampion.data.data.common
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
+import au.com.safetychampion.data.domain.models.action.payload.ActiveTaskPL
+import au.com.safetychampion.data.domain.models.action.payload.AssignTaskStatusPL
+import au.com.safetychampion.data.domain.models.action.payload.AssignTaskStatusManyPL
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.domain.payload.ActiveTaskPL
-import au.com.safetychampion.data.domain.payload.AssignTaskStatusManyPL
-import au.com.safetychampion.data.domain.payload.AssignTaskStatusPL
-import au.com.safetychampion.data.network.TaskAPI
+import au.com.safetychampion.util.koinInject
 
-class TaskRepositoryImpl(
-    private val api: TaskAPI
-) : BaseRepository(), TaskRepository {
+class TaskRepositoryImpl : BaseRepository(), ITaskRepository {
+    private val api: TaskAPI by koinInject()
     override suspend fun getAllActiveTask(body: ActiveTaskPL): Result<List<Task>> {
         return apiCallAsList { api.active(body) }
     }

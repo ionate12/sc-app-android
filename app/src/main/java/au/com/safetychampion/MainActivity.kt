@@ -12,13 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.domain.uncategory.AppToken
-import au.com.safetychampion.data.util.ITokenManager
-import au.com.safetychampion.data.util.dispatchers
+import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.databinding.ActivityMainBinding
+import au.com.safetychampion.util.AssetsManager
 import au.com.safetychampion.util.koinGet
-import au.com.safetychampion.util.toJsonString
-import au.com.safetychampion.utils.AssetsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
