@@ -12,7 +12,7 @@ import org.koin.dsl.module
 internal val commonModule = module {
     singleOf<IGsonManager>(::GsonManager)
 
-    singleOf<INetworkManager, IGsonManager, ITokenManager>(::NetworkManager)
+    singleOf<INetworkManager>(::NetworkManager)
 
     singleOf<ITokenManager> (::TokenManager)
 

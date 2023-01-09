@@ -1,12 +1,14 @@
 package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.manager.IFileManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.util.koinInject
 
 abstract class BaseRepository {
 
     val networkManager = koinInject<INetworkManager>()
+    protected val fileContentManager: IFileManager by koinInject()
 
     /**
      * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as List<[T]>
