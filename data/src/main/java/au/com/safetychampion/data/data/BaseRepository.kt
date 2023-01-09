@@ -2,11 +2,11 @@ package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.manager.INetworkManager
-import au.com.safetychampion.util.koinGet
+import au.com.safetychampion.util.koinInject
 
 abstract class BaseRepository {
 
-    val networkManager = koinGet<INetworkManager>()
+    val networkManager = koinInject<INetworkManager>()
 
     /**
      * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as List<[T]>
@@ -18,7 +18,7 @@ abstract class BaseRepository {
         crossinline call: suspend () -> APIResponse
     ): Result<List<T>> {
         return try {
-            if (!networkManager.isNetworkAvailable()) {
+            if (!networkManager.value.isNetworkAvailable()) {
                 return Result.Error(SCError.NoNetwork())
             }
             call.invoke().toItems()
@@ -39,7 +39,7 @@ abstract class BaseRepository {
         crossinline call: suspend () -> APIResponse
     ): Result<T> {
         return try {
-            if (!networkManager.isNetworkAvailable()) {
+            if (!networkManager.value.isNetworkAvailable()) {
                 return Result.Error(SCError.NoNetwork())
             }
             call.invoke().toItem(responseObjName)

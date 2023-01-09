@@ -5,20 +5,20 @@ import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.manager.IFileManager
-import au.com.safetychampion.data.domain.models.action.payload.Action
-import au.com.safetychampion.data.domain.models.action.payload.ActionSignOff
-import au.com.safetychampion.data.domain.models.action.ActionSignOffForm
+import au.com.safetychampion.data.domain.models.action.ActionTask
+import au.com.safetychampion.data.domain.models.action.payload.ActionPL
+import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
 import au.com.safetychampion.data.domain.toMultipartBody
 
 class ActionRepositoryImpl(
     private val api: ActionAPI,
     private val fileContentManager: IFileManager
-) : BaseRepository(), ActionRepository {
+) : BaseRepository(), IActionRepository {
 
     override suspend fun createNewAction(
-        payload: Action,
+        payload: ActionPL,
         attachments: List<Attachment>
-    ): Result<Action> {
+    ): Result<ActionPL> {
         return apiCall(
             call = {
                 api.newAction(
@@ -31,13 +31,13 @@ class ActionRepositoryImpl(
         )
     }
 
-    override suspend fun fetchAction(taskId: String?): Result<Action> {
+    override suspend fun fetchAction(taskId: String?): Result<ActionPL> {
         return apiCall { api.fetch(taskId) }
     }
 
     override suspend fun editAction(
         taskId: String?,
-        payload: Action,
+        payload: ActionPL,
         attachments: List<Attachment>
     ): Result<Unit> {
         return apiCall {
@@ -51,17 +51,17 @@ class ActionRepositoryImpl(
         }
     }
 
-    override suspend fun task(taskId: String?): Result<ActionSignOffForm> {
+    override suspend fun task(taskId: String?): Result<ActionTask> {
         return apiCall { api.task(taskId) }
     }
 
-    override suspend fun list(body: BasePL?): Result<List<Action>> {
+    override suspend fun list(body: BasePL?): Result<List<ActionPL>> {
         return apiCallAsList { api.list(body) }
     }
 
     override suspend fun signOff(
         actionId: String?,
-        payload: ActionSignOff,
+        payload: ActionSignOffPL,
         photos: List<Attachment>?
     ): Result<Unit> {
         return apiCall {

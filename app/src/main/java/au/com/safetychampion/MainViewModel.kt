@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
-import au.com.safetychampion.data.domain.models.action.payload.Action
+import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
@@ -94,7 +94,7 @@ class MainViewModel(
         }
     }
 
-    fun createNewAction(payload: Action, attachments: List<Attachment>) {
+    fun createNewAction(payload: ActionPL, attachments: List<Attachment>) {
         viewModelScope.launch {
             _apiCallStatus.emit(Result.Loading)
             _apiCallStatus.emit(
@@ -120,7 +120,7 @@ class MainViewModel(
         }
     }
 
-    fun editAction(actionPL: Action, id: String, attachments: List<Attachment>) {
+    fun editAction(actionPL: ActionPL, id: String, attachments: List<Attachment>) {
         viewModelScope.launch {
             _apiCallStatus.emit(Result.Loading)
             _apiCallStatus.emit(editActionUseCase.invoke(id, actionPL, attachments))

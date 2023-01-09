@@ -18,10 +18,9 @@ import java.net.Socket
 import java.net.SocketAddress
 import java.util.concurrent.TimeUnit
 
-class NetworkManager(
-    private val gsonManager: IGsonManager,
-    private val tokenManager: ITokenManager
-) : INetworkManager {
+class NetworkManager : INetworkManager {
+    private val gsonManager: IGsonManager by koinInject()
+    private val tokenManager: ITokenManager by koinInject()
     private val httpClient: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(
             Interceptor { chain ->

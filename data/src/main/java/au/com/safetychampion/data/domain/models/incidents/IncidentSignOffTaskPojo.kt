@@ -4,7 +4,7 @@ import au.com.safetychampion.data.domain.models.ExternalBodyPojo
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.UpdateLog
 import au.com.safetychampion.data.domain.models.action.ActionLink
-import au.com.safetychampion.data.domain.models.action.payload.Action
+import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CusvalPojo
 import au.com.safetychampion.data.domain.models.login.LoginUser
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
@@ -32,7 +32,7 @@ data class IncidentSignOffTaskPojo(
     var links: MutableList<ActionLink> = mutableListOf(),
     var complete: Boolean? = null,
     var editComments: List<UpdateLog> = listOf(),
-    var newActions: MutableList<Action> = mutableListOf(),
+    var newActions: MutableList<ActionPL> = mutableListOf(),
     // Task input one.
     var dateDue: String? = null,
     var description: String? = null,

@@ -5,7 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import au.com.safetychampion.data.domain.models.ExternalBodyPojo
 import au.com.safetychampion.data.domain.models.action.ActionLink
-import au.com.safetychampion.data.domain.models.action.payload.Action
+import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import au.com.safetychampion.data.domain.uncategory.ObservableNullableBoolean
@@ -32,5 +32,5 @@ data class IncidentSignOffTask(
     var links: MutableLiveData<MutableList<ActionLink>> = MutableLiveData(mutableListOf()),
     var hasExternalBody: ObservableNullableBoolean = ObservableNullableBoolean(),
     var complete: Boolean? = null,
-    var newActions: MutableLiveData<MutableList<Action>> = MutableLiveData(mutableListOf())
+    var newActions: MutableLiveData<MutableList<ActionPL>> = MutableLiveData(mutableListOf())
 ) : BaseObservable()

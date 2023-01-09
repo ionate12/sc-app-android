@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
-data class Action(
+data class ActionPL(
     val attachments: MutableList<DocAttachment>,
     val category: String,
     val date: String,

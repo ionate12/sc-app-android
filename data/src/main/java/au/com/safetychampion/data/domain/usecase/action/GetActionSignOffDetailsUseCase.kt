@@ -1,20 +1,20 @@
 package au.com.safetychampion.data.domain.usecase.action
 
-import au.com.safetychampion.data.data.action.ActionRepository
+import au.com.safetychampion.data.data.action.IActionRepository
 import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.core.dataOrNull
-import au.com.safetychampion.data.domain.models.action.payload.ActionSignOff
+import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class GetActionSignOffDetailsUseCase(
-    private val repository: ActionRepository
+    private val repository: IActionRepository
 ) {
     suspend operator fun invoke(
         actionID: String
-    ): au.com.safetychampion.data.domain.core.Result<ActionSignOff> {
+    ): au.com.safetychampion.data.domain.core.Result<ActionSignOffPL> {
         return withContext(Dispatchers.IO) {
             val actionFetch = async { repository.fetchAction(actionID) }
             val taskFetch = async { repository.task(actionID) }
@@ -24,7 +24,7 @@ class GetActionSignOffDetailsUseCase(
 
             return@withContext if (body != null && task != null) {
                 au.com.safetychampion.data.domain.core.Result.Success(
-                    ActionSignOff(
+                    ActionSignOffPL(
                         _id = task._id,
                         moduleId = body._id,
                         body = body,

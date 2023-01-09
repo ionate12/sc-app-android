@@ -5,7 +5,7 @@ import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.task.Task
 import com.google.gson.annotations.SerializedName
 
-data class AssignTaskStatusMany(
+data class AssignTaskStatusManyPL(
     val ids: List<Info>
 ) : BasePL() {
     data class Info(
@@ -15,8 +15,8 @@ data class AssignTaskStatusMany(
     )
 
     companion object {
-        fun fromTasks(tasks: List<Task>): AssignTaskStatusMany {
-            return AssignTaskStatusMany(tasks.map { Info(it._for, it._id) })
+        fun fromTasks(tasks: List<Task>): AssignTaskStatusManyPL {
+            return AssignTaskStatusManyPL(tasks.map { Info(it._for, it._id) })
         }
     }
 }

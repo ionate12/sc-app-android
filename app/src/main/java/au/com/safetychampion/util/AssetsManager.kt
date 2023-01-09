@@ -5,7 +5,7 @@ import android.content.res.AssetManager
 import android.net.Uri
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
-import au.com.safetychampion.data.domain.models.action.payload.Action
+import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.util.extension.itemOrNull
 import au.com.safetychampion.data.util.extension.listOrEmpty
@@ -34,11 +34,11 @@ class AssetsManager(private val context: Context) {
             .itemOrNull<TaskAssignStatusItem>()!!
     }
 
-    fun getNewAction(): Action {
+    fun getNewAction(): ActionPL {
         return context
             .assets
             .readAssetsFile("new_action")
-            .itemOrNull<Action>()!!
+            .itemOrNull<ActionPL>()!!
     }
 
     fun getAttachment(): List<Attachment> {
@@ -50,10 +50,10 @@ class AssetsManager(private val context: Context) {
 
     fun getActionId(): String = "63b5622b97f7ee1e8d3d639a"
 
-    fun getEditAction(): Action {
+    fun getEditAction(): ActionPL {
         return context
             .assets
             .readAssetsFile("edit_action_")
-            .itemOrNull<Action>()!!
+            .itemOrNull<ActionPL>()!!
     }
 }
