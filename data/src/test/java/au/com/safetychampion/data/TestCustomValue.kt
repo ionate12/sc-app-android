@@ -1,8 +1,8 @@
 package au.com.safetychampion.data
 
-import au.com.safetychampion.data.domain.models.customvalues.BaseCustomValuePL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueDropdown
+import au.com.safetychampion.data.domain.models.customvalues.CustomValuePL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueString
 import au.com.safetychampion.util.GsonManager
 import au.com.safetychampion.util.IGsonManager
@@ -102,7 +102,7 @@ class TestCustomValue : BaseTest() {
         assert(data[1].value == "12345")
         assert(data[2].value == null)
         assert(data[3].value == "123 456")
-        val pl: List<BaseCustomValuePL<*>> = data.map { it.toPayload() }
+        val pl: List<CustomValuePL> = data.map { it.toPayload() }
         val json = gson.toJsonTree(pl).asJsonArray
         assert(json[0].asJsonObject.has("value"))
         assert(!json[2].asJsonObject.has("value"))
