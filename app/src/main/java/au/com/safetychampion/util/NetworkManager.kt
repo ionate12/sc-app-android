@@ -56,7 +56,7 @@ class NetworkManager : INetworkManager {
             .build()
     }
 
-    override suspend fun isNetworkAvailable(): Boolean {
+    override suspend fun isOnline(): Boolean {
         return withContext(Dispatchers.Default) {
             try {
                 val sock = Socket()

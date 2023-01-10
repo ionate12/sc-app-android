@@ -8,11 +8,13 @@ import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
 import au.com.safetychampion.data.domain.toMultipartBody
+import au.com.safetychampion.data.domain.usecase.action.SignoffStatus
 import au.com.safetychampion.util.koinInject
 
 class ActionRepositoryImpl : BaseRepository(), IActionRepository {
     private val api: ActionAPI by koinInject()
-    override suspend fun createNewAction(
+
+    override suspend fun createAction(
         payload: ActionPL,
         attachments: List<Attachment>
     ): Result<ActionPL> {
@@ -60,7 +62,23 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
         actionId: String?,
         payload: ActionSignOffPL,
         photos: List<Attachment>?
-    ): Result<Unit> {
+    ): Result<SignoffStatus.OnlineCompleted> {
+        return apiCall {
+            api.signOff(
+                actionId = actionId,
+                body = payload.toRequestBody(),
+                photos = photos.toMultipartBody(
+                    fileManager = fileContentManager
+                )
+            )
+        }
+    }
+
+    override suspend fun save(
+        actionId: String?,
+        payload: ActionSignOffPL,
+        photos: List<Attachment>?
+    ): Result<SignoffStatus.OnlineSaved> {
         return apiCall {
             api.signOff(
                 actionId = actionId,

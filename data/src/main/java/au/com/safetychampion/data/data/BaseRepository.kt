@@ -20,7 +20,7 @@ abstract class BaseRepository {
         crossinline call: suspend () -> APIResponse
     ): Result<List<T>> {
         return try {
-            if (!networkManager.isNetworkAvailable()) {
+            if (!networkManager.isOnline()) {
                 return Result.Error(SCError.NoNetwork())
             }
             call.invoke().toItems()
@@ -41,7 +41,7 @@ abstract class BaseRepository {
         crossinline call: suspend () -> APIResponse
     ): Result<T> {
         return try {
-            if (!networkManager.isNetworkAvailable()) {
+            if (!networkManager.isOnline()) {
                 return Result.Error(SCError.NoNetwork())
             }
             call.invoke().toItem(responseObjName)
@@ -66,12 +66,13 @@ abstract class BaseRepository {
     ): Result<T> {
         return apiCall<T>(
             call = remote
-        ).flatMapError(
-            expectedError = SCError.NoNetwork::class,
-            action = { scError ->
-                local.invoke(scError)?.let { Result.Success(it) } ?: Result.Error(scError)
+        ).flatMapError {
+            if (it is SCError.NoNetwork) {
+                local.invoke(it)?.let { Result.Success(it) }
+            } else {
+                Result.Error(it)
             }
-        )
+        }
     }
 
     /**
@@ -84,12 +85,13 @@ abstract class BaseRepository {
     ): Result<List<T>> {
         return apiCallAsList<T>(
             call = remote
-        ).flatMapError(
-            expectedError = SCError.NoNetwork::class,
-            action = { scError ->
-                local.invoke(scError)?.let { Result.Success(it) } ?: Result.Error(scError)
+        ).flatMapError {
+            if (it is SCError.NoNetwork) {
+                local.invoke(it)?.let { Result.Success(it) }
+            } else {
+                null
             }
-        )
+        }
     }
 }
 

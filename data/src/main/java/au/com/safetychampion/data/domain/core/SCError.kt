@@ -33,4 +33,13 @@ sealed class SCError(val code: String, val errDescription: String) {
         code = "no_internet_connection",
         errDescription = "No Internet. Please check your internet connection"
     )
+
+    class SignOffFailed(
+        moduleName: String,
+        title: String,
+        details: String
+    ) : SCError(
+        code = "D",
+        errDescription = details
+    )
 }

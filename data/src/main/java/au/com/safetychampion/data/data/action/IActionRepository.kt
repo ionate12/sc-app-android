@@ -6,9 +6,10 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
+import au.com.safetychampion.data.domain.usecase.action.SignoffStatus
 
 interface IActionRepository {
-    suspend fun createNewAction(
+    suspend fun createAction(
         payload: ActionPL,
         attachments: List<Attachment>
     ): Result<ActionPL>
@@ -33,5 +34,11 @@ interface IActionRepository {
         actionId: String?,
         payload: ActionSignOffPL,
         photos: List<Attachment>?
-    ): Result<Unit>
+    ): Result<SignoffStatus.OnlineCompleted>
+
+    suspend fun save(
+        actionId: String?,
+        payload: ActionSignOffPL,
+        photos: List<Attachment>?
+    ): Result<SignoffStatus.OnlineSaved>
 }
