@@ -7,4 +7,5 @@ interface IGsonManager {
     val gsonBuilder: GsonBuilder
     val gson: Gson
     val cleanGson: Gson
+    val nullGson: Gson
 }

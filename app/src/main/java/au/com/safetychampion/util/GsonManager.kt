@@ -9,17 +9,10 @@ import au.com.safetychampion.data.domain.models.customvalues.CusvalType
 import au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter.CustomValueOptionTypeAdapter
 import au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter.CustomValueTypeAdapter
 import au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter.CusvalTypeTypeAdapter
-import au.com.safetychampion.util.gsonadapter.BasePLTypeAdapter
-import au.com.safetychampion.util.gsonadapter.TierTypeConverter
+import au.com.safetychampion.data.util.gsonadapters.BasePLTypeAdapter
+import au.com.safetychampion.data.util.gsonadapters.TierTypeConverter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-
-interface IGsonManager {
-    val gsonBuilder: GsonBuilder
-    val gson: Gson
-    val cleanGson: Gson
-    val nullGson: Gson
-}
 
 class GsonManager : IGsonManager {
     override val gsonBuilder: GsonBuilder by lazy {

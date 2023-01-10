@@ -1,10 +1,10 @@
 package au.com.safetychampion.data.domain.base
 
 import au.com.safetychampion.data.domain.core.IForceNullValues
+import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.customvalues.ICategoryCusval
 import au.com.safetychampion.data.domain.models.customvalues.ICusval
-import au.com.safetychampion.util.IGsonManager
 import au.com.safetychampion.util.koinGet
 import com.google.gson.Gson
 import com.google.gson.JsonElement
