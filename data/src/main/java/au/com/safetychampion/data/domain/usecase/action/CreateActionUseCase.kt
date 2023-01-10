@@ -5,13 +5,13 @@ import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 
-class CreateNewActionUseCase(
+class CreateActionUseCase(
     private val repository: IActionRepository
 ) {
     suspend operator fun invoke(
         payload: ActionPL,
         attachments: List<Attachment>
     ): Result<ActionPL> {
-        return repository.createNewAction(payload = payload, attachments = attachments)
+        return repository.createAction(payload = payload, attachments = attachments)
     }
 }

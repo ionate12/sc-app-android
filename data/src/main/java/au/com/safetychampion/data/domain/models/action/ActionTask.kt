@@ -32,7 +32,7 @@ data class ActionTask(
     var attachments: JsonArray? = null,
     var editComments: List<UpdateLog> = emptyList(),
     var cusvals: List<CustomValue> = emptyList(),
-    var links: List<ActionLink> = emptyList(),
+    val links: MutableList<ActionLink> = mutableListOf(),
     var newActions: List<ActionPL> = emptyList(),
     var changedImplemented: Boolean? = null
 )

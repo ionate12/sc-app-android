@@ -6,6 +6,8 @@ import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.payload.ActionPL
+import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
+import au.com.safetychampion.data.domain.models.action.payload.PendingActionPL
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
@@ -25,10 +27,11 @@ class MainViewModel(
     private val assignTaskUseCase: AssignTaskUseCase,
     private val unAssignTaskUseCase: UnAssignTaskUseCase,
 
-    private val newActionUseCase: CreateNewActionUseCase,
+    private val newActionUseCase: CreateActionUseCase,
     private val allAction: GetListActionUseCase,
     private val getActionSignOffDetailsUseCase: GetActionSignOffDetailsUseCase,
-    private val editActionUseCase: EditActionUseCase
+    private val editActionUseCase: EditActionUseCase,
+    private val signOffActionUseCase: SignOffActionUseCase
 ) : ViewModel() {
 
     private val _apiCallStatus = MutableSharedFlow<Result<*>>()
@@ -124,6 +127,25 @@ class MainViewModel(
         viewModelScope.launch {
             _apiCallStatus.emit(Result.Loading)
             _apiCallStatus.emit(editActionUseCase.invoke(id, actionPL, attachments))
+        }
+    }
+
+    fun signOffAction(
+        actionId: String,
+        attachments: List<Attachment>,
+        payload: ActionSignOffPL,
+        pendingAction: MutableList<PendingActionPL>
+    ) {
+        viewModelScope.launch {
+            signOffActionUseCase.invoke(
+                ActionSignOffParam(
+                    actionId = actionId,
+                    attachments = attachments,
+                    payload = payload,
+                    pendingAction = pendingAction,
+                    id = "ABC"
+                )
+            )
         }
     }
 }

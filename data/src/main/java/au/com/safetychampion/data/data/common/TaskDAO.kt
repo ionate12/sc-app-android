@@ -1,7 +1,8 @@
 package au.com.safetychampion.data.data.common
 
-import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.usecase.action.OfflineTask
 
 interface TaskDAO {
-    fun insert(vararg tasks: Task?)
+    fun insertOfflineTask(offTask: OfflineTask)
+    fun getOfflineTask(taskId: String?): OfflineTask?
 }

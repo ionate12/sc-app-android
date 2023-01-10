@@ -30,4 +30,6 @@ internal val commonModule = module {
     single<BaseAppDataStore> { AppDataStore(androidApplication()) }
 
     single<IFileManager> { FileContentManager(androidApplication().contentResolver) }
+
+    singleOf<IOfflineConverter> (::OfflineTaskManager)
 }

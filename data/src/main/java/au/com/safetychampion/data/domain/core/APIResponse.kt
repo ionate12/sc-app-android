@@ -25,7 +25,7 @@ inline fun <reified T> APIResponse.toItem(
                 Result.Error(SCError.EmptyResult)
             } else {
                 if (T::class == Unit::class) {
-                    return Result.Success(null)
+                    Result.Success(Unit)
                 }
                 Result.Success(result[responseObjName].itemOrNull())
             }

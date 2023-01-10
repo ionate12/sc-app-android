@@ -32,6 +32,7 @@ data class ActionPL(
     val severity: String,
     val tier: Tier,
     val _id: String?,
+    val type: String,
 
     override var categoryCusvals: MutableList<CustomValue>,
     override var cusvals: MutableList<CustomValue>
