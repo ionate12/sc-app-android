@@ -5,7 +5,7 @@ import androidx.databinding.ObservableLong
 import androidx.lifecycle.MutableLiveData
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
-import au.com.safetychampion.data.domain.payload.ActionPojo
+import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 import au.com.safetychampion.data.domain.uncategory.Constants
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import com.google.gson.annotations.SerializedName
@@ -20,7 +20,7 @@ data class SafetyPlanSignoffTask(
     var links: MutableLiveData<MutableList<ActionLink>> = MutableLiveData(mutableListOf()),
     var numTaskAssignees: ObservableLong = ObservableLong(),
     var attachments: MutableList<DocAttachment> = mutableListOf(),
-    var newActions: MutableLiveData<MutableList<ActionPojo>> = MutableLiveData(mutableListOf()),
+    var newActions: MutableLiveData<MutableList<ActionPL>> = MutableLiveData(mutableListOf()),
     var tzDateSignedoff: String = Constants.tz,
     var dateDueFrom: ObservableField<String> = ObservableField("DATE_DUE")
 ) {

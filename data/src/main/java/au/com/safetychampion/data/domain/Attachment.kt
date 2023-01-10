@@ -2,7 +2,7 @@ package au.com.safetychampion.data.domain
 
 import android.content.Intent
 import android.net.Uri
-import au.com.safetychampion.util.IFileManager
+import au.com.safetychampion.data.domain.manager.IFileManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody

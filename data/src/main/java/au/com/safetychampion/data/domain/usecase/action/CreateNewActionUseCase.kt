@@ -1,17 +1,17 @@
 package au.com.safetychampion.data.domain.usecase.action
 
-import au.com.safetychampion.data.data.action.ActionRepository
+import au.com.safetychampion.data.data.action.IActionRepository
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.payload.ActionPojo
+import au.com.safetychampion.data.domain.models.action.payload.ActionPL
 
 class CreateNewActionUseCase(
-    private val repository: ActionRepository
+    private val repository: IActionRepository
 ) {
     suspend operator fun invoke(
-        payload: ActionPojo,
+        payload: ActionPL,
         attachments: List<Attachment>
-    ): Result<ActionPojo> {
+    ): Result<ActionPL> {
         return repository.createNewAction(payload = payload, attachments = attachments)
     }
 }

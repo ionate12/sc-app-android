@@ -1,12 +1,12 @@
 package au.com.safetychampion.data.domain.usecase.activetask
 
-import au.com.safetychampion.data.data.common.TaskRepository
+import au.com.safetychampion.data.data.common.ITaskRepository
 import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.models.action.payload.ActiveTaskPL
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.domain.payload.ActiveTaskPL
 
 class GetAllActiveTaskUseCase(
-    private val activeTaskRepository: TaskRepository
+    private val activeTaskRepository: ITaskRepository
 ) {
     suspend operator fun invoke(moduleName: String?): Result<List<Task>> {
 //        TODO("Use enum as moduleName instead String")

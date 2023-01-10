@@ -4,22 +4,18 @@ import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.action.ActionSignOffPL
-import au.com.safetychampion.data.domain.models.action.ActionTaskPojo
-import au.com.safetychampion.data.domain.payload.ActionPojo
+import au.com.safetychampion.data.domain.models.action.ActionTask
+import au.com.safetychampion.data.domain.models.action.payload.ActionPL
+import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
 import au.com.safetychampion.data.domain.toMultipartBody
-import au.com.safetychampion.data.network.ActionAPI
-import au.com.safetychampion.util.IFileManager
+import au.com.safetychampion.util.koinInject
 
-class ActionRepositoryImpl(
-    private val api: ActionAPI,
-    private val fileContentManager: IFileManager
-) : BaseRepository(), ActionRepository {
-
+class ActionRepositoryImpl : BaseRepository(), IActionRepository {
+    private val api: ActionAPI by koinInject()
     override suspend fun createNewAction(
-        payload: ActionPojo,
+        payload: ActionPL,
         attachments: List<Attachment>
-    ): Result<ActionPojo> {
+    ): Result<ActionPL> {
         return apiCall(
             call = {
                 api.newAction(
@@ -32,13 +28,13 @@ class ActionRepositoryImpl(
         )
     }
 
-    override suspend fun fetchAction(taskId: String?): Result<ActionPojo> {
+    override suspend fun fetchAction(taskId: String?): Result<ActionPL> {
         return apiCall { api.fetch(taskId) }
     }
 
     override suspend fun editAction(
         taskId: String?,
-        payload: ActionPojo,
+        payload: ActionPL,
         attachments: List<Attachment>
     ): Result<Unit> {
         return apiCall {
@@ -52,11 +48,11 @@ class ActionRepositoryImpl(
         }
     }
 
-    override suspend fun task(taskId: String?): Result<ActionTaskPojo> {
+    override suspend fun task(taskId: String?): Result<ActionTask> {
         return apiCall { api.task(taskId) }
     }
 
-    override suspend fun list(body: BasePL?): Result<List<ActionPojo>> {
+    override suspend fun list(body: BasePL?): Result<List<ActionPL>> {
         return apiCallAsList { api.list(body) }
     }
 
