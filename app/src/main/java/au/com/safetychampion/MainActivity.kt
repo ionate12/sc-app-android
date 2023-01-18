@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzI5ODg3MTcsImV4cCI6MTY3MzA3NTExN30.Q6kaRRsUF8ihkihAUripjEs2bW3g7UFKs-TFHhKsrLA"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzQwMzMzNDAsImV4cCI6MTY3NDExOTc0MH0.cTsrVyFC5qXL1ibeLzWM_PBOyZUEapIMIybdNZ5OGzI"
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
         "Create new action" to { viewModel.createNewAction(payload = sampleData.getNewAction(), attachments = emptyList()) },
         "List Action" to { viewModel.getListAction() },
         "Get Action SignOff" to { viewModel.getActionSignOff(actionId = sampleData.getActionId(), task = sampleData.getSampleTask()) },
-        "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) }
+        "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) },
+        "Get List Banner" to { viewModel.getListBanner() }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

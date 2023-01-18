@@ -7,6 +7,7 @@ import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseC
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
+import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -34,5 +35,5 @@ internal val useCasesModule = module {
 
     factoryOf(::CreatePendingActionUseCase)
 
-    factoryOf(::SignOffActionUseCase)
+    factoryOf(::GetListBannerUseCase)
 }
