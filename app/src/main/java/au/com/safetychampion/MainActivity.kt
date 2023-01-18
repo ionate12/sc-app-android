@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         "UnAssign Task" to { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) },
         "Create new action" to { viewModel.createNewAction(payload = sampleData.getNewAction(), attachments = emptyList()) },
         "List Action" to { viewModel.getListAction() },
-        "Get Action SignOff" to { viewModel.getActionSignOff(actionId = sampleData.getActionId()) },
+        "Get Action SignOff" to { viewModel.getActionSignOff(actionId = sampleData.getActionId(), task = sampleData.getSampleTask()) },
         "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) }
     )
 

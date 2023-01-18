@@ -1,38 +1,40 @@
 package au.com.safetychampion.data.domain.models.action
 
+import au.com.safetychampion.data.domain.base.BaseModule
+import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.models.Tier
-import au.com.safetychampion.data.domain.models.UpdateLog
-import au.com.safetychampion.data.domain.models.action.payload.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.customvalues.ICusval
 import au.com.safetychampion.data.domain.models.login.LoginUser
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.google.gson.annotations.SerializedName
+import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class ActionTask(
-    var complete: Boolean = false,
-    var dateCompleted: String? = null,
-    var completionNotes: String? = null,
-    var controlLevel: String? = null,
-    var controlLevelOther: String? = null,
-    var dateDue: String? = null,
-    var description: String? = null,
-    @SerializedName("for")
-    var _for: JsonObject? = null,
-    var hazardCategory: String? = null,
-    var hazardCategoryOther: String? = null,
-    var severity: String? = null,
-    var tier: Tier? = null,
-    var title: String? = null,
-    var type: String? = null,
-    var _id: String? = null,
-    var tzDateSignedoff: String? = null,
-    var dateSignedoff: String? = null,
-    var signedoffBy: LoginUser? = null,
-    var attachments: JsonArray? = null,
-    var editComments: List<UpdateLog> = emptyList(),
-    var cusvals: List<CustomValue> = emptyList(),
-    val links: MutableList<ActionLink> = mutableListOf(),
-    var newActions: List<ActionPL> = emptyList(),
-    var changedImplemented: Boolean? = null
-)
+    override val _id: String?,
+    override val type: String?,
+    override val _for: BaseModule?,
+    override val tier: Tier?,
+    override val title: String?,
+    override val description: String?,
+    override val dateDue: String?,
+    override val complete: Boolean?,
+    override val inExecution: Boolean?,
+    override var cusvals: MutableList<CustomValue>,
+
+    val attachment: List<DocAttachment>,
+    val controlLevel: String?,
+    val controlLevelOther: String?,
+    val completionNotes: String?,
+    val changeImplemented: Boolean? = null,
+    val dateCompleted: String?,
+    val dateSignedoff: String,
+    val hazardCategory: String?,
+    val hazardCategoryOther: String?,
+    val links: MutableList<ActionLink>?,
+    val newAction: List<ActionPL>?,
+    val tzDateSignedoff: String?,
+    val severity: String?,
+    val signedoffBy: LoginUser?
+
+) : BasePL(), BaseTask, ICusval

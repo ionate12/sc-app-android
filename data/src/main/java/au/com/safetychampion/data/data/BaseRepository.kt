@@ -60,7 +60,7 @@ abstract class BaseRepository {
      * @see flatMapError
      */
 
-    suspend inline fun <reified T : Any> remoteOrLocalOrError(
+    suspend inline fun <reified T> remoteOrLocalOrError(
         crossinline remote: suspend () -> APIResponse,
         crossinline local: suspend (SCError) -> T?
     ): Result<T> {
@@ -93,6 +93,10 @@ abstract class BaseRepository {
             }
         }
     }
+
+    /**
+     * @see remoteOrLocalOrError
+     */
 }
 
 fun handleRetrofitException(e: Exception): Result.Error {

@@ -3,9 +3,9 @@ package au.com.safetychampion.data.data.action
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.ActionTask
-import au.com.safetychampion.data.domain.models.action.payload.ActionPL
-import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
+import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.usecase.action.SignoffStatus
 
 interface IActionRepository {
@@ -13,6 +13,11 @@ interface IActionRepository {
         payload: ActionPL,
         attachments: List<Attachment>
     ): Result<ActionPL>
+
+    suspend fun createPendingAction(
+        payload: ActionPL,
+        attachments: List<Attachment>
+    ): Result<ActionLink>
 
     suspend fun fetchAction(
         taskId: String?
@@ -32,13 +37,13 @@ interface IActionRepository {
 
     suspend fun signOff(
         actionId: String?,
-        payload: ActionSignOffPL,
+        payload: ActionTask,
         photos: List<Attachment>?
     ): Result<SignoffStatus.OnlineCompleted>
 
     suspend fun save(
         actionId: String?,
-        payload: ActionSignOffPL,
+        payload: ActionTask,
         photos: List<Attachment>?
     ): Result<SignoffStatus.OnlineSaved>
 }

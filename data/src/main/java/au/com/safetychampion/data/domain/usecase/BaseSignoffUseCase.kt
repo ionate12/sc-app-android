@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.base
+package au.com.safetychampion.data.domain.usecase
 
 import au.com.safetychampion.data.data.common.TaskDAO
 import au.com.safetychampion.data.domain.core.Result
@@ -10,7 +10,7 @@ import au.com.safetychampion.data.domain.usecase.action.OfflineTaskInfo
 import au.com.safetychampion.data.domain.usecase.action.SignoffStatus
 import au.com.safetychampion.util.koinInject
 
-abstract class SignoffUseCase<T : OfflineTaskInfo> : BaseUseCase() {
+abstract class BaseSignoffUseCase<T : OfflineTaskInfo> : BaseUseCase() {
 
     private val offlineTaskConverter by koinInject<IOfflineConverter>()
 
@@ -39,8 +39,7 @@ abstract class SignoffUseCase<T : OfflineTaskInfo> : BaseUseCase() {
     }
 
     private suspend fun signOff(param: T): Result<SignoffStatus> {
-        return signoffCall
-            .invoke(param)
+        return signoffCall(param)
             .flatMapError {
                 if (it is SCError.NoNetwork) {
                     // No internet connection case
@@ -65,7 +64,7 @@ abstract class SignoffUseCase<T : OfflineTaskInfo> : BaseUseCase() {
             }
     }
 
-    protected abstract val signoffCall: suspend (T) -> Result<SignoffStatus>
+    protected abstract suspend fun signoffCall(param: T): Result<SignoffStatus>
 
     suspend operator fun invoke(param: T): Result<SignoffStatus> {
         return overwrite(param) ?: signOff(param)

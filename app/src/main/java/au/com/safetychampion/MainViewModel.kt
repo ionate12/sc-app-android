@@ -1,13 +1,14 @@
 package au.com.safetychampion
 
+import GetActionSignOffDetailsUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
-import au.com.safetychampion.data.domain.models.action.payload.ActionPL
-import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
-import au.com.safetychampion.data.domain.models.action.payload.PendingActionPL
+import au.com.safetychampion.data.domain.models.action.ActionTask
+import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
@@ -116,10 +117,10 @@ class MainViewModel(
         }
     }
 
-    fun getActionSignOff(actionId: String) {
+    fun getActionSignOff(actionId: String, task: Task) {
         viewModelScope.launch {
             _apiCallStatus.emit(Result.Loading)
-            _apiCallStatus.emit(getActionSignOffDetailsUseCase.invoke(actionId))
+            _apiCallStatus.emit(getActionSignOffDetailsUseCase.invoke(task, actionId))
         }
     }
 
@@ -133,7 +134,7 @@ class MainViewModel(
     fun signOffAction(
         actionId: String,
         attachments: List<Attachment>,
-        payload: ActionSignOffPL,
+        payload: ActionTask,
         pendingAction: MutableList<PendingActionPL>
     ) {
         viewModelScope.launch {

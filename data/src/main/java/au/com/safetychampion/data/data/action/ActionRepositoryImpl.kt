@@ -4,9 +4,9 @@ import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.ActionTask
-import au.com.safetychampion.data.domain.models.action.payload.ActionPL
-import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
+import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.toMultipartBody
 import au.com.safetychampion.data.domain.usecase.action.SignoffStatus
 import au.com.safetychampion.util.koinInject
@@ -18,6 +18,22 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
         payload: ActionPL,
         attachments: List<Attachment>
     ): Result<ActionPL> {
+        return apiCall(
+            call = {
+                api.newAction(
+                    body = payload.toRequestBody(),
+                    photos = attachments.toMultipartBody(
+                        fileManager = fileContentManager
+                    )
+                )
+            }
+        )
+    }
+
+    override suspend fun createPendingAction(
+        payload: ActionPL,
+        attachments: List<Attachment>
+    ): Result<ActionLink> {
         return apiCall(
             call = {
                 api.newAction(
@@ -60,7 +76,7 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
 
     override suspend fun signOff(
         actionId: String?,
-        payload: ActionSignOffPL,
+        payload: ActionTask,
         photos: List<Attachment>?
     ): Result<SignoffStatus.OnlineCompleted> {
         return apiCall {
@@ -76,7 +92,7 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
 
     override suspend fun save(
         actionId: String?,
-        payload: ActionSignOffPL,
+        payload: ActionTask,
         photos: List<Attachment>?
     ): Result<SignoffStatus.OnlineSaved> {
         return apiCall {

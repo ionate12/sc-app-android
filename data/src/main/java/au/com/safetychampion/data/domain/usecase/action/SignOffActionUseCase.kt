@@ -2,14 +2,12 @@ package au.com.safetychampion.data.domain.usecase.action
 
 import au.com.safetychampion.data.data.action.IActionRepository
 import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.base.SignoffUseCase
 import au.com.safetychampion.data.domain.core.ModuleName
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.dataOrNull
-import au.com.safetychampion.data.domain.models.action.ActionLink
-import au.com.safetychampion.data.domain.models.action.payload.ActionPL
-import au.com.safetychampion.data.domain.models.action.payload.ActionSignOffPL
-import au.com.safetychampion.data.domain.models.action.payload.PendingActionPL
+import au.com.safetychampion.data.domain.models.action.ActionTask
+import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
+import au.com.safetychampion.data.domain.usecase.BaseSignoffUseCase
 import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -32,33 +30,35 @@ sealed class SignoffStatus(val message: String) {
     )
 }
 
-class SignOffActionUseCase : SignoffUseCase<ActionSignOffParam>() {
+class SignOffActionUseCase : BaseSignoffUseCase<ActionSignOffParam>() {
+
     private val repository: IActionRepository by koinInject()
 
-    private val pendingActionCall: suspend (ActionPL, List<Attachment>) -> ActionLink? = { action, attachments ->
-        repository.createAction(action, attachments).dataOrNull()?.let {
-            ActionLink(type = it.type, _id = it._id)
-        }
-    }
+    private val createPendingActionUseCase: CreatePendingActionUseCase by koinInject()
 
-    override val signoffCall: suspend (ActionSignOffParam) -> Result<SignoffStatus> = { signOffParam ->
-        withContext(dispatchers.io) {
-            signOffParam.pendingAction
-                .map {
-                    async { pendingActionCall.invoke(it.action, it.attachment) }
+    override suspend fun signoffCall(param: ActionSignOffParam): Result<SignoffStatus> {
+        return withContext(dispatchers.io) {
+            param.pendingAction
+                ?.map {
+                    async {
+                        createPendingActionUseCase.invoke(
+                            payload = it.action,
+                            attachments = it.attachment
+                        ).dataOrNull()
+                    }
                 }
-                .awaitAll()
-                .filterNotNull()
-                .let {
-                    signOffParam.pendingAction.clear()
-                    signOffParam.payload.task.links.clear()
-                    signOffParam.payload.task.links.addAll(it)
+                ?.awaitAll()
+                ?.filterNotNull() // Currently, we're ignoring the pending action result, if success -> add to task.link else do nothing
+                ?.let {
+                    param.payload.links?.clear()
+                    param.payload.links?.addAll(it)
+                    param.pendingAction = null
                 }
 
             repository.signOff(
-                signOffParam.actionId,
-                signOffParam.payload,
-                signOffParam.attachments
+                param.actionId,
+                param.payload,
+                param.attachments
             )
         }
     }
@@ -67,8 +67,8 @@ class SignOffActionUseCase : SignoffUseCase<ActionSignOffParam>() {
 class ActionSignOffParam(
     val actionId: String,
     val attachments: List<Attachment>,
-    val payload: ActionSignOffPL,
-    val pendingAction: MutableList<PendingActionPL>,
+    val payload: ActionTask,
+    var pendingAction: List<PendingActionPL>?,
     override val id: String
 ) : OfflineTaskInfo {
     override val moduleName: ModuleName
@@ -76,7 +76,7 @@ class ActionSignOffParam(
     override val title: String
         get() = "1234"
     override val offlineTitle: String
-        get() = (if (payload.task.complete) "[SIGN-OFF]" else "[SAVE]") + "$moduleName Sign-off: " + title
+        get() = (if (payload.complete == true) "[SIGN-OFF]" else "[SAVE]") + "$moduleName Sign-off: " + title
 }
 
 interface OfflineTaskInfo {

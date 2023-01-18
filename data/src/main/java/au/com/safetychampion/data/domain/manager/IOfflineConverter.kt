@@ -5,4 +5,5 @@ import au.com.safetychampion.data.domain.usecase.action.OfflineTaskInfo
 
 interface IOfflineConverter {
     fun toOfflineTask(taskData: OfflineTaskInfo): OfflineTask
+    fun <T> toObject(offlineTask: OfflineTask?): T?
 }

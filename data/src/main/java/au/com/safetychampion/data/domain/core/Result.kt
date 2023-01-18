@@ -14,9 +14,16 @@ fun Result<*>.errorOrNull(): SCError? {
     return (this as? Result.Error)?.err
 }
 
-suspend fun <T : Any> Result<T>.flatMapError(
+suspend fun <T> Result<T>.flatMapError(
     action: suspend (SCError) -> Result<T>?
 ): Result<T> {
     if (this is Result.Success<*>) return this
     return action.invoke(errorOrNull()!!) ?: this
+}
+
+suspend fun <T> Result<T>.flatMapSuccess(
+    action: (T?) -> Result<T>?
+): Result<T> {
+    if (this is Result.Error) return this
+    return action.invoke(dataOrNull()) ?: this
 }

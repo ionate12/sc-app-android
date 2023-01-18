@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.models.action.payload
+package au.com.safetychampion.data.domain.models.action.network
 
 import au.com.safetychampion.data.domain.base.BasePL
 

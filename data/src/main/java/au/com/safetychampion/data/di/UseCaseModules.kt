@@ -1,5 +1,6 @@
 package au.com.safetychampion.data.di
 
+import GetActionSignOffDetailsUseCase
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
@@ -28,6 +29,10 @@ internal val useCasesModule = module {
     factoryOf(::GetActionSignOffDetailsUseCase)
 
     factoryOf(::EditActionUseCase)
+
+    factoryOf(::SignOffActionUseCase)
+
+    factoryOf(::CreatePendingActionUseCase)
 
     factoryOf(::SignOffActionUseCase)
 }

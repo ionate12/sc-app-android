@@ -42,4 +42,9 @@ sealed class SCError(val code: String, val errDescription: String) {
         code = "D",
         errDescription = details
     )
+
+    object AlreadySignedOff : SCError(
+        code = "closed_or_signed_off",
+        errDescription = "This task is already closed or signed-off."
+    )
 }
