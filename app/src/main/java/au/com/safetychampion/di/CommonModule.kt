@@ -1,6 +1,8 @@
 package au.com.safetychampion.di
 
 import au.com.safetychampion.data.data.common.FakeDAO
+import au.com.safetychampion.data.data.common.FakeMasterDAO
+import au.com.safetychampion.data.data.common.MasterDAO
 import au.com.safetychampion.data.data.common.TaskDAO
 import au.com.safetychampion.data.domain.manager.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.local.AppDataStore
@@ -31,9 +33,11 @@ internal val commonModule = module {
 
     single<BaseAppDataStore> { AppDataStore(androidApplication()) }
 
-    single<IFileManager> { FileContentManager(androidApplication().contentResolver) }
+    single<IFileManager> { FileContentManager(androidApplication().contentResolver, androidApplication().getExternalFilesDir("")?.path ?: "") }
 
     singleOf<IOfflineConverter> (::OfflineTaskManager)
 
     singleOf<TaskDAO>(::FakeDAO)
+
+    singleOf<MasterDAO>(::FakeMasterDAO)
 }

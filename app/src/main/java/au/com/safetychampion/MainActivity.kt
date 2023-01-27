@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzI5ODg3MTcsImV4cCI6MTY3MzA3NTExN30.Q6kaRRsUF8ihkihAUripjEs2bW3g7UFKs-TFHhKsrLA"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYxOTQ2NTE3NGVlNmUwMmE2MDMwNDk1NiJ9LCJpYXQiOjE2NzQ3NDA3ODksImV4cCI6MTY3NDgyNzE4OX0._CPZclmc9tdjzXK9osGTq-l2YcY0Tid13dLvn3O8FIo"
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -37,8 +37,36 @@ class MainActivity : AppCompatActivity() {
         "UnAssign Task" to { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) },
         "Create new action" to { viewModel.createNewAction(payload = sampleData.getNewAction(), attachments = emptyList()) },
         "List Action" to { viewModel.getListAction() },
-        "Get Action SignOff" to { viewModel.getActionSignOff(actionId = sampleData.getActionId(), task = sampleData.getSampleTask()) },
-        "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) }
+        "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) },
+        "Refresh GHS code" to { viewModel.refreshGHS() },
+        "Refresh Chemical" to { viewModel.refreshChemical() },
+
+        "Get Action SignOff" to { viewModel.getActionSignOff(actionId = sampleData.getActionId(), id = sampleData.getSampleTask()._id) },
+        "Get Chemical Signoff" to {
+            viewModel.getChemicalSignoff(
+                moduleId = "61ad7aedb3ea32726aac3523",
+                id = "0123456"
+            )
+        },
+
+        "Signoff Action" to {
+            viewModel.signOffAction(
+                actionId = sampleData.getActionId(),
+                attachments = emptyList(),
+                payload = sampleData.getActionTask(),
+                pendingAction = sampleData.getPendingActionPL()
+            )
+        },
+        "Signoff Chemical" to {
+            viewModel.signoffChemical(
+                taskId = "61ad7aedb3ea32726aac3522",
+                moduleId = "61ad7aedb3ea32726aac3523",
+                task = sampleData.getChemicalTask(),
+                attachments = emptyList()
+
+            )
+        }
+
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,19 +96,18 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.apiCallStatus.collectLatest {
                 binding.progress.isVisible = it is Result.Loading
-                when {
-                    it is Result.Loading -> {
+                when (it) {
+                    is Result.Loading -> {
                         binding.status.text = "This is Result.Loading"
                         binding.result.text = ""
                         binding.payload.text = ""
                         binding.count.text = "[]"
                     }
-                    it is Result.Error -> {
+                    is Result.Error -> {
                         binding.status.text = "This is Result.ERROR"
                         binding.result.text = it.err.toString()
                     }
-
-                    it is Result.Success -> {
+                    is Result.Success -> {
                         binding.status.text = "This is Result.Success"
                         binding.result.text = it.data?.toJsonString()
                         binding.count.text = "[${(it.data as? List<*>)?.size}]"

@@ -9,6 +9,6 @@ class GetListActionUseCase(
     private val repository: IActionRepository
 ) {
     suspend operator fun invoke(): Result<List<ActionPL>> {
-        return repository.list(body = object : BasePL() {})
+        return repository.list(body = BasePL.empty())
     }
 }

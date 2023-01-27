@@ -1,14 +1,18 @@
 package au.com.safetychampion.data.data
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.manager.IDispatchers
 import au.com.safetychampion.data.domain.manager.IFileManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.util.koinInject
 
 abstract class BaseRepository {
 
-    val networkManager: INetworkManager by koinInject()
+    protected val networkManager: INetworkManager by koinInject()
+
     protected val fileContentManager: IFileManager by koinInject()
+
+    protected val dispatchers: IDispatchers by koinInject()
 
     /**
      * Invoke the specified suspend function block, and parses the result (result object in APIResponse) as List<[T]>
@@ -16,7 +20,7 @@ abstract class BaseRepository {
      * @see toItems
      */
 
-    suspend inline fun <reified T> apiCallAsList(
+    protected suspend inline fun <reified T> apiCallAsList(
         crossinline call: suspend () -> APIResponse
     ): Result<List<T>> {
         return try {
@@ -36,7 +40,7 @@ abstract class BaseRepository {
      * @see toItems
      */
 
-    suspend inline fun <reified T> apiCall(
+    protected suspend inline fun <reified T> apiCall(
         responseObjName: String = "item",
         crossinline call: suspend () -> APIResponse
     ): Result<T> {
@@ -52,7 +56,7 @@ abstract class BaseRepository {
 
     /**
      * Trying to fetch data from the remote datasource, with [remote] as the parameter of [apiCall] function,
-     * If [apiCall] is failed, and it returns a [SCError.NoNetwork] wrapped in [Result.Error], then invokes the [local] as the fallback.
+     * If [apiCall] returns a [SCError.NoNetwork] wrapped in [Result.Error], then invokes the [local] as the fallback.
      * @param remote Remote datasource: an API request returns APIResponse
      * @param local Local datasource: using as a fallback and only be invoked if we have a SCError.NoNetwork from [apiCall]
      * @return [Result.Success] if [remote] is [Result.Success] || [remote] is [Result.Error] but [local].invokes() != null,
@@ -60,7 +64,7 @@ abstract class BaseRepository {
      * @see flatMapError
      */
 
-    suspend inline fun <reified T> remoteOrLocalOrError(
+    protected suspend inline fun <reified T> remoteOrLocalOrError(
         crossinline remote: suspend () -> APIResponse,
         crossinline local: suspend (SCError) -> T?
     ): Result<T> {
@@ -79,7 +83,7 @@ abstract class BaseRepository {
      * @see remoteOrLocalOrError
      */
 
-    suspend inline fun <reified T : Any> remoteOrLocalOrErrorAsList(
+    protected suspend inline fun <reified T : Any> remoteOrLocalOrErrorAsList(
         crossinline remote: suspend () -> APIResponse,
         crossinline local: suspend (SCError) -> List<T>?
     ): Result<List<T>> {

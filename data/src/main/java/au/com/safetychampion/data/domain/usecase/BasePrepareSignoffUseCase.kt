@@ -21,7 +21,7 @@ abstract class BasePrepareSignoffUseCase<T> : BaseUseCase() {
      */
     protected open fun closedCheck(it: T?): Boolean = false
 
-    protected open fun fromDatabase(): Result<T>? {
+    protected open fun fromDatabase(): T? {
         TODO()
     }
 
@@ -30,14 +30,13 @@ abstract class BasePrepareSignoffUseCase<T> : BaseUseCase() {
 
     protected suspend inline fun fromOfflineTaskFirst(
         offlineTaskId: String?,
-        crossinline remote: suspend () -> Result<T>,
-        crossinline local: () -> Result<T>?
+        crossinline remote: suspend () -> Result<T>
     ): Result<T> {
-        val data: T? = offlineTaskConverter.toObject(
+        val offData: T? = offlineTaskConverter.toObject(
             offlineTask = offlineTaskRepo.getOfflineTask(offlineTaskId)
         )
-        if (data != null) {
-            return Result.Success(data)
+        if (offData != null) {
+            return Result.Success(offData)
         }
 
         return remote.invoke()
@@ -51,7 +50,7 @@ abstract class BasePrepareSignoffUseCase<T> : BaseUseCase() {
             }
             .flatMapError {
                 if (it is SCError.NoNetwork) {
-                    local()
+                    Result.Success(fromDatabase())
                 } else {
                     Result.Error(it)
                 }

@@ -14,6 +14,9 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 abstract class BasePL {
+    companion object {
+        fun empty() = object : BasePL() {}
+    }
     open fun toJsonElement(gson: Gson): JsonElement {
         return gson.toJsonTree(this)
     }

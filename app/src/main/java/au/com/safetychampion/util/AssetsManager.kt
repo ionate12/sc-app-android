@@ -5,7 +5,10 @@ import android.content.res.AssetManager
 import android.net.Uri
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
+import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
+import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.util.extension.itemOrNull
 import au.com.safetychampion.data.util.extension.listOrEmpty
@@ -55,5 +58,28 @@ class AssetsManager(private val context: Context) {
             .assets
             .readAssetsFile("edit_action_")
             .itemOrNull<ActionPL>()!!
+    }
+
+    fun getActionTask(): ActionTask {
+        return context
+            .assets
+            .readAssetsFile("signoff_action")
+            .itemOrNull<ActionTask>()!!
+    }
+
+    fun getPendingActionPL(): MutableList<PendingActionPL> {
+        return mutableListOf(
+            PendingActionPL(
+                action = getNewAction(),
+                emptyList()
+            )
+        )
+    }
+
+    fun getChemicalTask(): ChemicalTask {
+        return context
+            .assets
+            .readAssetsFile("chemical_tasl")
+            .itemOrNull<ChemicalTask>()!!
     }
 }

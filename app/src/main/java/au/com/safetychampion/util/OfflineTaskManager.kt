@@ -14,6 +14,6 @@ class OfflineTaskManager : IOfflineConverter {
     }
 
     override fun <T> toObject(offlineTask: OfflineTask?): T? {
-        TODO("Not yet implemented")
+        return null
     }
 }

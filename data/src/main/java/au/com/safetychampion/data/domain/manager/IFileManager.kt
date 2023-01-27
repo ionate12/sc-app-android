@@ -10,4 +10,6 @@ interface IFileManager {
         flags: Int
     )
     suspend fun getDisplayNameFromURI(vararg uris: Uri?): List<String>
+
+    val externalFilesDir: String
 }

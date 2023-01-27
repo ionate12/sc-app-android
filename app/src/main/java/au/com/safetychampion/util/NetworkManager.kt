@@ -57,6 +57,7 @@ class NetworkManager : INetworkManager {
     }
 
     override suspend fun isOnline(): Boolean {
+        // TODO("Move this function into base repository")
         return withContext(Dispatchers.Default) {
             try {
                 val sock = Socket()

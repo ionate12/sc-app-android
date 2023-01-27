@@ -5,9 +5,9 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.core.flatMapError
 import au.com.safetychampion.data.domain.manager.IOfflineConverter
+import au.com.safetychampion.data.domain.models.SignoffStatus
 import au.com.safetychampion.data.domain.usecase.action.OfflineTask
 import au.com.safetychampion.data.domain.usecase.action.OfflineTaskInfo
-import au.com.safetychampion.data.domain.usecase.action.SignoffStatus
 import au.com.safetychampion.util.koinInject
 
 abstract class BaseSignoffUseCase<T : OfflineTaskInfo> : BaseUseCase() {
@@ -39,7 +39,7 @@ abstract class BaseSignoffUseCase<T : OfflineTaskInfo> : BaseUseCase() {
     }
 
     private suspend fun signOff(param: T): Result<SignoffStatus> {
-        return signoffCall(param)
+        return signoffInternal(param)
             .flatMapError {
                 if (it is SCError.NoNetwork) {
                     // No internet connection case
@@ -64,7 +64,7 @@ abstract class BaseSignoffUseCase<T : OfflineTaskInfo> : BaseUseCase() {
             }
     }
 
-    protected abstract suspend fun signoffCall(param: T): Result<SignoffStatus>
+    protected abstract suspend fun signoffInternal(param: T): Result<SignoffStatus>
 
     suspend operator fun invoke(param: T): Result<SignoffStatus> {
         return overwrite(param) ?: signOff(param)

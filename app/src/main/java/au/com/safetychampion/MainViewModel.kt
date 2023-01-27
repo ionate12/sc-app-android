@@ -9,6 +9,7 @@ import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
+import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
@@ -16,24 +17,31 @@ import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseC
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel(
-    private val getActiveTaskUseCase: GetAllActiveTaskUseCase,
-    private val assignTaskStatusItem: AssignTaskStatusItemUseCase,
-    private val assignTasksStatusItem: AssignManyTasksStatusItemUseCase,
-    private val assignTaskUseCase: AssignTaskUseCase,
-    private val unAssignTaskUseCase: UnAssignTaskUseCase,
+class MainViewModel : ViewModel() {
 
-    private val newActionUseCase: CreateActionUseCase,
-    private val allAction: GetListActionUseCase,
-    private val getActionSignOffDetailsUseCase: GetActionSignOffDetailsUseCase,
-    private val editActionUseCase: EditActionUseCase,
-    private val signOffActionUseCase: SignOffActionUseCase
-) : ViewModel() {
+    private val getActiveTaskUseCase: GetAllActiveTaskUseCase by koinInject()
+    private val assignTaskStatusItem: AssignTaskStatusItemUseCase by koinInject()
+    private val assignTasksStatusItem: AssignManyTasksStatusItemUseCase by koinInject()
+    private val assignTaskUseCase: AssignTaskUseCase by koinInject()
+    private val unAssignTaskUseCase: UnAssignTaskUseCase by koinInject()
+
+    private val newActionUseCase: CreateActionUseCase by koinInject()
+    private val allAction: GetListActionUseCase by koinInject()
+    private val getActionSignOffDetailsUseCase: GetActionSignOffDetailsUseCase by koinInject()
+    private val editActionUseCase: EditActionUseCase by koinInject()
+    private val signoffActionUseCase: SignOffActionUseCase by koinInject()
+
+    private val getChemicalSignoffDetailsUseCase: GetChemicalSignoffDetailUseCase by koinInject()
+    private val refreshGHSCodeUseCase: RefreshGHSCodeUseCase by koinInject()
+    private val refreshChemicalUseCase: RefreshChemicalListUseCase by koinInject()
+    private val signoffChemicalUseCase: SignoffChemicalUseCase by koinInject()
 
     private val _apiCallStatus = MutableSharedFlow<Result<*>>()
     val apiCallStatus = _apiCallStatus.asSharedFlow()
@@ -117,10 +125,10 @@ class MainViewModel(
         }
     }
 
-    fun getActionSignOff(actionId: String, task: Task) {
+    fun getActionSignOff(actionId: String, id: String) {
         viewModelScope.launch {
             _apiCallStatus.emit(Result.Loading)
-            _apiCallStatus.emit(getActionSignOffDetailsUseCase.invoke(task, actionId))
+            _apiCallStatus.emit(getActionSignOffDetailsUseCase.invoke(id, actionId))
         }
     }
 
@@ -138,13 +146,50 @@ class MainViewModel(
         pendingAction: MutableList<PendingActionPL>
     ) {
         viewModelScope.launch {
-            signOffActionUseCase.invoke(
+            signoffActionUseCase.invoke(
                 ActionSignOffParam(
                     actionId = actionId,
                     attachments = attachments,
                     payload = payload,
                     pendingAction = pendingAction,
                     id = "ABC"
+                )
+            )
+        }
+    }
+
+    fun getChemicalSignoff(id: String, moduleId: String) {
+        viewModelScope.launch {
+            _apiCallStatus.emit(Result.Loading)
+            _apiCallStatus.emit(getChemicalSignoffDetailsUseCase.invoke(id, moduleId))
+        }
+    }
+
+    fun refreshGHS() {
+        viewModelScope.launch {
+            refreshGHSCodeUseCase.invoke()
+        }
+    }
+
+    fun refreshChemical() {
+        viewModelScope.launch {
+            refreshChemicalUseCase.invoke()
+        }
+    }
+
+    fun signoffChemical(
+        taskId: String,
+        moduleId: String,
+        task: ChemicalTask,
+        attachments: List<Attachment>
+    ) {
+        viewModelScope.launch {
+            signoffChemicalUseCase.invoke(
+                ChemicalSignoffParam(
+                    taskId = taskId,
+                    moduleId = moduleId,
+                    task = task,
+                    attachments = attachments
                 )
             )
         }
