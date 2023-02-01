@@ -33,7 +33,7 @@ interface ActionApi {
         body: BasePL?
     ) : NetworkAPI.Post("actions/list", body), IStorable
 
-    class SignOff(
+    class Signoff(
         actionId: String,
         body: ActionTask,
         photos: AttachmentList

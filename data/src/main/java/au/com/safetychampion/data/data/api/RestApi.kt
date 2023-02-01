@@ -29,5 +29,3 @@ sealed class NetworkAPI(val path: String) {
     sealed class Post(path: String, val body: BasePL?) : NetworkAPI(path)
     sealed class PostMultiParts(path: String, val body: BasePL, val attachment: List<Attachment>?) : NetworkAPI(path)
 }
-
-

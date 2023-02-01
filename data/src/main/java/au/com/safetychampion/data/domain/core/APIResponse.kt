@@ -20,11 +20,11 @@ data class APIResponse(
         val message: List<String>
     )
 }
-//data class SyncableResponse(
+// data class SyncableResponse(
 //    override val success: Boolean,
 //    val msg: String,
 //    val extras: Map<String, Any>? = null // Temporary set as Map
-//) : IResponse
+// ) : IResponse
 
 inline fun <reified T> APIResponse.toItem(
     responseObjName: String = "item"

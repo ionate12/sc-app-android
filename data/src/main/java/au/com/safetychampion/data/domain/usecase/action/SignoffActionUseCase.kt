@@ -5,6 +5,7 @@ import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.ModuleName
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.dataOrNull
+import au.com.safetychampion.data.domain.models.SignoffStatus
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.usecase.BaseSignoffUseCase
@@ -13,30 +14,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
-sealed class SignoffStatus(val message: String) {
-    class OfflineCompleted(
-        val isOverwritten: Boolean? = false,
-        moduleName: String,
-        title: String
-    ) : SignoffStatus(
-        "OFFLINE - <b><u>$moduleName: $title/u></b> has been save/signed off as a new Offline Task. " +
-            "\n**Offline tasks will be synchronised when the device is back online "
-    )
-    class OnlineCompleted(moduleName: String, title: String) : SignoffStatus(
-        "You've successfully signed off <b><u>$moduleName: $title</u></b>"
-    )
-    class OnlineSaved(moduleName: String, title: String) : SignoffStatus(
-        "You've successfully saved <b><u>$moduleName: $title</u></b>"
-    )
-}
-
 class SignoffActionUseCase : BaseSignoffUseCase<ActionSignOffParam>() {
 
     private val repository: IActionRepository by koinInject()
 
     private val createPendingActionUseCase: CreatePendingActionUseCase by koinInject()
 
-    override suspend fun signoffCall(param: ActionSignOffParam): Result<SignoffStatus> {
+    override suspend fun signoffInternal(param: ActionSignOffParam): Result<SignoffStatus> {
         return withContext(dispatchers.io) {
             param.pendingAction
                 ?.map {
@@ -55,11 +39,19 @@ class SignoffActionUseCase : BaseSignoffUseCase<ActionSignOffParam>() {
                     param.pendingAction = null
                 }
 
-            repository.signOff(
-                param.actionId,
-                param.payload,
-                param.attachments
-            )
+            if (param.payload.complete == true) {
+                repository.signoff(
+                    param.actionId,
+                    param.payload,
+                    param.attachments
+                )
+            } else {
+                repository.save(
+                    param.actionId,
+                    param.payload,
+                    param.attachments
+                )
+            }
         }
     }
 }

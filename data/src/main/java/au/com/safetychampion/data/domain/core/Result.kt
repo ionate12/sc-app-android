@@ -28,3 +28,23 @@ suspend fun <T, R> Result<T>.flatMap(
     val data = dataOrNull() ?: return Result.Error(SCError.EmptyResult)
     return action.invoke(data)
 }
+
+/**
+ * Performs the given action if this is [Result.Success] and data != null,
+ * @return self
+ */
+
+fun <T> Result<T>.doOnSucceed(action: (T) -> Unit): Result<T> {
+    dataOrNull()?.let(action)
+    return this
+}
+
+/**
+ * Performs the given action if this is [Result.Error]
+ * @return self
+ */
+
+fun <T> Result<T>.doOnFailure(action: SCError.() -> Unit): Result<T> {
+    errorOrNull()?.let(action)
+    return this
+}
