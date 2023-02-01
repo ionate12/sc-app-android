@@ -30,7 +30,7 @@ sealed class SignoffStatus(val message: String) {
     )
 }
 
-class SignOffActionUseCase : BaseSignoffUseCase<ActionSignOffParam>() {
+class SignoffActionUseCase : BaseSignoffUseCase<ActionSignOffParam>() {
 
     private val repository: IActionRepository by koinInject()
 

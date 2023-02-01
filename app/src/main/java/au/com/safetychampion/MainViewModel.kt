@@ -32,7 +32,7 @@ class MainViewModel(
     private val allAction: GetListActionUseCase,
     private val getActionSignOffDetailsUseCase: GetActionSignOffDetailsUseCase,
     private val editActionUseCase: EditActionUseCase,
-    private val signOffActionUseCase: SignOffActionUseCase
+    private val signOffActionUseCase: SignoffActionUseCase
 ) : ViewModel() {
 
     private val _apiCallStatus = MutableSharedFlow<Result<*>>()
