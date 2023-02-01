@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.domain.core
 
 sealed class Result<out R> {
-    data class Success<out T>(val data: T?) : Result<T>()
+    data class Success<out T>(val data: T?, val offline: Boolean = false) : Result<T>()
     data class Error(val err: SCError) : Result<Nothing>()
     object Loading : Result<Nothing>()
 }
@@ -21,9 +21,10 @@ suspend fun <T> Result<T>.flatMapError(
     return action.invoke(errorOrNull()!!) ?: this
 }
 
-suspend fun <T> Result<T>.flatMapSuccess(
-    action: (T?) -> Result<T>?
-): Result<T> {
+suspend fun <T, R> Result<T>.flatMap(
+    action: suspend (T) -> Result<R>
+): Result<R> {
     if (this is Result.Error) return this
-    return action.invoke(dataOrNull()) ?: this
+    val data = dataOrNull() ?: return Result.Error(SCError.EmptyResult)
+    return action.invoke(data)
 }

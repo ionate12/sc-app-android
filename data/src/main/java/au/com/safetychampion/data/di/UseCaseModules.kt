@@ -33,6 +33,4 @@ internal val useCasesModule = module {
     factoryOf(::SignOffActionUseCase)
 
     factoryOf(::CreatePendingActionUseCase)
-
-    factoryOf(::SignOffActionUseCase)
 }

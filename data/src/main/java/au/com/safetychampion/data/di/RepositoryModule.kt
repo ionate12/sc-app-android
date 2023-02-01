@@ -1,8 +1,8 @@
 package au.com.safetychampion.data.di
 
-import au.com.safetychampion.data.data.action.ActionAPI
 import au.com.safetychampion.data.data.action.ActionRepositoryImpl
 import au.com.safetychampion.data.data.action.IActionRepository
+import au.com.safetychampion.data.data.api.RestApi
 import au.com.safetychampion.data.data.common.ITaskRepository
 import au.com.safetychampion.data.data.common.TaskAPI
 import au.com.safetychampion.data.data.common.TaskRepositoryImpl
@@ -14,6 +14,6 @@ internal val repositoryModule = module {
     single<TaskAPI> { get<INetworkManager>().retrofit.create(TaskAPI::class.java) }
     singleOf<ITaskRepository> (::TaskRepositoryImpl)
 
-    single<ActionAPI> { get<INetworkManager>().retrofit.create(ActionAPI::class.java) }
     singleOf<IActionRepository>(::ActionRepositoryImpl)
+    single<RestApi> { get<INetworkManager>().retrofit.create(RestApi::class.java) }
 }
