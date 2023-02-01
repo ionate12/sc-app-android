@@ -24,7 +24,7 @@ class CombineFetchAndTaskUseCase(
 
             return@withContext when {
                 fetch.errorOrNull() is SCError.NoNetwork || task.errorOrNull() is SCError.NoNetwork -> Result.Error(
-                    SCError.NoNetwork()
+                    SCError.NoNetwork
                 )
                 fetch is Result.Error || task is Result.Error -> { Result.Error(err = fetch.errorOrNull() ?: task.errorOrNull()!!) }
                 else -> {
