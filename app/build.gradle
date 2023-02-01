@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation(project(":data"))
+    implementation(project(":visitor"))
 
     def lifecycle_version = "2.5.1"
     def koin_version = "3.2.2"
