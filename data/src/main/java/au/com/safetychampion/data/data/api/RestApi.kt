@@ -11,7 +11,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 
-interface RestAPI {
+interface RestApi {
 
     @GET("{path}")
     suspend fun get(@Path(value = "path", encoded = true) path: String): APIResponse

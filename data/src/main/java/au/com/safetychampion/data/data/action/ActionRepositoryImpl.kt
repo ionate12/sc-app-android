@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.data.action
 
 import au.com.safetychampion.data.data.BaseRepository
-import au.com.safetychampion.data.data.api.ActionApi2
+import au.com.safetychampion.data.data.api.ActionApi
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
@@ -16,18 +16,18 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
         payload: ActionPL,
         attachments: List<Attachment>
     ): Result<ActionPL> {
-        return ActionApi2.New(payload, attachments).call()
+        return ActionApi.New(payload, attachments).call()
     }
 
     override suspend fun createPendingAction(
         payload: ActionPL,
         attachments: List<Attachment>
     ): Result<ActionLink> {
-        return ActionApi2.New(payload, attachments).call()
+        return ActionApi.New(payload, attachments).call()
     }
 
     override suspend fun fetchAction(taskId: String): Result<ActionPL> {
-        return ActionApi2.Fetch(taskId).call()
+        return ActionApi.Fetch(taskId).call()
     }
 
     override suspend fun editAction(
@@ -35,15 +35,15 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
         payload: ActionPL,
         attachments: List<Attachment>
     ): Result<Unit> {
-        return ActionApi2.Edit(taskId, payload, attachments).call()
+        return ActionApi.Edit(taskId, payload, attachments).call()
     }
 
     override suspend fun task(taskId: String): Result<ActionTask> {
-        return ActionApi2.Task(taskId).call()
+        return ActionApi.Task(taskId).call()
     }
 
     override suspend fun list(body: BasePL?): Result<List<ActionPL>> {
-        return ActionApi2.List(body).callAsList()
+        return ActionApi.List(body).callAsList()
     }
 
     override suspend fun signOff(
@@ -51,7 +51,7 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
         payload: ActionTask,
         photos: List<Attachment>?
     ): Result<SignoffStatus.OnlineCompleted> {
-        return ActionApi2.SignOff(actionId, payload, photos ?: listOf()).call()
+        return ActionApi.SignOff(actionId, payload, photos ?: listOf()).call()
     }
 
     override suspend fun save(
@@ -59,6 +59,6 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
         payload: ActionTask,
         photos: List<Attachment>?
     ): Result<SignoffStatus.OnlineSaved> {
-        return ActionApi2.SignOff(actionId, payload, photos ?: listOf()).call()
+        return ActionApi.SignOff(actionId, payload, photos ?: listOf()).call()
     }
 }

@@ -9,7 +9,7 @@ import au.com.safetychampion.data.domain.models.action.network.ActionPL
 
 typealias AttachmentList = List<Attachment>
 
-interface ActionApi2 {
+interface ActionApi {
     class New(
         body: ActionPL,
         photos: AttachmentList
@@ -37,6 +37,5 @@ interface ActionApi2 {
         actionId: String,
         body: ActionTask,
         photos: AttachmentList
-    ) :
-        NetworkAPI.PostMultiParts("actions/$actionId/task/signoff", body, photos), ISyncable
+    ) : NetworkAPI.PostMultiParts("actions/$actionId/task/signoff", body, photos), ISyncable
 }
