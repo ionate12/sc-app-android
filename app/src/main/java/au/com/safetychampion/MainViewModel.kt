@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
@@ -20,7 +21,6 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStat
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.util.koinInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -45,110 +45,86 @@ class MainViewModel : ViewModel() {
     private val refreshChemicalUseCase: RefreshChemicalListUseCase by koinInject()
     private val signoffChemicalUseCase: SignoffChemicalUseCase by koinInject()
 
-    private val _apiCallStatus = MutableSharedFlow<Result<*>>()
+    val _apiCallStatus = MutableSharedFlow<Pair<Int, Result<*>>>()
     val apiCallStatus = _apiCallStatus.asSharedFlow()
 
-    fun loadActiveTasks() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _apiCallStatus.emit(Result.Loading)
-            val result = getActiveTaskUseCase.invoke(null)
-            _apiCallStatus.emit(result)
-        }
+    suspend fun loadActiveTasks(index: Int) {
+        val result = getActiveTaskUseCase.invoke(null)
+        _apiCallStatus.emit(index to result)
     }
 
-    fun loadActiveTasksReViewPlan() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _apiCallStatus.emit(Result.Loading)
-            val result = getActiveTaskUseCase.invoke("core.module.reviewplan")
-            _apiCallStatus.emit(result)
-        }
+    suspend fun loadActiveTasksReViewPlan(index: Int) {
+        val result = getActiveTaskUseCase.invoke("core.module.reviewplan")
+        _apiCallStatus.emit(index to result)
     }
 
-    fun assignTaskStatus(task: Task) {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            val result = assignTaskStatusItem.invoke(task, null, null, null, null)
-            _apiCallStatus.emit(result)
-        }
+    suspend fun assignTaskStatus(task: Task, index: Int) {
+        val result = assignTaskStatusItem.invoke(task, null, null, null, null)
+        _apiCallStatus.emit(index to result)
     }
 
-    fun assignTaskStatusForMany(task: List<Task>) {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            val result = assignTasksStatusItem.invoke(task)
-            _apiCallStatus.emit(result)
-        }
+    suspend fun assignTaskStatusForMany(task: List<Task>, index: Int) {
+        val result = assignTasksStatusItem.invoke(task)
+        _apiCallStatus.emit(index to result)
     }
 
-    fun assignTask(assignTask: TaskAssignStatusItem, ownerTask: Task) {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            val result = assignTaskUseCase.invoke(
-                task = ownerTask,
-                toUserId = assignTask._id,
-                moduleName = "Action",
-                notes = assignTask.optionalMessage,
-                dateDue = ownerTask.dateDue
+    suspend fun assignTask(assignTask: TaskAssignStatusItem, ownerTask: Task, index: Int) {
+        val result = assignTaskUseCase.invoke(
+            task = ownerTask,
+            toUserId = assignTask._id,
+            moduleName = "Action",
+            notes = assignTask.optionalMessage,
+            dateDue = ownerTask.dateDue
+        )
+        _apiCallStatus.emit(index to result)
+    }
+
+    suspend fun unAssignTask(assignTask: TaskAssignStatusItem, ownerTask: Task, index: Int) {
+        val result = unAssignTaskUseCase.invoke(
+            task = ownerTask,
+            toUserId = assignTask._id,
+            moduleName = "Action",
+            notes = assignTask.optionalMessage,
+            dateDue = ownerTask.dateDue
+        )
+        _apiCallStatus.emit(index to result)
+    }
+
+    suspend fun createNewAction(payload: ActionPL, attachments: List<Attachment>, index: Int) {
+        _apiCallStatus.emit(
+            index to newActionUseCase.invoke(
+                payload = payload,
+                attachments = attachments
             )
-            _apiCallStatus.emit(result)
-        }
+        )
     }
 
-    fun unAssignTask(assignTask: TaskAssignStatusItem, ownerTask: Task) {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            val result = unAssignTaskUseCase.invoke(
-                task = ownerTask,
-                toUserId = assignTask._id,
-                moduleName = "Action",
-                notes = assignTask.optionalMessage,
-                dateDue = ownerTask.dateDue
+    suspend fun getListAction(index: Int) {
+        _apiCallStatus.emit(index to allAction.invoke())
+    }
+
+    suspend fun getActionSignOff(actionId: String, id: String, index: Int) {
+        _apiCallStatus.emit(
+            index to Result.Error(
+                SCError.Failure(listOf("Error, bug in custom value"))
             )
-            _apiCallStatus.emit(result)
-        }
+        )
+//            getActionSignOffDetailsUseCase.invoke(id, actionId)
     }
 
-    fun createNewAction(payload: ActionPL, attachments: List<Attachment>) {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            _apiCallStatus.emit(
-                newActionUseCase.invoke(
-                    payload = payload,
-                    attachments = attachments
-                )
-            )
-        }
+    suspend fun editAction(actionPL: ActionPL, id: String, attachments: List<Attachment>, index: Int) {
+        _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL, attachments))
     }
 
-    fun getListAction() {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            _apiCallStatus.emit(allAction.invoke())
-        }
-    }
-
-    fun getActionSignOff(actionId: String, id: String) {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            _apiCallStatus.emit(getActionSignOffDetailsUseCase.invoke(id, actionId))
-        }
-    }
-
-    fun editAction(actionPL: ActionPL, id: String, attachments: List<Attachment>) {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            _apiCallStatus.emit(editActionUseCase.invoke(id, actionPL, attachments))
-        }
-    }
-
-    fun signOffAction(
+    suspend fun signOffAction(
         actionId: String,
         attachments: List<Attachment>,
         payload: ActionTask,
-        pendingAction: MutableList<PendingActionPL>
+        pendingAction: MutableList<PendingActionPL>,
+        index: Int
     ) {
-        viewModelScope.launch {
-            signOffActionUseCase.invoke(
+        _apiCallStatus.emit(
+            index to signOffActionUseCase.invoke(
                 ActionSignOffParam(
                     actionId = actionId,
                     attachments = attachments,
@@ -157,47 +133,38 @@ class MainViewModel : ViewModel() {
                     id = "ABC"
                 )
             )
-        }
+        )
     }
 
-    fun getListBanner() {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            _apiCallStatus.emit(getListBannerUseCase.invoke())
-        }
+    suspend fun getListBanner(index: Int) {
+        _apiCallStatus.emit(index to getListBannerUseCase.invoke())
     }
 
-    fun getChemicalSignoff(id: String, moduleId: String) {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            _apiCallStatus.emit(getChemicalSignoffDetailsUseCase.invoke(id, moduleId))
-        }
+    suspend fun getChemicalSignoff(id: String, moduleId: String, index: Int) {
+        _apiCallStatus.emit(index to getChemicalSignoffDetailsUseCase.invoke(id, moduleId))
     }
 
-    fun refreshGHS() {
-        viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
-            refreshGHSCodeUseCase.invoke()
-            _apiCallStatus.emit(Result.Success("Done. Please check the logcat for more info"))
-        }
+    suspend fun refreshGHS(index: Int) {
+        refreshGHSCodeUseCase.invoke()
+        _apiCallStatus.emit(index to Result.Success("Done. Please check the logcat for more info"))
     }
 
-    fun refreshChemical() {
+    suspend fun refreshChemical(index: Int) {
         viewModelScope.launch {
-            _apiCallStatus.emit(Result.Loading)
             refreshChemicalUseCase.invoke()
-            _apiCallStatus.emit(Result.Success("Done. Please check the logcat for more info"))
+            _apiCallStatus.emit(index to Result.Success("Done. Please check the logcat for more info"))
         }
     }
 
-    fun signoffChemical(
+    suspend fun signoffChemical(
         taskId: String,
         moduleId: String,
         task: ChemicalTask,
-        attachments: List<Attachment>
+        attachments: List<Attachment>,
+        index: Int
     ) {
-        viewModelScope.launch {
-            signoffChemicalUseCase.invoke(
+        _apiCallStatus.emit(
+            index to signoffChemicalUseCase.invoke(
                 ChemicalSignoffParam(
                     taskId = taskId,
                     moduleId = moduleId,
@@ -205,6 +172,6 @@ class MainViewModel : ViewModel() {
                     attachments = attachments
                 )
             )
-        }
+        )
     }
 }

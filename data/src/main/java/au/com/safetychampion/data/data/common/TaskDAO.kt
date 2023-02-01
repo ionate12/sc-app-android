@@ -37,6 +37,6 @@ class FakeDAO : TaskDAO {
 
     override fun getOfflineTask(taskId: String?): OfflineTask? {
         Timber.d("getOfflineTask")
-        return OfflineTask(title = "dsdsd")
+        return null
     }
 }

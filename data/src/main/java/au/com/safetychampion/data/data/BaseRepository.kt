@@ -84,6 +84,8 @@ abstract class BaseRepository {
                     this.attachment.toMultipartBody(fileContentManager).let { parts.addAll(it) }
                     onSuccess(restAPI.postMultipart(this.path, parts))
                 }
+
+                else -> TODO()
             }
         } catch (e: Exception) {
             handleRetrofitException(e)
