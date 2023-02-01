@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
         "Create new action" to { viewModel.createNewAction(payload = sampleData.getNewAction(), attachments = emptyList()) },
         "List Action" to { viewModel.getListAction() },
         "Get Action SignOff" to { viewModel.getActionSignOff(actionId = sampleData.getActionId(), task = sampleData.getSampleTask()) },
-        "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) }
+        "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) },
+        "Get List Banner" to { viewModel.getListBanner() }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
