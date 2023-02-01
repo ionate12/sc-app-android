@@ -1,6 +1,7 @@
 package au.com.safetychampion.data.data.chemical
 
 import au.com.safetychampion.data.data.BaseRepository
+import au.com.safetychampion.data.data.api.ChemicalAPI
 import au.com.safetychampion.data.data.common.MasterDAO
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
@@ -9,8 +10,8 @@ import au.com.safetychampion.data.domain.models.SignoffStatus
 import au.com.safetychampion.data.domain.models.chemical.Chemical
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
-import au.com.safetychampion.data.domain.toMultipartBody
 import au.com.safetychampion.data.domain.uncategory.setFilePath
+import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -20,8 +21,6 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
-
-    private val api: ChemicalAPI by koinInject()
 
     private val masterRepo: MasterDAO by koinInject()
 
@@ -54,7 +53,8 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
     override suspend fun refreshChemicalList(): Job {
         return withContext(dispatchers.io) {
             return@withContext launch {
-                apiCallAsList<Chemical> { api.listChemicals() }
+                ChemicalAPI.List()
+                    .callAsList<Chemical>()
                     .doOnSucceed {
                         it.forEach { chem ->
                             chem.attachments?.setFilePath(
@@ -63,7 +63,7 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
                             chem.setWPName("abc") // TODO("WPName")
                         }
                         masterRepo.insertToDB(it)
-                        Timber.tag(TAG).d("refresh Chemicals: $it")
+                        Timber.tag(TAG).d("refresh Chemicals: ${it.toJsonString()}")
                     }
             }
         }
@@ -75,9 +75,10 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
     override suspend fun refreshGHSCodeList(): Job {
         return withContext(dispatchers.io) {
             return@withContext launch {
-                apiCall<GHSCode> { api.listCodes() }
+                ChemicalAPI.ListCode()
+                    .callAsList<GHSCode>()
                     .doOnSucceed {
-                        Timber.tag(TAG).d("refresh GHS: $it")
+                        Timber.tag(TAG).d("refresh GHS: ${it.toJsonString()}")
                         masterRepo.insertToDB(it)
                     }
             }
@@ -85,7 +86,7 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
     }
 
     override suspend fun fetch(moduleId: String): Result<Chemical> {
-        return apiCall { api.fetch(moduleId) }
+        return ChemicalAPI.Fetch(moduleId).call()
     }
 
     override suspend fun combineFetchAndTask(moduleId: String, taskId: String): Result<ChemicalSignoff> {
@@ -102,25 +103,23 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
         }
     }
 
-    override suspend fun signOff(
+    override suspend fun signoff(
         moduleId: String,
         taskId: String,
         body: ChemicalTask,
         photos: List<Attachment>
     ): Result<SignoffStatus.OnlineCompleted> {
-        return apiCall<SignoffStatus.OnlineCompleted> {
-            api.signOff(
-                moduleId = moduleId,
-                taskId = taskId,
-                body = body.toRequestBody(),
-                photos = photos.toMultipartBody(
-                    fileManager = fileContentManager
-                )
-            )
-        }.doOnSucceed {
-            it.moduleName = ModuleName.CHEMICAL.name
-            it.title = "titleABC"
-        }
+        return ChemicalAPI.Signoff(
+            moduleId = moduleId,
+            taskId = taskId,
+            body = body,
+            photos = photos
+        )
+            .call<SignoffStatus.OnlineCompleted>()
+            .doOnSucceed {
+                it.moduleName = ModuleName.CHEMICAL.name
+                it.title = "titleABC"
+            }
     }
 
     override suspend fun save(
@@ -129,18 +128,16 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
         body: ChemicalTask,
         photos: List<Attachment>
     ): Result<SignoffStatus.OnlineSaved> {
-        return apiCall<SignoffStatus.OnlineSaved> {
-            api.signOff(
-                moduleId = moduleId,
-                taskId = taskId,
-                body = body.toRequestBody(),
-                photos = photos.toMultipartBody(
-                    fileManager = fileContentManager
-                )
-            )
-        }.doOnSucceed {
-            it.moduleName = ModuleName.CHEMICAL.name
-            it.title = "titleABC"
-        }
+        return ChemicalAPI.Signoff(
+            moduleId = moduleId,
+            taskId = taskId,
+            body = body,
+            photos = photos
+        )
+            .call<SignoffStatus.OnlineSaved>()
+            .doOnSucceed {
+                it.moduleName = ModuleName.CHEMICAL.name
+                it.title = "titleABC"
+            }
     }
 }

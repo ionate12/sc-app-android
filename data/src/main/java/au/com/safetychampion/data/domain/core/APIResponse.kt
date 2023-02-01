@@ -5,16 +5,26 @@ import au.com.safetychampion.data.util.extension.itemOrNull
 import au.com.safetychampion.data.util.extension.listOrEmpty
 import com.google.gson.JsonObject
 
+interface IResponse {
+    val success: Boolean
+}
+
+// TODO: Move to data, make it internal.
 data class APIResponse(
-    val success: Boolean,
+    override val success: Boolean,
     val result: JsonObject?,
     val error: APIError?
-) {
+) : IResponse {
     data class APIError(
         val code: List<String>,
         val message: List<String>
     )
 }
+// data class SyncableResponse(
+//    override val success: Boolean,
+//    val msg: String,
+//    val extras: Map<String, Any>? = null // Temporary set as Map
+// ) : IResponse
 
 inline fun <reified T> APIResponse.toItem(
     responseObjName: String = "item"

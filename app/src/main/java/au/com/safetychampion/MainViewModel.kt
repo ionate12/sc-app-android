@@ -17,6 +17,7 @@ import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseC
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
+import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.Dispatchers
@@ -36,8 +37,9 @@ class MainViewModel : ViewModel() {
     private val allAction: GetListActionUseCase by koinInject()
     private val getActionSignOffDetailsUseCase: GetActionSignOffDetailsUseCase by koinInject()
     private val editActionUseCase: EditActionUseCase by koinInject()
-    private val signoffActionUseCase: SignOffActionUseCase by koinInject()
+    private val signOffActionUseCase: SignoffActionUseCase by koinInject()
 
+    private val getListBannerUseCase: GetListBannerUseCase by koinInject()
     private val getChemicalSignoffDetailsUseCase: GetChemicalSignoffDetailUseCase by koinInject()
     private val refreshGHSCodeUseCase: RefreshGHSCodeUseCase by koinInject()
     private val refreshChemicalUseCase: RefreshChemicalListUseCase by koinInject()
@@ -146,7 +148,7 @@ class MainViewModel : ViewModel() {
         pendingAction: MutableList<PendingActionPL>
     ) {
         viewModelScope.launch {
-            signoffActionUseCase.invoke(
+            signOffActionUseCase.invoke(
                 ActionSignOffParam(
                     actionId = actionId,
                     attachments = attachments,
@@ -155,6 +157,13 @@ class MainViewModel : ViewModel() {
                     id = "ABC"
                 )
             )
+        }
+    }
+
+    fun getListBanner() {
+        viewModelScope.launch {
+            _apiCallStatus.emit(Result.Loading)
+            _apiCallStatus.emit(getListBannerUseCase.invoke())
         }
     }
 
@@ -167,13 +176,17 @@ class MainViewModel : ViewModel() {
 
     fun refreshGHS() {
         viewModelScope.launch {
+            _apiCallStatus.emit(Result.Loading)
             refreshGHSCodeUseCase.invoke()
+            _apiCallStatus.emit(Result.Success("Done. Please check the logcat for more info"))
         }
     }
 
     fun refreshChemical() {
         viewModelScope.launch {
+            _apiCallStatus.emit(Result.Loading)
             refreshChemicalUseCase.invoke()
+            _apiCallStatus.emit(Result.Success("Done. Please check the logcat for more info"))
         }
     }
 

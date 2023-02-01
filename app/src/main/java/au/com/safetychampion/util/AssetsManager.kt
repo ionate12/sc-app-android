@@ -79,7 +79,7 @@ class AssetsManager(private val context: Context) {
     fun getChemicalTask(): ChemicalTask {
         return context
             .assets
-            .readAssetsFile("chemical_tasl")
+            .readAssetsFile("chemical_task")
             .itemOrNull<ChemicalTask>()!!
     }
 }

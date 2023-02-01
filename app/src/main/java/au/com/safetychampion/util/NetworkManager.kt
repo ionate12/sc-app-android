@@ -4,7 +4,11 @@ import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.dispatchers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
@@ -17,6 +21,7 @@ import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.SocketAddress
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 
 class NetworkManager : INetworkManager {
     private val gsonManager: IGsonManager by koinInject()
@@ -56,17 +61,33 @@ class NetworkManager : INetworkManager {
             .build()
     }
 
-    override suspend fun isOnline(): Boolean {
-        // TODO("Move this function into base repository")
+    private var cachedOnlineStatus: AtomicBoolean? = null
+    private var clearCacheJob: Job? = null
+
+    // Debounce by cacheTimeMs
+    private fun runClearCacheJob(cacheTimeMs: Long) {
+        clearCacheJob?.cancel()
+        clearCacheJob = CoroutineScope(dispatchers().io).launch {
+            delay(cacheTimeMs)
+            cachedOnlineStatus = null
+        }
+    }
+    override suspend fun isOnline(cachedBy: Long): Boolean {
+        cachedOnlineStatus?.let {
+            return it.get()
+        }
         return withContext(Dispatchers.Default) {
+            runClearCacheJob(cachedBy)
             try {
                 val sock = Socket()
                 val sockAddress: SocketAddress = InetSocketAddress("8.8.8.8", 53)
                 sock.use {
                     it.connect(sockAddress, 5000)
                 } // This will block no more than timeoutMs
+                cachedOnlineStatus = AtomicBoolean(true)
                 true
             } catch (e: IOException) {
+                cachedOnlineStatus = null // Don't cache offline status.
                 false
             }
         }

@@ -40,7 +40,7 @@ abstract class BasePrepareSignoffUseCase<T> : BaseUseCase() {
         }
 
         return remote.invoke()
-            .flatMapSuccess {
+            .flatMap {
                 insertToDatabase(it)
                 if (closedCheck(it)) {
                     Result.Error(SCError.AlreadySignedOff)

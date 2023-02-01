@@ -5,5 +5,5 @@ import retrofit2.Retrofit
 interface INetworkManager {
     val baseUrl: String
     val retrofit: Retrofit
-    suspend fun isOnline(): Boolean
+    suspend fun isOnline(cachedBy: Long = 2000): Boolean
 }

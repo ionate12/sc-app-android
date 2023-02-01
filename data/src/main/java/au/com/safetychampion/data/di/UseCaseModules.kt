@@ -7,6 +7,7 @@ import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseC
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
+import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetChemicalSignoffDetailUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.RefreshChemicalListUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.RefreshGHSCodeUseCase
@@ -42,9 +43,9 @@ internal val useCasesModule = module {
 
     factoryOf(::RefreshGHSCodeUseCase)
 
+    factoryOf(::GetListBannerUseCase)
     // Signoff
 
-    factoryOf(::SignOffActionUseCase)
-
     factoryOf(::SignoffChemicalUseCase)
+    factoryOf(::SignoffActionUseCase)
 }

@@ -1,5 +1,7 @@
 package au.com.safetychampion.data.domain
 
+import au.com.safetychampion.data.domain.base.BasePL
+
 data class BannerListItem(
     val _id: String,
     val type: String,
@@ -38,7 +40,7 @@ data class BannerListItem(
 
 data class BannerListPayload(
     val filter: Filter = Filter()
-) {
+) : BasePL() {
     data class Filter(
         val enableOnAndroid: Boolean = true
     )

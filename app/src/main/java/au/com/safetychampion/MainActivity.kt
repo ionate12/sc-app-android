@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYxOTQ2NTE3NGVlNmUwMmE2MDMwNDk1NiJ9LCJpYXQiOjE2NzQ3NDA3ODksImV4cCI6MTY3NDgyNzE4OX0._CPZclmc9tdjzXK9osGTq-l2YcY0Tid13dLvn3O8FIo"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzUyMjIwMjksImV4cCI6MTY3NTMwODQyOX0.FNfue_TFsrsvCTOiQE98pNLLl4KpRJALEDmxNz49aYI"
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity() {
         "UnAssign Task" to { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem()) },
         "Create new action" to { viewModel.createNewAction(payload = sampleData.getNewAction(), attachments = emptyList()) },
         "List Action" to { viewModel.getListAction() },
+        "Get Action SignOff" to { viewModel.getActionSignOff(actionId = sampleData.getActionId(), id = sampleData.getSampleTask()._id) },
+        "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) },
+        "Get List Banner" to { viewModel.getListBanner() },
         "Edit Action" to { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList()) },
         "Refresh GHS code" to { viewModel.refreshGHS() },
         "Refresh Chemical" to { viewModel.refreshChemical() },

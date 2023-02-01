@@ -84,16 +84,6 @@
       "value": "https://g.com"
     },
     {
-      "_id": "rthcIeYxhAK",
-      "title": "Checkbox",
-      "type": "checkbox",
-      "value": [
-        "Yes",
-        "No",
-        "NA"
-      ]
-    },
-    {
       "_id": "T5lgBkAw7-S",
       "title": "Single Select",
       "type": "select_single",
