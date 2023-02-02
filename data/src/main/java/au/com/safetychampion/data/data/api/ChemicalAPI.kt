@@ -2,8 +2,10 @@ package au.com.safetychampion.data.data.api
 
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
+import au.com.safetychampion.data.domain.usecase.ISignoffGeneral
+import au.com.safetychampion.data.domain.usecase.chemical.ChemicalSignoffParam
 
-interface ChemicalAPI {
+interface ChemicalAPI : ISignoffGeneral<ChemicalSignoffParam> {
     class List(
         body: BasePL = BasePL.empty()
     ) : NetworkAPI.Post(

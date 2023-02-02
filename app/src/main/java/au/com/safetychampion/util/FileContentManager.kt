@@ -22,12 +22,12 @@ class FileContentManager(
     }
 
     @SuppressLint("Range")
-    override suspend fun getDisplayNameFromURI(vararg uris: Uri?): List<String> {
+    override suspend fun getDisplayNameFromURI(uris: List<Uri>): List<String> {
         return withContext(Dispatchers.IO) {
             uris.indices.map { i ->
                 contentResolver
                     .query(
-                        uris[i]!!,
+                        uris[i],
                         null,
                         null,
                         null,

@@ -3,7 +3,7 @@ package au.com.safetychampion.data.domain.usecase
 import au.com.safetychampion.data.data.common.TaskDAO
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.manager.IOfflineConverter
-import au.com.safetychampion.util.koinInject
+import au.com.safetychampion.data.util.extension.koinInject
 
 /**
  * A base use-case with caching implementation to provide data for sign-off feature,

@@ -2,7 +2,7 @@ package au.com.safetychampion.data.domain.usecase.chemical
 
 import au.com.safetychampion.data.data.chemical.IChemicalRepository
 import au.com.safetychampion.data.domain.usecase.BaseUseCase
-import au.com.safetychampion.util.koinInject
+import au.com.safetychampion.data.util.extension.koinInject
 
 class RefreshChemicalListUseCase : BaseUseCase() {
 

@@ -2,6 +2,7 @@ package au.com.safetychampion.util
 
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.domain.uncategory.AppToken
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.dispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

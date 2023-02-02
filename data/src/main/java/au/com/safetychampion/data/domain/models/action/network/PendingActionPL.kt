@@ -4,5 +4,5 @@ import au.com.safetychampion.data.domain.Attachment
 
 data class PendingActionPL(
     val action: ActionPL,
-    val attachment: List<Attachment>
+    val attachments: List<Attachment>
 )

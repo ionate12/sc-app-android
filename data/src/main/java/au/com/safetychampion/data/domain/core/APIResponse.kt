@@ -1,6 +1,7 @@
 package au.com.safetychampion.data.domain.core
 
 import au.com.safetychampion.data.data.handleAPIError
+import au.com.safetychampion.data.util.extension.isNullOrEmpty
 import au.com.safetychampion.data.util.extension.itemOrNull
 import au.com.safetychampion.data.util.extension.listOrEmpty
 import com.google.gson.JsonObject
@@ -26,18 +27,18 @@ data class APIResponse(
 //    val extras: Map<String, Any>? = null // Temporary set as Map
 // ) : IResponse
 
-inline fun <reified T> APIResponse.toItem(
+suspend inline fun <reified T> APIResponse.toItem(
     responseObjName: String = "item"
 ): Result<T> {
     return when (this.success) {
         true -> {
-            if (this.result == null) {
+            if (this.result.isNullOrEmpty()) {
                 Result.Error(SCError.EmptyResult)
             } else {
                 if (T::class == Unit::class) {
                     Result.Success(Unit)
                 }
-                Result.Success(result[responseObjName].itemOrNull())
+                Result.Success(result!![responseObjName].itemOrNull())
             }
         }
         false -> {
@@ -48,16 +49,16 @@ inline fun <reified T> APIResponse.toItem(
     }
 }
 
-inline fun <reified T> APIResponse.toItems(): Result<List<T>> {
+suspend inline fun <reified T> APIResponse.toItems(objName: String = "items"): Result<List<T>> {
     return when (success) {
         true -> {
-            if (result == null) {
+            if (result.isNullOrEmpty()) {
                 Result.Error(SCError.EmptyResult)
             } else {
                 if (T::class == Unit::class) {
                     Result.Success(Unit)
                 }
-                Result.Success(result["items"].listOrEmpty())
+                Result.Success(result!![objName].listOrEmpty())
             }
         }
         false -> {

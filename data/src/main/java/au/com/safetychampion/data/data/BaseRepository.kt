@@ -17,7 +17,8 @@ import au.com.safetychampion.data.domain.manager.IDispatchers
 import au.com.safetychampion.data.domain.manager.IFileManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.domain.toMultipartBody
-import au.com.safetychampion.util.koinInject
+import au.com.safetychampion.data.util.extension.koinInject
+import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 
 abstract class BaseRepository {
@@ -31,9 +32,9 @@ abstract class BaseRepository {
 
     private val roomDts: RoomDataSource by koinInject()
 
-    internal suspend inline fun <reified T> NetworkAPI.callAsList(): Result<List<T>> {
+    internal suspend inline fun <reified T> NetworkAPI.callAsList(objName: String = "items"): Result<List<T>> {
         return internalCall().flatMap {
-            it.toItems()
+            it.toItems(objName)
         }
     }
 
@@ -60,7 +61,7 @@ abstract class BaseRepository {
         }
     }
 
-    private suspend fun NetworkAPI.handleOnline(): Result<APIResponse> {
+    private suspend fun NetworkAPI.handleOnline(): Result<APIResponse> = withContext(dispatchers.io) {
         val onSuccess: (res: APIResponse) -> Result.Success<APIResponse> = { res ->
             // Store data if instance of IStorable
             if (res.success && res.result != null && this is IStorable) {
@@ -68,42 +69,42 @@ abstract class BaseRepository {
             }
             Result.Success(res)
         }
-        return try {
-            when (this) {
+        try {
+            when (this@handleOnline) {
                 is NetworkAPI.Get -> {
-                    onSuccess(restAPI.get(this.path))
+                    onSuccess(restAPI.get(this@handleOnline.path))
                 }
                 is NetworkAPI.Post -> {
                     onSuccess(restAPI.post(path, body))
                 }
                 is NetworkAPI.PostMultiParts -> {
                     val parts = mutableListOf(
-                        this.body.toRequestBody()
+                        this@handleOnline.body.toRequestBody()
                             .let { MultipartBody.Part.createFormData("json", null, it) }
                     )
-                    this.attachment.toMultipartBody(fileContentManager).let { parts.addAll(it) }
-                    onSuccess(restAPI.postMultipart(this.path, parts))
+                    this@handleOnline.attachment.toMultipartBody(fileContentManager).let { parts.addAll(it) }
+                    onSuccess(restAPI.postMultipart(this@handleOnline.path, parts))
                 }
-
-                else -> TODO()
             }
         } catch (e: Exception) {
             handleRetrofitException(e)
         }
     }
 
-    private suspend fun NetworkAPI.handleOffline(): Result<APIResponse> = when {
-        this is IStorable -> {
-            roomDts.getStorable(customKey() ?: path)?.let {
-                Result.Success(it.toAPIResponse(), offline = true)
-            } ?: Result.Error(SCError.NoNetwork)
+    private suspend fun NetworkAPI.handleOffline(): Result<APIResponse> = withContext(dispatchers.default) {
+        return@withContext when {
+            this is IStorable -> {
+                roomDts.getStorable(customKey() ?: path)?.let {
+                    Result.Success(it.toAPIResponse(), offline = true)
+                } ?: Result.Error(SCError.NoNetwork)
+            }
+            this is ISyncable && this is NetworkAPI.PostMultiParts -> {
+                val key = customKey() ?: path
+                roomDts.insertSyncable(key, data = body)
+                Result.Error(SCError.SyncableStored(key))
+            }
+            else -> Result.Error(SCError.NoNetwork)
         }
-        this is ISyncable && this is NetworkAPI.PostMultiParts -> {
-            val key = customKey() ?: path
-            roomDts.insertSyncable(key, data = body)
-            Result.Error(SCError.SyncableStored(key))
-        }
-        else -> Result.Error(SCError.NoNetwork)
     }
 
     /**

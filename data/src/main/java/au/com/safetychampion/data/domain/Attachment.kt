@@ -3,6 +3,7 @@ package au.com.safetychampion.data.domain
 import android.content.Intent
 import android.net.Uri
 import au.com.safetychampion.data.domain.manager.IFileManager
+import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -13,7 +14,8 @@ data class Attachment(
     val file: Uri,
     val type: String,
     val displayName: String? = "no-name",
-    val partName: String
+    val partName: String,
+    val group: String?
 )
 
 suspend fun List<Attachment>?.toMultipartBody(fileManager: IFileManager): List<MultipartBody.Part> {
@@ -42,4 +44,26 @@ suspend fun List<Attachment>?.toMultipartBody(fileManager: IFileManager): List<M
             )
         } ?: emptyList()
     }
+}
+
+suspend fun List<Attachment>.export(fileManager: IFileManager): Pair<List<DocAttachment>, List<Uri>> {
+    val uris = this@export.mapTo(mutableListOf()) { it.file }
+    val groups = this@export.map { it.group }
+    val attachmentsName = fileManager.getDisplayNameFromURI(uris)
+    val docAttachments = mutableListOf<DocAttachment>()
+
+    for (i in attachmentsName.indices) {
+        val name = attachmentsName[i]
+        if (name.trim().isEmpty()) {
+            uris.removeAt(i)
+            continue
+        }
+        docAttachments.add(
+            DocAttachment(
+                fileName = name,
+                group = if (!groups[i].isNullOrEmpty()) groups[i] else null
+            )
+        )
+    }
+    return Pair(docAttachments, uris)
 }

@@ -20,15 +20,15 @@ import au.com.safetychampion.data.domain.core.dataOrNull
 import au.com.safetychampion.data.domain.core.errorOrNull
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.domain.uncategory.AppToken
+import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.databinding.ActivityMainBinding
 import au.com.safetychampion.util.AssetsManager
-import au.com.safetychampion.util.koinGet
-import kotlinx.coroutines.*
+import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzUyMjIwMjksImV4cCI6MTY3NTMwODQyOX0.FNfue_TFsrsvCTOiQE98pNLLl4KpRJALEDmxNz49aYI"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzU0MjEzNTgsImV4cCI6MTY3NTQyMTY1OH0.tayZkKCwjKPtwmu7WnLAYqUNa6kH9fox3O21AuarxIE"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -75,7 +75,14 @@ class MainActivity : AppCompatActivity() {
                 index = 16
 
             )
-        }
+        },
+        "Get Crisk List" to suspend { viewModel.getListCrisk(17) },
+        "Get Crisk HrLookup" to suspend { viewModel.getListHrLookup(18) },
+        "Get Crisk Contractor Lookup" to suspend { viewModel.getListContractorLookup(19) },
+        "Get Crisk Signoff" to suspend { viewModel.getCriskSignoff(taskId = "63a2584497f7ee1e8d3d6369", criskId = "633fa33f4d59ca38fe91336e", index = 20) },
+        "Get Crisk" to suspend { viewModel.getCrisk(criskId = "633fa33f4d59ca38fe91336e", index = 21) },
+        "Crisk Evidence" to suspend { viewModel.getCriskEvidence(criskId = "633fa33f4d59ca38fe91336e", index = 22) },
+        "Archive Crisk" to suspend { viewModel.archiveCrisk(criskId = "633fa33f4d59ca38fe91336e", payload = sampleData.getCriskArchivePL(), index = 23) }
 
     )
 
@@ -151,7 +158,7 @@ class MainActivity : AppCompatActivity() {
 
             loadAllJob = lifecycleScope.launch(Dispatchers.Default) {
                 listUseCase.forEach {
-                    it.second.invoke()
+                    launch { it.second.invoke() }
                 }
             }
         }

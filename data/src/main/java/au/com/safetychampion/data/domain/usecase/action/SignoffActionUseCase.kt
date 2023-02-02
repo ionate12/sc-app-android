@@ -1,84 +1,85 @@
 package au.com.safetychampion.data.domain.usecase.action
 
+import android.graphics.Bitmap
 import au.com.safetychampion.data.data.action.IActionRepository
 import au.com.safetychampion.data.domain.Attachment
+import au.com.safetychampion.data.domain.SignaturePayload
+import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.core.ModuleName
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.dataOrNull
 import au.com.safetychampion.data.domain.models.SignoffStatus
+import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
+import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import au.com.safetychampion.data.domain.usecase.BaseSignoffUseCase
-import au.com.safetychampion.util.koinInject
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.withContext
 
-class SignoffActionUseCase : BaseSignoffUseCase<ActionSignOffParam>() {
-
-    private val repository: IActionRepository by koinInject()
-
-    private val createPendingActionUseCase: CreatePendingActionUseCase by koinInject()
-
-    override suspend fun signoffInternal(param: ActionSignOffParam): Result<SignoffStatus> {
-        return withContext(dispatchers.io) {
-            param.pendingAction
-                ?.map {
-                    async {
-                        createPendingActionUseCase.invoke(
-                            payload = it.action,
-                            attachments = it.attachment
-                        ).dataOrNull()
-                    }
-                }
-                ?.awaitAll()
-                ?.filterNotNull() // Currently, we're ignoring the pending action result, if success -> add to task.link else do nothing
-                ?.let {
-                    param.payload.links?.clear()
-                    param.payload.links?.addAll(it)
-                    param.pendingAction = null
-                }
-
-            if (param.payload.complete == true) {
-                repository.signoff(
-                    param.actionId,
-                    param.payload,
-                    param.attachments
-                )
-            } else {
-                repository.save(
-                    param.actionId,
-                    param.payload,
-                    param.attachments
-                )
-            }
+class SignoffActionUseCase(repository: IActionRepository) : BaseSignoffUseCase<ActionSignoffParams, ActionTask>(repository) {
+    override fun onPayloadModifications(
+        mutablePayload: ActionTask,
+        actionLinks: List<ActionLink>?,
+        docAttachments: List<DocAttachment>?,
+        signatures: Pair<List<DocAttachment>, List<SignaturePayload>>?
+    ) {
+        if (actionLinks != null) {
+            mutablePayload.links?.clear()
+            mutablePayload.links?.addAll(actionLinks)
         }
+
+        mutablePayload.attachment?.clear()
+        if (docAttachments != null) {
+            mutablePayload.attachment?.addAll(docAttachments)
+        }
+
+//        if (signatures != null) {
+//            mutableParams.attachment.addAll(signatures.first)
+//            mutableParams.signaturePayload.clear()
+//            mutableParams.signaturePayload.addAll(signatures.second)
+//        }
+    }
+    override suspend fun invoke(params: ActionSignoffParams): Result<SignoffStatus> {
+        return signoff(params)
     }
 }
 
-class ActionSignOffParam(
+class ActionSignoffParams(
     val actionId: String,
-    val attachments: List<Attachment>,
-    val payload: ActionTask,
-    var pendingAction: List<PendingActionPL>?,
-    override val id: String
-) : OfflineTaskInfo {
-    override val moduleName: ModuleName
-        get() = ModuleName.ACTION
+    override val attachmentList: List<Attachment>,
+    override val moduleName: ModuleName,
+    override val payload: ActionTask,
+    override val signaturesList: List<SignatureView>?,
     override val title: String
-        get() = "1234"
-    override val offlineTitle: String
-        get() = (if (payload.complete == true) "[SIGN-OFF]" else "[SAVE]") + "$moduleName Sign-off: " + title
-}
+) : SignoffParams()
 
-interface OfflineTaskInfo {
-    val id: String
-    val moduleName: ModuleName
-    val title: String
-    val offlineTitle: String
+/** Base class for all signoff call */
+abstract class SignoffParams {
+
+    /** Task id, used to retrieve offline task */
+    final val id: String get() = payload._id ?: ""
+
+    abstract val attachmentList: List<Attachment>
+
+    abstract val moduleName: ModuleName
+
+    /** Payload for signoff */
+    abstract val payload: BaseTask
+
+    abstract val signaturesList: List<SignatureView>?
+
+    abstract val title: String
+
+    /** Pending action, will be submit before sign off. Can be null */
+    open val pendingAction: List<PendingActionPL>? = null
+
+    val offlineTitle: String get() = if (payload.complete == true) "[SIGN-OFF]" else "[SAVE] ${moduleName.value}: $title"
 }
 
 class OfflineTask(
     var title: String = "",
     var status: String = ""
+)
+
+class SignatureView(
+    val bitmap: Bitmap,
+    var name: String
 )

@@ -1,12 +1,11 @@
 package au.com.safetychampion.data
 
+import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueDropdown
 import au.com.safetychampion.data.domain.models.customvalues.CustomValuePL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueString
-import au.com.safetychampion.util.GsonManager
-import au.com.safetychampion.util.IGsonManager
-import au.com.safetychampion.util.koinGet
+import au.com.safetychampion.data.util.extension.koinGet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.junit.Test

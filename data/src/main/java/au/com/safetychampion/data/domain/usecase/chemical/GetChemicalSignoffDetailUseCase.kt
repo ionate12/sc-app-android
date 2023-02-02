@@ -4,7 +4,7 @@ import au.com.safetychampion.data.data.chemical.IChemicalRepository
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
 import au.com.safetychampion.data.domain.usecase.BasePrepareSignoffUseCase
-import au.com.safetychampion.util.koinInject
+import au.com.safetychampion.data.util.extension.koinInject
 
 class GetChemicalSignoffDetailUseCase : BasePrepareSignoffUseCase<ChemicalSignoff>() {
 

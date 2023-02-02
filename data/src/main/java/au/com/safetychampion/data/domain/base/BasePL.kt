@@ -5,7 +5,7 @@ import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.customvalues.ICategoryCusval
 import au.com.safetychampion.data.domain.models.customvalues.ICusval
-import au.com.safetychampion.util.koinGet
+import au.com.safetychampion.data.util.extension.koinGet
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonNull

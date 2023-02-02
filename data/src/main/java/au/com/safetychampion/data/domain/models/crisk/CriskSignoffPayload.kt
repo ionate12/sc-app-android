@@ -52,7 +52,7 @@ data class CriskSignoffPayload(
     val description: String? = null,
     val reviewNotes: String? = null,
     val dateCompleted: String? = null,
-    val signatures: List<InspectionFormPayload.SignaturePayload>? = null,
+    val signatures: List<SignaturePayload>? = null,
     val recurrent: Boolean? = null,
     val tzDateSignedoff: String? = null
 ) {

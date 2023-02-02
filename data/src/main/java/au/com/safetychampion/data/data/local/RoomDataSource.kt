@@ -7,8 +7,8 @@ import au.com.safetychampion.data.data.local.room.SyncableEntity
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.manager.IDispatchers
 import au.com.safetychampion.data.domain.manager.IGsonManager
-import au.com.safetychampion.util.koinGet
-import au.com.safetychampion.util.koinInject
+import au.com.safetychampion.data.util.extension.koinGet
+import au.com.safetychampion.data.util.extension.koinInject
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

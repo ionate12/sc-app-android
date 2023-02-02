@@ -3,7 +3,6 @@ package au.com.safetychampion.data.data.chemical
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.ChemicalAPI
 import au.com.safetychampion.data.data.common.MasterDAO
-import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.GHSCode
 import au.com.safetychampion.data.domain.models.SignoffStatus
@@ -11,8 +10,9 @@ import au.com.safetychampion.data.domain.models.chemical.Chemical
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.uncategory.setFilePath
+import au.com.safetychampion.data.domain.usecase.chemical.ChemicalSignoffParam
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.util.extension.toJsonString
-import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -63,7 +63,11 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
                             chem.setWPName("abc") // TODO("WPName")
                         }
                         masterRepo.insertToDB(it)
-                        Timber.tag(TAG).d("refresh Chemicals: ${it.toJsonString()}")
+                        Timber.tag(TAG).d(
+                            "refresh Chemicals: ${
+                            suspend { it.toJsonString() }
+                            }"
+                        )
                     }
             }
         }
@@ -78,7 +82,11 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
                 ChemicalAPI.ListCode()
                     .callAsList<GHSCode>()
                     .doOnSucceed {
-                        Timber.tag(TAG).d("refresh GHS: ${it.toJsonString()}")
+                        Timber.tag(TAG).d(
+                            "refresh GHS: ${
+                            suspend { it.toJsonString() }
+                            }"
+                        )
                         masterRepo.insertToDB(it)
                     }
             }
@@ -103,38 +111,28 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
         }
     }
 
-    override suspend fun signoff(
-        moduleId: String,
-        taskId: String,
-        body: ChemicalTask,
-        photos: List<Attachment>
-    ): Result<SignoffStatus.OnlineCompleted> {
+    override suspend fun save(params: ChemicalSignoffParam): Result<SignoffStatus.OnlineSaved> {
         return ChemicalAPI.Signoff(
-            moduleId = moduleId,
-            taskId = taskId,
-            body = body,
-            photos = photos
+            moduleId = params.moduleID,
+            taskId = params.id,
+            body = params.payload,
+            photos = params.attachmentList
         )
-            .call<SignoffStatus.OnlineCompleted>()
+            .call<SignoffStatus.OnlineSaved>()
             .doOnSucceed {
                 it.moduleName = ModuleName.CHEMICAL.name
                 it.title = "titleABC"
             }
     }
 
-    override suspend fun save(
-        moduleId: String,
-        taskId: String,
-        body: ChemicalTask,
-        photos: List<Attachment>
-    ): Result<SignoffStatus.OnlineSaved> {
+    override suspend fun signoff(params: ChemicalSignoffParam): Result<SignoffStatus.OnlineCompleted> {
         return ChemicalAPI.Signoff(
-            moduleId = moduleId,
-            taskId = taskId,
-            body = body,
-            photos = photos
+            moduleId = params.moduleID,
+            taskId = params.id,
+            body = params.payload,
+            photos = params.attachmentList
         )
-            .call<SignoffStatus.OnlineSaved>()
+            .call<SignoffStatus.OnlineCompleted>()
             .doOnSucceed {
                 it.moduleName = ModuleName.CHEMICAL.name
                 it.title = "titleABC"

@@ -8,8 +8,10 @@ import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOffPL
+import au.com.safetychampion.data.domain.usecase.ISignoffGeneral
+import au.com.safetychampion.data.domain.usecase.action.ActionSignoffParams
 
-interface IActionRepository {
+interface IActionRepository : ISignoffGeneral<ActionSignoffParams> {
     suspend fun createAction(
         payload: ActionPL,
         attachments: List<Attachment>
@@ -38,15 +40,7 @@ interface IActionRepository {
 
     suspend fun list(body: BasePL?): Result<List<ActionPL>>
 
-    suspend fun signoff(
-        actionId: String,
-        payload: ActionTask,
-        photos: List<Attachment>?
-    ): Result<SignoffStatus.OnlineCompleted>
+    override suspend fun save(params: ActionSignoffParams): Result<SignoffStatus.OnlineSaved>
 
-    suspend fun save(
-        actionId: String,
-        payload: ActionTask,
-        photos: List<Attachment>?
-    ): Result<SignoffStatus.OnlineSaved>
+    override suspend fun signoff(params: ActionSignoffParams): Result<SignoffStatus.OnlineCompleted>
 }
