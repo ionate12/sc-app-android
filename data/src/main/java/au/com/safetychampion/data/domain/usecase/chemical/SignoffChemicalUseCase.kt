@@ -16,7 +16,7 @@ class SignoffChemicalUseCase : BaseSignoffUseCase<ChemicalSignoffParam>() {
 
     override suspend fun signoffInternal(param: ChemicalSignoffParam): Result<SignoffStatus> {
         return if (param.task.complete) {
-            repository.signOff(
+            repository.signoff(
                 moduleId = param.moduleId,
                 taskId = param.taskId,
                 body = param.task,

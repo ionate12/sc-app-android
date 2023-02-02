@@ -24,12 +24,12 @@ sealed class SCError(val code: String, val errDescription: String) {
         errDescription = "Data not available"
     )
 
-    class LoginTokenExpired() : SCError(
+    object LoginTokenExpired : SCError(
         code = "authorization_token_expired",
         errDescription = "Your LOGIN SESSION has expired. Re-login is required"
     )
 
-    class NoNetwork() : SCError(
+    object NoNetwork : SCError(
         code = "no_internet_connection",
         errDescription = "No Internet. Please check your internet connection"
     )
@@ -46,5 +46,10 @@ sealed class SCError(val code: String, val errDescription: String) {
     object AlreadySignedOff : SCError(
         code = "closed_or_signed_off",
         errDescription = "This task is already closed or signed-off."
+    )
+
+    class SyncableStored(val syncableId: String) : SCError(
+        code = "syncable_stored",
+        errDescription = "Due to offline network, this task has been stored as a Offline Task, and it will be synced with Safety Champion System when going back online."
     )
 }

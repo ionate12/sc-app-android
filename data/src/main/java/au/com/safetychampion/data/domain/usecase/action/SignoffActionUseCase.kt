@@ -14,7 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
-class SignOffActionUseCase : BaseSignoffUseCase<ActionSignOffParam>() {
+class SignoffActionUseCase : BaseSignoffUseCase<ActionSignOffParam>() {
 
     private val repository: IActionRepository by koinInject()
 

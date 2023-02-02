@@ -23,7 +23,7 @@ interface IChemicalRepository {
 
     suspend fun combineFetchAndTask(moduleId: String, taskId: String): Result<ChemicalSignoff>
 
-    suspend fun signOff(
+    suspend fun signoff(
         moduleId: String,
         taskId: String,
         body: ChemicalTask,
