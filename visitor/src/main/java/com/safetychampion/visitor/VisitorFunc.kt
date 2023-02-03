@@ -15,7 +15,7 @@ import au.com.safetychampion.scmobile.utils.DateUtils
 import au.com.safetychampion.scmobile.utils.GeneralConverter
 import au.com.safetychampion.scmobile.visitorModule.models.SCTextMessage
 import au.com.safetychampion.scmobile.visitorModule.models.VisitorMockData
-import au.com.safetychampion.scmobile.visitorModule.models.VisitorPayload
+import au.com.safetychampion.data.visitor.models.VisitorPayload
 import au.com.safetychampion.scmobile.visitorModule.models.VisitorProfile
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener

@@ -1,5 +1,6 @@
 package au.com.safetychampion.scmobile.visitorModule.models
 
+import au.com.safetychampion.data.visitor.models.IdObject
 import au.com.safetychampion.scmobile.constantValues.Constants
 import au.com.safetychampion.scmobile.modules.incident.model.CusvalPojo
 
@@ -13,9 +14,9 @@ import au.com.safetychampion.scmobile.modules.incident.model.CusvalPojo
 
 class VisitorPayload {
     data class Token(
-            val org: IdObject,
-            val site: IdObject,
-            val pin: String?
+        val org: IdObject,
+        val site: IdObject,
+        val pin: String?
     )
 
     data class SiteFetch(

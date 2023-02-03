@@ -42,36 +42,29 @@ interface IVisitorNetworkRepository {
  * Visitor NETWORK Repository
  * Often handle Network calls only
  */
-internal class VisitorNetworkRepository: BaseRepository(), IVisitorNetworkRepository {
+class VisitorNetworkRepository: BaseRepository(), IVisitorNetworkRepository {
 
     override suspend fun token(orgId: String, siteId: String, pin: String?): Result<VisitorToken> {
         val payload = VisitorPayload.Token(IdObject(orgId), IdObject(siteId), pin)
-        VisitorApi.Token(payload).call()
-        return client.token(payload).flatMap { res ->
-            return@flatMap if (res.success) {
-                Single.just(GsonHelper.getGson().fromJson(res.result, VisitorToken::class.java))
-            } else {
-                Single.error(ErrorEnvThrowable(res.error))
-            }
-        }
+        return VisitorApi.Token(payload).call("")
     }
 
-    override fun siteFetch(token: String): Single<VisitorSite> {
+    override suspend fun siteFetch(token: String): Result<VisitorSite> {
         val payload = VisitorPayload.SiteFetch(token)
-        return client.siteFetch(payload).flatMapToResItem(VisitorSite::class.java)
+        return VisitorApi.SiteFetch(payload).call()
     }
 
-    override fun formFetch(token: String, formId: String): Single<VisitorForm> {
+    override suspend fun formFetch(token: String, formId: String): Result<VisitorForm> {
         val payload = VisitorPayload.FormFetch(token, formId)
-        return client.formFetch(payload).flatMapToResItem(VisitorForm::class.java)
+        return VisitorApi.FormFetch(payload).call()
     }
 
-    override fun visitFetch(tokens: List<String>): Single<List<VisitorEvidenceWrapper>> {
+    override suspend fun visitFetch(tokens: List<String>): Result<List<VisitorEvidenceWrapper>> {
         val payload = VisitorPayload.VisitFetch(tokens)
-        return client.visitFetch(payload).flatMapToResItems(VisitorEvidenceWrapper::class.java) //flatMapToResItem"s" will return a List
+        return VisitorApi.VisitFetch(payload).callAsList() //flatMapToResItem"s" will return a List
     }
 
-    override fun arrive(token: String, profile: VisitorProfile, arriveForm: VisitorForm): Single<VisitorEvidence> {
+    override suspend fun arrive(token: String, profile: VisitorProfile, arriveForm: VisitorForm): Result<VisitorEvidence> {
         arriveForm.selectedRole
                 ?: return Single.error(ErrorEnvThrowable("Arrive Form has no selected Role. Please assign it before submitting the form"))
         val mForm = arriveForm.toPayload()
