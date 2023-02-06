@@ -1,5 +1,6 @@
 package au.com.safetychampion.data.domain.models.contractor
 
+import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
@@ -30,4 +31,4 @@ data class ContractorProfile(
     var contacts: MutableList<Contact>? = null,
     @Transient
     var fromTaskType: String? = null
-)
+) : BasePL()

@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.models.action.database
+package au.com.safetychampion.data.domain.models.admin.database
 
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.ModuleName
