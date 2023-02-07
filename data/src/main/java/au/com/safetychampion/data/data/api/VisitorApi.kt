@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.data.api
 
-import au.com.safetychampion.data.visitor.models.VisitorPayload
+import au.com.safetychampion.data.visitor.domain.models.VisitorPayload
 
 interface VisitorApi {
     class Token(

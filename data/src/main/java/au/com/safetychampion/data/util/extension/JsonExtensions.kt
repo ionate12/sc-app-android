@@ -57,6 +57,14 @@ fun Any.toJsonString(): String? {
     }
 }
 
+fun Any.toJSonElement(): String? {
+    return try {
+        gson.toJson(this)
+    } catch (e: Exception) {
+        null
+    }
+}
+
 fun JsonElement?.isNullOrEmpty(): Boolean {
     if (this == null) return true
     return when (this) {

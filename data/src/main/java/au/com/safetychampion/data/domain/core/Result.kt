@@ -34,8 +34,12 @@ suspend fun <T, R> Result<T>.flatMap(
  * @return self
  */
 
-fun <T> Result<T>.doOnSucceed(action: (T) -> Unit): Result<T> {
-    dataOrNull()?.let(action)
+suspend fun <T> Result<T>.doOnSucceed(
+    action: suspend (T) -> Unit
+): Result<T> {
+    dataOrNull()?.let {
+        action.invoke(it)
+    }
     return this
 }
 

@@ -1,5 +1,7 @@
 package au.com.safetychampion.data.domain.core
 
+import au.com.safetychampion.data.visitor.domain.models.Destination
+
 sealed class SCError(val code: String, val errDescription: String) {
     override fun toString(): String {
         return "An error has occurred: $code \n $errDescription"
@@ -51,5 +53,15 @@ sealed class SCError(val code: String, val errDescription: String) {
     class SyncableStored(val syncableId: String) : SCError(
         code = "syncable_stored",
         errDescription = "Due to offline network, this task has been stored as a Offline Task, and it will be synced with Safety Champion System when going back online."
+    )
+
+    /**
+     *  Represents an invalid QR code request.
+     *  @param [des] the [Destination] would like to go, this is an optional*/
+    class InvalidQRCodeRequest(
+        val des: Destination? = null
+    ) : SCError(
+        "invalid_qr",
+        "Invalid Token"
     )
 }
