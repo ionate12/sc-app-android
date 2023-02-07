@@ -44,8 +44,10 @@ internal val useCasesModule = module {
     factoryOf(::RefreshGHSCodeUseCase)
 
     factoryOf(::GetListBannerUseCase)
+
     // Signoff
 
     factoryOf(::SignoffChemicalUseCase)
+
     factoryOf(::SignoffActionUseCase)
 }
