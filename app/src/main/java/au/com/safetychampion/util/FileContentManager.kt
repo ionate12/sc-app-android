@@ -10,7 +10,8 @@ import kotlinx.coroutines.withContext
 import java.io.InputStream
 
 class FileContentManager(
-    private val contentResolver: ContentResolver
+    private val contentResolver: ContentResolver,
+    override val externalFilesDir: String
 ) : IFileManager {
     override fun open(uri: Uri): InputStream? {
         return contentResolver.openInputStream(uri)

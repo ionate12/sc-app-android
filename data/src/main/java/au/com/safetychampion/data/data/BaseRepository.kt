@@ -5,6 +5,7 @@ import au.com.safetychampion.data.data.api.RestApi
 import au.com.safetychampion.data.data.local.IStorable
 import au.com.safetychampion.data.data.local.ISyncable
 import au.com.safetychampion.data.data.local.RoomDataSource
+import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.core.APIResponse
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
@@ -12,6 +13,7 @@ import au.com.safetychampion.data.domain.core.flatMap
 import au.com.safetychampion.data.domain.core.flatMapError
 import au.com.safetychampion.data.domain.core.toItem
 import au.com.safetychampion.data.domain.core.toItems
+import au.com.safetychampion.data.domain.manager.IDispatchers
 import au.com.safetychampion.data.domain.manager.IFileManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.domain.toMultipartBody
@@ -19,18 +21,26 @@ import au.com.safetychampion.util.koinInject
 import okhttp3.MultipartBody
 
 abstract class BaseRepository {
+    protected val dispatchers: IDispatchers by koinInject()
 
-    val networkManager: INetworkManager by koinInject()
-    private val fileContentManager: IFileManager by koinInject()
+    protected val networkManager: INetworkManager by koinInject()
+
+    protected val fileContentManager: IFileManager by koinInject()
+
     private val restAPI: RestApi by koinInject()
+
     private val roomDts: RoomDataSource by koinInject()
 
     internal suspend inline fun <reified T> NetworkAPI.callAsList(): Result<List<T>> {
-        return internalCall().flatMap { it.toItems() }
+        return internalCall().flatMap {
+            it.toItems()
+        }
     }
 
     internal suspend inline fun <reified T> NetworkAPI.call(objName: String = "item"): Result<T> {
-        return internalCall().flatMap { it.toItem(objName) }
+        return internalCall().flatMap {
+            it.toItem(objName)
+        }
     }
 
     /**
@@ -74,6 +84,8 @@ abstract class BaseRepository {
                     this.attachment.toMultipartBody(fileContentManager).let { parts.addAll(it) }
                     onSuccess(restAPI.postMultipart(this.path, parts))
                 }
+
+                else -> TODO()
             }
         } catch (e: Exception) {
             handleRetrofitException(e)
@@ -101,7 +113,7 @@ abstract class BaseRepository {
      */
 
     @Deprecated("use #NetworkAPI.callAsList() instead")
-    suspend inline fun <reified T> apiCallAsList(
+    protected suspend inline fun <reified T> apiCallAsList(
         crossinline call: suspend () -> APIResponse
     ): Result<List<T>> {
         return try {
@@ -122,7 +134,7 @@ abstract class BaseRepository {
      */
 
     @Deprecated("use #NetworkAPI.call() instead")
-    suspend inline fun <reified T> apiCall(
+    protected suspend inline fun <reified T> apiCall(
         responseObjName: String = "item",
         crossinline call: suspend () -> APIResponse
     ): Result<T> {
@@ -147,7 +159,7 @@ abstract class BaseRepository {
      */
 
     @Deprecated("No used - Local data is now handled by IStorable/ISyncable")
-    suspend inline fun <reified T> remoteOrLocalOrError(
+    protected suspend inline fun <reified T> remoteOrLocalOrError(
         crossinline remote: suspend () -> APIResponse,
         crossinline local: suspend (SCError) -> T?
     ): Result<T> {
@@ -167,7 +179,7 @@ abstract class BaseRepository {
      */
 
     @Deprecated("No used - Local data is now handled by IStorable/ISyncable")
-    suspend inline fun <reified T : Any> remoteOrLocalOrErrorAsList(
+    protected suspend inline fun <reified T : Any> remoteOrLocalOrErrorAsList(
         crossinline remote: suspend () -> APIResponse,
         crossinline local: suspend (SCError) -> List<T>?
     ): Result<List<T>> {

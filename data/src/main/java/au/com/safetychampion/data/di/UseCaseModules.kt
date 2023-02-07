@@ -7,6 +7,11 @@ import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseC
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
+import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.GetChemicalSignoffDetailUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.RefreshChemicalListUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.RefreshGHSCodeUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -30,7 +35,17 @@ internal val useCasesModule = module {
 
     factoryOf(::EditActionUseCase)
 
-    factoryOf(::SignOffActionUseCase)
-
     factoryOf(::CreatePendingActionUseCase)
+
+    factoryOf(::GetChemicalSignoffDetailUseCase)
+
+    factoryOf(::RefreshChemicalListUseCase)
+
+    factoryOf(::RefreshGHSCodeUseCase)
+
+    factoryOf(::GetListBannerUseCase)
+    // Signoff
+
+    factoryOf(::SignoffChemicalUseCase)
+    factoryOf(::SignoffActionUseCase)
 }
