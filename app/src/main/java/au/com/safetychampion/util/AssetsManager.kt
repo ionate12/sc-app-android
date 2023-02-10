@@ -9,6 +9,8 @@ import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
+import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskPL
+import au.com.safetychampion.data.domain.models.contractor.id
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.util.extension.itemOrNull
 import au.com.safetychampion.data.util.extension.listOrEmpty
@@ -82,4 +84,6 @@ class AssetsManager(private val context: Context) {
             .readAssetsFile("chemical_task")
             .itemOrNull<ChemicalTask>()!!
     }
+
+    fun getLinkedTaskPayload(): ContractorLinkedTaskPL = ContractorLinkedTaskPL(id("5efbedcac6bac31619e1221e"))
 }

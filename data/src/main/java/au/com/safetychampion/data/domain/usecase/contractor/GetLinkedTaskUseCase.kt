@@ -1,19 +1,19 @@
 package au.com.safetychampion.data.domain.usecase.contractor
 
 import au.com.safetychampion.data.data.contractor.IContractorRepository
-import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskPL
 import au.com.safetychampion.data.domain.models.task.Task
 
-class LinkedTaskUseCase(
+class GetLinkedTaskUseCase(
     private val repository: IContractorRepository
 ) {
     suspend operator fun invoke(
-        body: BasePL
+        payload: ContractorLinkedTaskPL
     ):
         Result<List<Task>> {
         return repository.linkedTasks(
-            body = body
+            payload = payload
         )
     }
 }

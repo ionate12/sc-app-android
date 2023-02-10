@@ -28,7 +28,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzUyMjIwMjksImV4cCI6MTY3NTMwODQyOX0.FNfue_TFsrsvCTOiQE98pNLLl4KpRJALEDmxNz49aYI"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzU5NTYwOTksImV4cCI6MTY3NjA0MjQ5OX0.uOnWA2T10pYzkXDTkJmF0oERt7-rNWWjqpITcNpCxmQ"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -75,8 +75,19 @@ class MainActivity : AppCompatActivity() {
                 index = 16
 
             )
+        },
+        "Fetch Contractor" to suspend {
+            viewModel.fetchContractor(
+                index = 17,
+                moduleId = "5efbedcac6bac31619e1221e"
+            )
+        },
+        "Get List Contractor" to suspend {
+            viewModel.getListContractor(18)
+        },
+        "Get Linked Contractor" to suspend {
+            viewModel.getLinkedTask(19, payload = sampleData.getLinkedTaskPayload())
         }
-
     )
 
     val items = {
