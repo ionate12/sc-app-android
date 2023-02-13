@@ -4,8 +4,7 @@ import GetActionSignOffDetailsUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.SCError
+import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
@@ -20,10 +19,17 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTask
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
+import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceUseCase
+import au.com.safetychampion.data.visitor.domain.usecase.qr.SubmitQRCodeUseCase
+import au.com.safetychampion.data.visitor.domain.usecase.site.FetchSiteUseCase
+import au.com.safetychampion.data.visitor.domain.usecase.site.UpdateSiteByFormFetchUseCase
 import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainViewModel : ViewModel() {
 
@@ -172,6 +178,130 @@ class MainViewModel : ViewModel() {
                     attachments = attachments
                 )
             )
+        )
+    }
+
+    // Region Visitor
+    private val fetchSiteUseCase: FetchSiteUseCase by koinInject()
+    private val submitQRUseCase: SubmitQRCodeUseCase by koinInject()
+
+    // 1. signInFromQRCode
+    suspend fun signIn(qrCode: String, index: Int) {
+        _apiCallStatus.emit(index to signInFromQRCode(qrCode))
+    }
+
+    private suspend fun signInFromQRCode(qrCode: String): Result<Destination> {
+        return submitQRUseCase.invoke(
+            qrCode = qrCode,
+            destination = { Destination.PinCode(qrCode) }
+        ).flatMap { token ->
+            fetchSiteUseCase.invoke(VisitorPayload.SiteFetch(token.token!!)) // non null, already handled in submitQR
+                .flatMap {
+                    Result.Success(
+                        Destination.VisitorWizard(
+                            site = it,
+                            token = token.token,
+                            evidence = null // this is sign in flow, so this be null
+                        )
+                    )
+                }
+        }.flatMapError {
+            when (it) {
+                is SCError.NoNetwork, is SCError.InvalidQRCodeRequest -> Result.Error(it)
+                else -> Result.Error(SCError.InvalidQRCodeRequest())
+            }
+        }
+    }
+
+    private val fetchEvidenceUseCase: FetchEvidenceUseCase by koinInject()
+
+    // 2. Not tested yet region
+
+    // invokeSignOutFlowFromNotification
+    suspend fun signout(requestEvidenceId: String, index: Int) {
+        _apiCallStatus.emit(index to signOut(requestEvidenceId))
+    }
+
+    private suspend fun signOut(requestEvidenceId: String): Result.Success<Destination> {
+        var destination: Destination? = null
+        fetchEvidenceUseCase.invoke(requestEvidenceId)
+            .doOnSucceed { nEvidence ->
+                // TODO("removeGeofence")
+                destination = if (nEvidence.leave != null) {
+                    Destination.Toast(
+                        scError = SCError.Failure(
+                            message = nEvidence.site.tier.VISIT_TERMS.leave.toLowerCase(Locale.ROOT)
+                        )
+                    )
+                } else {
+                    Destination.VisitorWizard(
+                        site = nEvidence.site,
+                        evidence = nEvidence,
+                        token = null
+                    )
+                }
+            }.doOnFailure {
+                destination = Destination.Toast(scError = this) // Show toast: unable to Perform Sign Out because...
+            }
+
+        return Result.Success(destination)
+    }
+
+    private val updateSiteByFormFetchUseCase: UpdateSiteByFormFetchUseCase by koinInject()
+
+    suspend fun fetchLeaveForm(
+        token: String?,
+        site: VisitorSite?,
+        role: VisitorRole?
+    ): Result<VisitorSite> {
+        token ?: return errorOf("Invalid Token")
+        role ?: return errorOf("No selected role.")
+        val leaveFormId = site?.getLeaveFormId(role._id) ?: return errorOf("No Leave Form Available.")
+        return updateSiteByFormFetchUseCase.invoke(
+            payload = VisitorPayload.FormFetch(
+                token,
+                leaveFormId
+            ),
+            site = site
+        )
+    }
+
+    suspend fun fetchArriveForm(
+        token: String?,
+        role: VisitorRole?,
+        site: VisitorSite?
+    ): Result<VisitorSite> {
+        token ?: return errorOf("Invalid Token")
+        role ?: return errorOf("No selected role.")
+        val arriveFormId = site?.getArriveFormId(role._id) ?: return errorOf("No Arrive Form Available")
+
+        return updateSiteByFormFetchUseCase.invoke(
+            payload = VisitorPayload.FormFetch(
+                token,
+                arriveFormId
+            ),
+            site = site
+        )
+    }
+
+    private val arriveUseCase: ArriveAndUpdateUseCase by koinInject()
+
+    suspend fun submitArriveForm(
+        token: String?,
+        form: VisitorForm,
+        profile: VisitorProfile,
+        site: VisitorSite
+    ): Result<VisitorEvidence> {
+        form.selectedRole ?: return errorOf("Arrive Form has no selected Role. Please assign it before submitting the form")
+        token ?: errorOf("No sufficient data available to perform submitForm")
+        return arriveUseCase.invoke(
+            payload = VisitorPayload.Arrive(
+                token!!,
+                arrive = form.toPayload(),
+                visitor = profile.toPayload(role = form.selectedRole!!)
+            ),
+            site = site,
+            profile = profile
         )
     }
 }

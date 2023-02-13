@@ -24,7 +24,7 @@ import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.databinding.ActivityMainBinding
 import au.com.safetychampion.util.AssetsManager
 import au.com.safetychampion.util.koinGet
-import kotlinx.coroutines.*
+import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -75,6 +75,9 @@ class MainActivity : AppCompatActivity() {
                 index = 16
 
             )
+        },
+        "QR CODE" to suspend {
+            viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = 17)
         }
 
     )

@@ -1,12 +1,35 @@
-package au.com.safetychampion.data.visitor.domain.usecase.internal
+package au.com.safetychampion.data.visitor.domain.usecase.evidence
 
+import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.core.doOnSucceed
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.visitor.data.VisitorActivityEntity
 import au.com.safetychampion.data.visitor.domain.models.VisitorEvidence
+import au.com.safetychampion.data.visitor.domain.models.VisitorPayload
+import au.com.safetychampion.data.visitor.domain.usecase.BaseVisitorUseCase
 import au.com.safetychampion.util.koinInject
 
+class FetchListEvidenceUseCase : BaseVisitorUseCase() {
+    private val updateActivitiesUseCase: UpdateActivitiesUseCase by koinInject()
+
+    /**
+     * Fetch an evidence list remotely.
+     */
+    suspend operator fun invoke(payload: VisitorPayload.EvidencesFetch): Result<List<VisitorEvidence>> {
+        return remoteRepository.evidencesFetch(payload)
+            .doOnSucceed { evidences ->
+                updateActivitiesUseCase.invoke(
+                    fetched = evidences,
+                    activities = localRepository.getActivitiesEntity(
+                        idList = evidences.map { it._id }
+                    ) ?: emptyList()
+                )
+            }
+    }
+}
+
 internal class UpdateActivitiesUseCase : BaseVisitorUseCase() {
-    private val retainEvidencesUseCase: RetainEvidencesUseCase by koinInject()
+    private val retainEvidencesUseCase: RetainEvidencesDataUseCase by koinInject()
     private val gson: IGsonManager by koinInject()
 
     suspend operator fun invoke(
@@ -18,7 +41,8 @@ internal class UpdateActivitiesUseCase : BaseVisitorUseCase() {
             val retainedEvidences = retainEvidencesUseCase.invoke(
                 fetchedEvidences = fetched,
                 activities = activities
-            )
+            )!! // not null.
+
             activities.forEachIndexed { i, activity ->
                 activity.data = gson.gson.toJsonTree(retainedEvidences[i]).asJsonObject
                 activity.isActive = retainedEvidences[i].leave != null
@@ -31,6 +55,6 @@ internal class UpdateActivitiesUseCase : BaseVisitorUseCase() {
             }
         }
         // 2. Insert
-        localRepository.insertActivity(*activities.toTypedArray())
+        localRepository.saveActivities(activities)
     }
 }

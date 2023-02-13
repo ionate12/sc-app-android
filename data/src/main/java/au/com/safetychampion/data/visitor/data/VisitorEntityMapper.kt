@@ -1,14 +1,13 @@
 package au.com.safetychampion.data.visitor.data
 
 import au.com.safetychampion.data.domain.manager.IGsonManager
-import au.com.safetychampion.data.util.extension.itemOrNull
 import au.com.safetychampion.data.visitor.domain.models.VisitorSite
 import au.com.safetychampion.util.koinInject
 
 internal class VisitorEntityMapper {
     private val gson: IGsonManager by koinInject()
 
-    fun toVisitorSite(en: VisitorSiteEntity): VisitorSite? = en.data.itemOrNull()
+    fun toVisitorSite(en: VisitorSiteEntity): VisitorSite? = gson.gson.fromJson(en.data, VisitorSite::class.java)
 
     fun toVisitorSiteEntity(site: VisitorSite, profileId: String): VisitorSiteEntity {
         return VisitorSiteEntity(

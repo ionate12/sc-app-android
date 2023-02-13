@@ -35,4 +35,16 @@ data class VisitorSite(
     internal fun toVisitorSiteEntity(mapper: VisitorEntityMapper, profileID: String): VisitorSiteEntity {
         return mapper.toVisitorSiteEntity(this, profileID)
     }
+
+    fun getRoles(): List<VisitorRole> = forms.map { it.role }
+
+    fun hasArriveForm(roleId: String): Boolean = forms.find { it.role._id == roleId }?.arrive != null
+
+    fun hasLeaveForm(roleId: String): Boolean = forms.find { it.role._id == roleId }?.leave != null
+
+    fun getArriveFormId(roleId: String) = forms.find { it.role._id == roleId }?.arrive?.form?._id
+
+    fun getLeaveFormId(roleId: String) = forms.find { it.role._id == roleId }?.leave?.form?._id
+
+    fun getFormTemplate(roleId: String) = forms.first { it.role._id == roleId }
 }

@@ -7,5 +7,6 @@ import org.koin.dsl.module
 val dbModule = module {
     single { get<AppDatabase>(AppDatabase::class).storableDao() }
     single { get<AppDatabase>(AppDatabase::class).syncableDao() }
+    single { get<AppDatabase>(AppDatabase::class).visitorDao() }
     single { RoomDataSource() }
 }

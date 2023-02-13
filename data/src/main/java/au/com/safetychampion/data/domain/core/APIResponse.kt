@@ -27,7 +27,7 @@ data class APIResponse(
 // ) : IResponse
 
 inline fun <reified T> APIResponse.toItem(
-    responseObjName: String = "item"
+    responseObjName: String? = "item"
 ): Result<T> {
     return when (this.success) {
         true -> {
@@ -37,7 +37,10 @@ inline fun <reified T> APIResponse.toItem(
                 if (T::class == Unit::class) {
                     Result.Success(Unit)
                 }
-                Result.Success(result[responseObjName].itemOrNull())
+                val jElement = responseObjName?.let { result[responseObjName] } ?: result
+                Result.Success(
+                    jElement.itemOrNull()
+                )
             }
         }
         false -> {

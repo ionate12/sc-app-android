@@ -14,7 +14,17 @@ data class VisitorProfileEntity(
     val name: String,
     val phoneCountryCode: String?
 ) {
-    fun toVisitorProfile() = VisitorProfile(this)
+    fun toVisitorProfile(): VisitorProfile {
+        return VisitorProfile(
+            _id = this._id,
+            email = this.email,
+            name = this.name,
+            phoneCountryCode = this.phoneCountryCode,
+            phoneNumber = this.phone,
+            address = null,
+            company = null
+        )
+    }
 }
 
 data class VisitorProfile(
@@ -26,13 +36,26 @@ data class VisitorProfile(
     var name: String?,
     var phoneCountryCode: String? = "(+61)"
 ) {
-    constructor(entity: VisitorProfileEntity) : this(
-        _id = entity._id,
-        email = entity.email,
-        name = entity.name,
-        phoneCountryCode = entity.phoneCountryCode,
-        phoneNumber = entity.phone,
-        address = null,
-        company = null
+
+    fun toProfileEntity() = VisitorProfileEntity(
+        _id = _id,
+        name = name ?: "",
+        email = email,
+        phone = phoneNumber,
+        phoneCountryCode = phoneCountryCode
     )
+
+    fun toPii(): VisitorPayload.Pii {
+        return VisitorPayload.Pii(
+            name = this.name ?: "",
+            email = this.email ?: "",
+            phone = this.phoneNumber ?: "",
+            phoneCountryCode = this.phoneCountryCode ?: ""
+        )
+    }
+
+    fun toPayload(role: VisitorRole): VisitorPayload.Visitor {
+        return VisitorPayload.Visitor(role = role, pii = toPii())
+    }
+    fun toPhoneString() = "$phoneCountryCode $phoneNumber"
 }

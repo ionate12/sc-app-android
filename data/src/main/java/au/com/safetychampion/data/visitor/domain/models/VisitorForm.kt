@@ -3,6 +3,7 @@ package au.com.safetychampion.data.visitor.domain.models
 import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.customvalues.ICusval
 
 data class VisitorForm(
     val _id: String,
@@ -14,7 +15,15 @@ data class VisitorForm(
     val createdBy: CreatedBy,
     val tzDateCreated: String,
     val dateCreated: String,
-    var cusvals: List<CustomValue>,
+    override var cusvals: MutableList<CustomValue>,
     val archived: Boolean?,
     var selectedRole: VisitorRole? = null
-)
+) : ICusval {
+    fun toPayload(): VisitorPayload.Form {
+        return VisitorPayload.Form(
+            _id,
+            type,
+            cusvals
+        )
+    }
+}

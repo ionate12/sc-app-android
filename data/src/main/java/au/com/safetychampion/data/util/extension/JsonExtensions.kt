@@ -2,10 +2,8 @@ package au.com.safetychampion.data.util.extension
 
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.util.koinGet
-import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.google.gson.JsonPrimitive
 import com.google.gson.reflect.TypeToken
 import timber.log.Timber
 
@@ -57,20 +55,11 @@ fun Any.toJsonString(): String? {
     }
 }
 
-fun Any.toJSonElement(): String? {
+suspend fun jsonObjectOf(src: Any): JsonObject? {
+    // move to bg
     return try {
-        gson.toJson(this)
+        gson.toJsonTree(src).asJsonObject
     } catch (e: Exception) {
         null
-    }
-}
-
-fun JsonElement?.isNullOrEmpty(): Boolean {
-    if (this == null) return true
-    return when (this) {
-        is JsonPrimitive -> asString.trim().isEmpty()
-        is JsonArray -> asJsonArray.isEmpty
-        is JsonObject -> asJsonObject.entrySet().isEmpty()
-        else -> true
     }
 }

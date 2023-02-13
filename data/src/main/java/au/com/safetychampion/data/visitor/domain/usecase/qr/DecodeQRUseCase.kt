@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.visitor.domain.usecase.internal
+package au.com.safetychampion.data.visitor.domain.usecase.qr
 
 internal class DecodeQRUseCase {
     operator fun invoke(qrCode: String): Pair<String, String>? {

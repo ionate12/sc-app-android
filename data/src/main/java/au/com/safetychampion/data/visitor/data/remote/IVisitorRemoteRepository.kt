@@ -11,15 +11,15 @@ internal interface IVisitorRemoteRepository {
 
     suspend fun token(orgId: String, siteId: String, pin: String?): Result<VisitorToken> // right now is a token String
 
-    suspend fun siteFetch(token: String): Result<VisitorSite>
+    suspend fun siteFetch(payload: VisitorPayload.SiteFetch): Result<VisitorSite>
 
-    suspend fun formFetch(token: String, formId: String): Result<VisitorForm>
+    suspend fun formFetch(payload: VisitorPayload.FormFetch): Result<VisitorForm>
 
-    suspend fun visitFetch(tokens: List<String>): Result<List<VisitorEvidence>>
+    suspend fun evidencesFetch(payload: VisitorPayload.EvidencesFetch): Result<List<VisitorEvidence>>
 
-    suspend fun arrive(token: String, profile: VisitorProfile, arriveForm: VisitorForm): Result<VisitorEvidence>
+    suspend fun arrive(payload: VisitorPayload.Arrive): Result<VisitorEvidence>
 
-    suspend fun leave(token: String, leaveForm: VisitorForm?): Result<VisitorEvidence>
+    suspend fun leave(payload: VisitorPayload.Leave): Result<VisitorEvidence>
 
-    suspend fun signOut(profile: VisitorProfile, site: VisitorSite): Result<Any>
+    suspend fun evidenceFetch(payload: VisitorPayload.EvidencesFetch): Result<List<VisitorEvidence>>
 }

@@ -1,11 +1,13 @@
-package au.com.safetychampion.data.visitor.domain.usecase.internal
+package au.com.safetychampion.data.visitor.domain.usecase.qr
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.visitor.domain.models.Destination
 import au.com.safetychampion.data.visitor.domain.models.VisitorToken
+import au.com.safetychampion.data.visitor.domain.usecase.BaseVisitorUseCase
 import au.com.safetychampion.util.koinGet
+import timber.log.Timber
 
-internal class SubmitQRCodeUseCase : BaseVisitorUseCase() {
+class SubmitQRCodeUseCase : BaseVisitorUseCase() {
     private val decodeUseCase: DecodeQRUseCase = koinGet()
 
     /**
@@ -13,11 +15,12 @@ internal class SubmitQRCodeUseCase : BaseVisitorUseCase() {
      * @return [Result.Error] if [decodeUseCase] can not decode the QR code, or
      * visitorToken.token = null or any general error from network layer.
      * @see [SCError.InvalidQRCodeRequest]
+     * @see DecodeQRUseCase
      */
     suspend operator fun invoke(
         qrCode: String,
         pin: String? = null,
-        destination: () -> Destination
+        destination: (() -> Destination)? = null
     ): Result<VisitorToken> {
         return decodeUseCase.invoke(qrCode)?.let { decoded ->
             remoteRepository.token(
@@ -27,10 +30,12 @@ internal class SubmitQRCodeUseCase : BaseVisitorUseCase() {
             ).flatMap { visitorToken ->
                 if (visitorToken.token == null) {
                     return@flatMap Result.Error(
-                        SCError.InvalidQRCodeRequest(des = destination())
+                        SCError.InvalidQRCodeRequest(des = destination?.invoke())
                     )
                 }
                 Result.Success(visitorToken)
+            }.doOnFailure {
+                Timber.tag("d").d(this.toString())
             }
         } ?: Result.Error(SCError.InvalidQRCodeRequest())
     }

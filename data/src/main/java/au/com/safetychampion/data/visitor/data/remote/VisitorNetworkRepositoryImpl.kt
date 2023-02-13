@@ -10,22 +10,19 @@ internal class VisitorRemoteRepositoryImpl : BaseRepository(), IVisitorRemoteRep
 
     override suspend fun token(orgId: String, siteId: String, pin: String?): Result<VisitorToken> {
         val payload = VisitorPayload.Token(IdObject(orgId), IdObject(siteId), pin)
-        return VisitorApi.Token(payload).call("")
+        return VisitorApi.Token(payload).call(null)
     }
 
-    override suspend fun siteFetch(token: String): Result<VisitorSite> {
-        val payload = VisitorPayload.SiteFetch(token)
+    override suspend fun siteFetch(payload: VisitorPayload.SiteFetch): Result<VisitorSite> {
         return VisitorApi.SiteFetch(payload).call()
     }
 
-    override suspend fun formFetch(token: String, formId: String): Result<VisitorForm> {
-        val payload = VisitorPayload.FormFetch(token, formId)
+    override suspend fun formFetch(payload: VisitorPayload.FormFetch): Result<VisitorForm> {
         return VisitorApi.FormFetch(payload).call()
     }
 
-    override suspend fun visitFetch(tokens: List<String>): Result<List<VisitorEvidence>> {
-        val payload = VisitorPayload.VisitFetch(tokens)
-        return VisitorApi.VisitFetch(payload)
+    override suspend fun evidencesFetch(payload: VisitorPayload.EvidencesFetch): Result<List<VisitorEvidence>> {
+        return VisitorApi.EvidenceFetch(payload)
             .callAsList<VisitorEvidenceWrapper>()
             .flatMap { wrapper ->
                 Result.Success(
@@ -34,15 +31,17 @@ internal class VisitorRemoteRepositoryImpl : BaseRepository(), IVisitorRemoteRep
             }
     }
 
-    override suspend fun arrive(token: String, profile: VisitorProfile, arriveForm: VisitorForm): Result<VisitorEvidence> {
-        TODO()
+    override suspend fun arrive(payload: VisitorPayload.Arrive): Result<VisitorEvidence> {
+        return VisitorApi.Arrive(
+            body = payload
+        ).call()
     }
 
-    override suspend fun leave(token: String, leaveForm: VisitorForm?): Result<VisitorEvidence> {
-        TODO()
+    override suspend fun leave(payload: VisitorPayload.Leave): Result<VisitorEvidence> {
+        return VisitorApi.Leave(body = payload).call()
     }
 
-    override suspend fun signOut(profile: VisitorProfile, site: VisitorSite): Result<Any> {
-        TODO()
+    override suspend fun evidenceFetch(body: VisitorPayload.EvidencesFetch): Result<List<VisitorEvidence>> {
+        return VisitorApi.EvidenceFetch(body = body).callAsList()
     }
 }

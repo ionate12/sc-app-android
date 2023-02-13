@@ -23,7 +23,7 @@ interface VisitorApi {
         body: VisitorPayload.Leave
     ) : NetworkAPI.Post("/visitors/linkaccess/visit/leave", body)
 
-    class VisitFetch(
-        body: VisitorPayload.VisitFetch
+    class EvidenceFetch(
+        body: VisitorPayload.EvidencesFetch
     ) : NetworkAPI.Post("/visitors/linkaccess/visit/fetch", body)
 }

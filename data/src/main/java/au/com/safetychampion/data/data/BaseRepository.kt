@@ -37,7 +37,7 @@ abstract class BaseRepository {
         }
     }
 
-    internal suspend inline fun <reified T> NetworkAPI.call(objName: String = "item"): Result<T> {
+    internal suspend inline fun <reified T> NetworkAPI.call(objName: String? = "item"): Result<T> {
         return internalCall().flatMap {
             it.toItem(objName)
         }

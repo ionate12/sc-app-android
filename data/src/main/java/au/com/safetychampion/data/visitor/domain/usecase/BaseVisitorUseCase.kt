@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.visitor.domain.usecase.internal
+package au.com.safetychampion.data.visitor.domain.usecase
 
 import au.com.safetychampion.data.domain.usecase.BaseUseCase
 import au.com.safetychampion.data.visitor.data.local.IVisitorLocalRepository

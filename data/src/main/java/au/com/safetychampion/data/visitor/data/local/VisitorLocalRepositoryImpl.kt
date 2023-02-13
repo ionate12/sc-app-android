@@ -1,86 +1,52 @@
 package au.com.safetychampion.data.visitor.data.local
 
 import au.com.safetychampion.data.visitor.data.VisitorActivityEntity
-import au.com.safetychampion.data.visitor.data.VisitorSiteEntity
-import au.com.safetychampion.data.visitor.domain.models.VisitorProfileEntity
+import au.com.safetychampion.data.visitor.data.VisitorEntityMapper
+import au.com.safetychampion.data.visitor.domain.models.VisitorMockData
+import au.com.safetychampion.data.visitor.domain.models.VisitorProfile
+import au.com.safetychampion.data.visitor.domain.models.VisitorSite
 import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 
 internal class VisitorLocalRepositoryImpl : IVisitorLocalRepository {
     private val dao: VisitorDAO by koinInject()
+    private val mapper by lazy { VisitorEntityMapper() }
 
-    // Delete  ---------------------------------------------------------------------
-    override suspend fun deleteActivity(activity: VisitorActivityEntity) {
-        return dao.deleteActivity(activity)
+    override suspend fun saveFetchSite(visitorSite: VisitorSite) {
+        dao.insertSites(
+            visitorSite.toVisitorSiteEntity(
+                mapper = mapper,
+                profileID = VisitorMockData.mockProfileId
+            )
+        )
+    }
+    override suspend fun saveProfile(profile: VisitorProfile) {
+        dao.insertProfile(profile.toProfileEntity())
+    }
+    override suspend fun saveActivity(activityEntity: VisitorActivityEntity) {
+        dao.insertActivity(activityEntity)
+    }
+    override suspend fun saveActivities(list: List<VisitorActivityEntity>) {
+        dao.insertActivity(*list.toTypedArray())
+    }
+    override fun getActivitiesByProfileId(profileId: String, isActive: Boolean?): Flow<List<VisitorActivityEntity>> {
+        return if (isActive == null) dao.getActivitiesByProfileId(profileId) else dao.getActivitiesByProfileId(profileId, isActive)
+    }
+    override suspend fun getProfile(id: String): VisitorProfile? {
+        return dao.getProfileById(id)?.toVisitorProfile()
     }
 
-    override suspend fun deleteAllSites() {
-        return dao.deleteAllSites()
+    override suspend fun getProfileAsFlow(id: String): Flow<VisitorProfile> {
+        return dao.getProfileByIdFlowable(id).transform { it.toVisitorProfile() }
     }
-
-    override suspend fun deleteProfile(profile: VisitorProfileEntity) {
-        return dao.deleteProfile(profile)
+    override suspend fun getSite(id: String): VisitorSite? {
+        return dao.getSiteEntityById(id)?.toVisitorSite(mapper)
     }
-
-    // Get  ---------------------------------------------------------------------
-    override suspend fun getActivityById(activityId: String): VisitorActivityEntity? {
-        return dao.getActivityById(activityId)
+    override suspend fun getActivityEntity(id: String): VisitorActivityEntity? {
+        return dao.getActivityById(id)
     }
-
-    override suspend fun getActivities(idList: List<String>): List<VisitorActivityEntity>? {
+    override suspend fun getActivitiesEntity(idList: List<String>): List<VisitorActivityEntity>? {
         return dao.getActivities(idList)
-    }
-
-    override suspend fun getActivitiesByProfileId(profileId: String): Flow<List<VisitorActivityEntity>>? {
-        return dao.getActivitiesByProfileId(profileId)
-    }
-
-    override suspend fun getActivitiesByProfileId(
-        profileId: String,
-        isActive: Boolean
-    ): Flow<List<VisitorActivityEntity>>? {
-        return dao.getActivitiesByProfileId(profileId, isActive)
-    }
-
-    override suspend fun getProfileById(profileId: String): VisitorProfileEntity? {
-        return dao.getProfileById(profileId)
-    }
-
-    override suspend fun getProfileByIdFlowable(profileId: String): Flow<VisitorProfileEntity>? {
-        return dao.getProfileByIdFlowable(profileId)
-    }
-
-    override suspend fun getSiteById(siteId: String): VisitorSiteEntity? {
-        return dao.getSiteById(siteId)
-    }
-
-    override suspend fun getSitesByProfileId(profileId: String): Flow<List<VisitorSiteEntity>>? {
-        return dao.getSitesByProfileId(profileId)
-    }
-
-    // Insert ---------------------------------------------------------------------
-    override suspend fun insertActivity(vararg activity: VisitorActivityEntity) {
-        return dao.insertActivity(*activity)
-    }
-
-    override suspend fun insertProfile(profile: VisitorProfileEntity) {
-        return dao.insertProfile(profile)
-    }
-
-    override suspend fun insertSites(vararg sites: VisitorSiteEntity) {
-        return dao.insertSites(*sites)
-    }
-
-    // Update  ---------------------------------------------------------------------
-    override suspend fun updateActivity(activity: VisitorActivityEntity) {
-        return dao.updateActivity(activity)
-    }
-
-    override suspend fun updateProfile(profile: VisitorProfileEntity) {
-        return dao.updateProfile(profile)
-    }
-
-    override suspend fun updateSite(site: VisitorSiteEntity) {
-        return dao.updateSite(site)
     }
 }
