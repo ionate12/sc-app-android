@@ -1,6 +1,6 @@
 package au.com.safetychampion
 
-import GetActionSignOffDetailsUseCase
+import PrepareSignoffActionUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.core.Result
@@ -34,14 +34,14 @@ class MainViewModel : ViewModel() {
 
     private val newActionUseCase: CreateActionUseCase by koinInject()
     private val allAction: GetListActionUseCase by koinInject()
-    private val getActionSignOffDetailsUseCase: GetActionSignOffDetailsUseCase by koinInject()
+    private val prepareSignoffActionUseCase: PrepareSignoffActionUseCase by koinInject()
     private val editActionUseCase: EditActionUseCase by koinInject()
     private val signOffActionUseCase: SignoffActionUseCase by koinInject()
 
     private val getListBannerUseCase: GetListBannerUseCase by koinInject()
-    private val getChemicalSignoffDetailsUseCase: GetChemicalSignoffDetailUseCase by koinInject()
-    private val refreshGHSCodeUseCase: RefreshGHSCodeUseCase by koinInject()
-    private val refreshChemicalUseCase: RefreshChemicalListUseCase by koinInject()
+    private val getChemicalSignoffDetailsUseCase: PerpareSignoffChemicalUseCase by koinInject()
+    private val getGhsCodeUseCase: GetGhsCodeUseCase by koinInject()
+    private val refreshChemicalUseCase: GetListChemicalUseCase by koinInject()
     private val signoffChemicalUseCase: SignoffChemicalUseCase by koinInject()
 
     private val getListCriskUseCase: GetListCriskUseCase by koinInject()
@@ -111,7 +111,7 @@ class MainViewModel : ViewModel() {
 
     suspend fun getActionSignOff(actionId: String, id: String, index: Int) {
         _apiCallStatus.emit(
-            index to getActionSignOffDetailsUseCase.invoke(id, actionId)
+            index to prepareSignoffActionUseCase.invoke(id, actionId)
         )
 //
     }
@@ -140,7 +140,7 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun refreshGHS(index: Int) {
-        refreshGHSCodeUseCase.invoke()
+        getGhsCodeUseCase.invoke()
         _apiCallStatus.emit(index to Result.Success("Done. Please check the logcat for more info"))
     }
 

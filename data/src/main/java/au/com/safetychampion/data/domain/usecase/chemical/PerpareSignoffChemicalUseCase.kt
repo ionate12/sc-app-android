@@ -8,7 +8,7 @@ import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.usecase.BasePrepareSignoffUseCase
 import au.com.safetychampion.data.util.extension.koinInject
 
-class GetChemicalSignoffDetailUseCase : BasePrepareSignoffUseCase<ChemicalTask, ChemicalSignoff>() {
+class PerpareSignoffChemicalUseCase : BasePrepareSignoffUseCase<ChemicalTask, ChemicalSignoff>() {
 
     private val repo: IChemicalRepository by koinInject()
 

@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.di
 
-import GetActionSignOffDetailsUseCase
+import PrepareSignoffActionUseCase
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
@@ -8,9 +8,9 @@ import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.GetChemicalSignoffDetailUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.RefreshChemicalListUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.RefreshGHSCodeUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
 import org.koin.core.module.dsl.factoryOf
@@ -36,7 +36,7 @@ internal val useCasesModule = module {
 
     factoryOf(::GetListActionUseCase)
 
-    factoryOf(::GetActionSignOffDetailsUseCase)
+    factoryOf(::PrepareSignoffActionUseCase)
 
     factoryOf(::EditActionUseCase)
 
@@ -46,11 +46,11 @@ internal val useCasesModule = module {
 
     // Chemicals
 
-    factoryOf(::GetChemicalSignoffDetailUseCase)
+    factoryOf(::PerpareSignoffChemicalUseCase)
 
-    factoryOf(::RefreshChemicalListUseCase)
+    factoryOf(::GetListChemicalUseCase)
 
-    factoryOf(::RefreshGHSCodeUseCase)
+    factoryOf(::GetGhsCodeUseCase)
 
     // Banner
 
