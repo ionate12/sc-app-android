@@ -21,7 +21,7 @@ abstract class BasePrepareSignoffUseCase<T> : BaseUseCase() {
      */
     protected open fun closedCheck(it: T?): Boolean = false
 
-    protected open fun fromDatabase(): T? {
+    protected open fun fromDatabase(): T {
         TODO()
     }
 
