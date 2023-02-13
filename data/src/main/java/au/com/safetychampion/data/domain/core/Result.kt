@@ -29,6 +29,18 @@ suspend fun <T, R> Result<T>.flatMap(
     return action.invoke(data)
 }
 
+suspend fun <T, R> Result<T>.map(block: suspend (T) -> R): Result<R> {
+    return when (this) {
+        is Result.Error -> return this
+        is Result.Success -> {
+            return data?.let {
+                Result.Success(block(it))
+            } ?: Result.Error(SCError.EmptyResult)
+        }
+        else -> TODO("TO BE REMOVED")
+    }
+}
+
 /**
  * Performs the given action if this is [Result.Success] and data != null,
  * @return self

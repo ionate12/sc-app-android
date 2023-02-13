@@ -1,16 +1,17 @@
 package au.com.safetychampion.data.data.local
 
+import au.com.safetychampion.data.data.common.SyncableRepresentative
 import au.com.safetychampion.data.data.local.room.StorableDao
 import au.com.safetychampion.data.data.local.room.StorableEntity
 import au.com.safetychampion.data.data.local.room.SyncableDao
 import au.com.safetychampion.data.data.local.room.SyncableEntity
-import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.manager.IDispatchers
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.koinInject
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.Calendar
@@ -58,12 +59,20 @@ internal class RoomDataSource {
     /**
      * await to complete unlike storable
      */
-    suspend fun insertSyncable(key: String, data: BasePL) {
-        val json = data.toJsonElement(gson).asJsonObject
-        syncableDao.insert(SyncableEntity(key, json, SyncableEntity.Status.PENDING))
+    suspend fun insertSyncable(key: String, data: Any) {
+        val json = gson.toJsonTree(data).asJsonObject
+        syncableDao.insert(SyncableEntity(key, json, SyncableRepresentative.Status.PENDING))
     }
 
-    suspend fun updateStatusSyncable(key: String, status: SyncableEntity.Status) {
+    suspend fun updateStatusSyncable(key: String, status: SyncableRepresentative.Status) {
         syncableDao.updateStatus(key, status)
+    }
+
+    suspend fun getSyncable(key: String): SyncableEntity? {
+        return syncableDao.findById(key)
+    }
+
+    fun getAllSyncable(): Flow<List<SyncableEntity>> {
+        return syncableDao.getAllAsFlow()
     }
 }

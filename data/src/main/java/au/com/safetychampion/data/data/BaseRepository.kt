@@ -1,5 +1,6 @@
 package au.com.safetychampion.data.data
 
+import au.com.safetychampion.data.data.api.ActionApi
 import au.com.safetychampion.data.data.api.NetworkAPI
 import au.com.safetychampion.data.data.api.RestApi
 import au.com.safetychampion.data.data.local.IStorable
@@ -16,10 +17,11 @@ import au.com.safetychampion.data.domain.core.toItems
 import au.com.safetychampion.data.domain.manager.IDispatchers
 import au.com.safetychampion.data.domain.manager.IFileManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
-import au.com.safetychampion.data.domain.toMultipartBody
+import au.com.safetychampion.data.domain.models.IPendingActionPL
+import au.com.safetychampion.data.domain.models.action.Action
+import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.util.extension.koinInject
 import kotlinx.coroutines.withContext
-import okhttp3.MultipartBody
 
 abstract class BaseRepository {
     protected val dispatchers: IDispatchers by koinInject()
@@ -78,17 +80,49 @@ abstract class BaseRepository {
                     onSuccess(restAPI.post(path, body))
                 }
                 is NetworkAPI.PostMultiParts -> {
-                    val parts = mutableListOf(
-                        this@handleOnline.body.toRequestBody()
-                            .let { MultipartBody.Part.createFormData("json", null, it) }
+                    var nBody = this@handleOnline.body
+                    // Pending Actions api calls handle
+                    (this@handleOnline.body as? IPendingActionPL)?.apply {
+                        if (this.pendingActions.isEmpty()) return@apply
+                        consumePendingActions().let {
+                            when (it) {
+                                is Result.Error -> return@withContext Result.Error(it.err)
+                                is Result.Success -> {
+                                    nBody = this@handleOnline.body.onPendingActionsCreated(it.data!!)
+                                }
+                                else -> TODO("To be removed")
+                            }
+                        }
+                    }
+
+                    onSuccess(
+                        restAPI.postMultipart(
+                            this@handleOnline.path,
+                            nBody.toMultiPartBody()
+                        )
                     )
-                    this@handleOnline.attachment.toMultipartBody(fileContentManager).let { parts.addAll(it) }
-                    onSuccess(restAPI.postMultipart(this@handleOnline.path, parts))
                 }
             }
         } catch (e: Exception) {
             handleRetrofitException(e)
         }
+    }
+
+    private suspend fun IPendingActionPL.consumePendingActions(): Result<List<ActionLink>> {
+        if (pendingActions.isEmpty()) return Result.Success(listOf())
+
+        val results: List<Result<ActionLink>> = this.pendingActions.map { pendingAction ->
+            // pure api call of actions.
+            ActionApi.NewOnline(pendingAction.action).call<Action>()
+                .map { it.toActionLink().apply { refId = pendingAction.refId } }
+        }
+        return when {
+            !this.shouldIgnorePendingActionError() && results.any { it is Result.Error } -> {
+                Result.Error(results.first { it is Result.Error }.errorOrNull()!!)
+            }
+            else -> Result.Success(results.mapNotNull { it.dataOrNull() })
+        }
+//        iPendingAction.onPendingActionsCreated(results.mapNotNull { it.dataOrNull() })
     }
 
     private suspend fun NetworkAPI.handleOffline(): Result<APIResponse> = withContext(dispatchers.default) {

@@ -1,11 +1,9 @@
 package au.com.safetychampion.data.data.api
 
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
-import au.com.safetychampion.data.domain.usecase.ISignoffGeneral
-import au.com.safetychampion.data.domain.usecase.chemical.ChemicalSignoffParam
+import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
 
-interface ChemicalAPI : ISignoffGeneral<ChemicalSignoffParam> {
+interface ChemicalAPI {
     class List(
         body: BasePL = BasePL.empty()
     ) : NetworkAPI.Post(
@@ -26,11 +24,9 @@ interface ChemicalAPI : ISignoffGeneral<ChemicalSignoffParam> {
     class Signoff(
         moduleId: String?,
         taskId: String?,
-        body: ChemicalTask,
-        photos: AttachmentList?
+        body: ChemicalTaskPL
     ) : NetworkAPI.PostMultiParts(
         path = "chemicals/$moduleId/tasks/$taskId/signoff",
-        body = body,
-        attachment = photos ?: emptyList()
+        body = body
     )
 }

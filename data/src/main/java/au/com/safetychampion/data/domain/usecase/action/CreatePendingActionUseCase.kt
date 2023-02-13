@@ -1,50 +1,35 @@
 package au.com.safetychampion.data.domain.usecase.action
 
 import au.com.safetychampion.data.data.action.IActionRepository
-import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.dataOrNull
+import au.com.safetychampion.data.domain.core.map
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.usecase.BaseUseCase
-import kotlinx.coroutines.SupervisorJob
+import au.com.safetychampion.data.util.extension.koinInject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
-class CreatePendingActionUseCase(
-    private val repository: IActionRepository
-) : BaseUseCase() {
+class CreatePendingActionUseCase : BaseUseCase() {
+    private val repository: IActionRepository by koinInject()
     suspend operator fun invoke(
-        payload: ActionPL,
-        attachments: List<Attachment>
-    ): Result<ActionLink?> {
-        return repository.createPendingAction(payload = payload, attachments = attachments)
+        payload: ActionPL
+    ): Result<ActionLink> {
+        return repository.createAction(payload = payload)
+            .map { it.toActionLink() }
     }
 }
 
-class CreatePendingActionAsynchronousUseCase(
-    private val repository: IActionRepository
-) : BaseUseCase() {
-    suspend operator fun invoke(pendingActionPL: List<PendingActionPL>?): Result.Success<List<ActionLink>> {
-        if (pendingActionPL == null) {
-            return Result.Success(emptyList())
-        }
-
+class CreateMultiPendingActionsUseCase : BaseUseCase() {
+    private val createPendingActionUseCase: CreatePendingActionUseCase by koinInject()
+    suspend operator fun invoke(pendingActionPL: List<PendingActionPL>): List<Result<ActionLink>> {
+        if (pendingActionPL.isEmpty()) return listOf()
         return withContext(dispatchers.io) {
-            Result.Success(
-                pendingActionPL.map {
-                    async(SupervisorJob()) {
-                        repository.createPendingAction(
-                            payload = it.action,
-                            attachments = it.attachments
-                        ).dataOrNull()
-                    }
-                }
-                    .awaitAll()
-                    .filterNotNull()
-            )
+            pendingActionPL.map {
+                async { createPendingActionUseCase(it.action) }
+            }.awaitAll()
         }
     }
 }

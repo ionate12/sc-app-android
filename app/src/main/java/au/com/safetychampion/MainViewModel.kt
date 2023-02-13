@@ -3,14 +3,11 @@ package au.com.safetychampion
 import GetActionSignOffDetailsUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.core.ModuleName
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
-import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
-import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
+import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
+import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
@@ -100,11 +97,10 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to result)
     }
 
-    suspend fun createNewAction(payload: ActionPL, attachments: List<Attachment>, index: Int) {
+    suspend fun createNewAction(payload: ActionPL, index: Int) {
         _apiCallStatus.emit(
             index to newActionUseCase.invoke(
-                payload = payload,
-                attachments = attachments
+                payload = payload
             )
         )
     }
@@ -120,27 +116,17 @@ class MainViewModel : ViewModel() {
 //
     }
 
-    suspend fun editAction(actionPL: ActionPL, id: String, attachments: List<Attachment>, index: Int) {
-        _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL, attachments))
+    suspend fun editAction(actionPL: ActionPL, id: String, index: Int) {
+        _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL))
     }
 
     suspend fun signOffAction(
-        actionId: String,
-        attachments: List<Attachment>,
-        payload: ActionTask,
-        pendingAction: MutableList<PendingActionPL>,
+        actionSignOff: ActionSignOff,
         index: Int
     ) {
         _apiCallStatus.emit(
             index to signOffActionUseCase.invoke(
-                ActionSignoffParams(
-                    actionId = actionId,
-                    attachmentList = attachments,
-                    moduleName = ModuleName.ACTION,
-                    payload = payload,
-                    signaturesList = emptyList(),
-                    title = "ABC"
-                )
+                actionSignOff
             )
         )
     }
@@ -166,23 +152,11 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun signoffChemical(
-        taskId: String,
-        moduleId: String,
-        task: ChemicalTask,
-        attachments: List<Attachment>,
+        signoff: ChemicalSignoff,
         index: Int
     ) {
         _apiCallStatus.emit(
-            index to signoffChemicalUseCase.invoke(
-                ChemicalSignoffParam(
-                    moduleID = moduleId,
-                    attachmentList = attachments,
-                    moduleName = ModuleName.CHEMICAL,
-                    signaturesList = emptyList(),
-                    payload = task,
-                    title = "ABC"
-                )
-            )
+            index to signoffChemicalUseCase.invoke(signoff)
         )
     }
 

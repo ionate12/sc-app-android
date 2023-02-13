@@ -62,8 +62,7 @@ class AssetsManager(private val context: Context) {
     suspend fun getPendingActionPL(): MutableList<PendingActionPL> {
         return mutableListOf(
             PendingActionPL(
-                action = getNewAction(),
-                emptyList()
+                action = getNewAction()
             )
         )
     }

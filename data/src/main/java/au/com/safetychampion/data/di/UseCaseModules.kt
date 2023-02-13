@@ -42,7 +42,7 @@ internal val useCasesModule = module {
 
     factoryOf(::CreatePendingActionUseCase)
 
-    factoryOf(::CreatePendingActionAsynchronousUseCase)
+    factoryOf(::CreateMultiPendingActionsUseCase)
 
     // Chemicals
 

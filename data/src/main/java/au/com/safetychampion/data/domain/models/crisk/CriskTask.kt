@@ -1,19 +1,25 @@
 package au.com.safetychampion.data.domain.models.crisk
 
-import au.com.safetychampion.data.domain.SignaturePayload
-import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BaseTask
+import au.com.safetychampion.data.domain.core.Signature
+import au.com.safetychampion.data.domain.models.IAttachment
+import au.com.safetychampion.data.domain.models.ICusval
+import au.com.safetychampion.data.domain.models.IPendingAction
+import au.com.safetychampion.data.domain.models.ISignature
+import au.com.safetychampion.data.domain.models.ISubcategoryCusval
 import au.com.safetychampion.data.domain.models.SCHolderLink
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
-import au.com.safetychampion.data.domain.models.customvalues.ICategoryCusval
-import au.com.safetychampion.data.domain.models.customvalues.ICusval
-import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
+interface ICriskTaskComponents :
+    ICusval, ISubcategoryCusval, IAttachment, ISignature, IPendingAction
+
+// TODO: redo CriskTask, needs add more properties.
 data class CriskTask(
-    val attachments: MutableList<DocAttachment>,
     val actionLinks: MutableList<ActionLink>,
     val currentMitigation: String,
     val futureControl: Boolean,
@@ -22,7 +28,6 @@ data class CriskTask(
     val residualRisk: String,
     val riskOwnerLinks: MutableList<SCHolderLink>,
     val save: Boolean,
-    val signatures: MutableList<SignaturePayload>,
     val tzDateSignedoff: String,
     override val complete: Boolean?,
     override val dateDue: String?,
@@ -34,5 +39,8 @@ data class CriskTask(
     override val _id: String,
     override val type: String,
     override var cusvals: MutableList<CustomValue>,
-    override var categoryCusvals: MutableList<CustomValue>
-) : BasePL(), BaseTask, ICusval, ICategoryCusval
+    override var subcategoryCusvals: MutableList<CustomValue>,
+    override var signatures: MutableList<Signature>,
+    override var attachments: MutableList<Attachment>,
+    override var pendingActions: MutableList<PendingActionPL>
+) : BaseTask, ICusval, ICriskTaskComponents

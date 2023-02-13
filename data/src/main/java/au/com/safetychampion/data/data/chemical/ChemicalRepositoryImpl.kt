@@ -5,12 +5,11 @@ import au.com.safetychampion.data.data.api.ChemicalAPI
 import au.com.safetychampion.data.data.common.MasterDAO
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.GHSCode
-import au.com.safetychampion.data.domain.models.SignoffStatus
 import au.com.safetychampion.data.domain.models.chemical.Chemical
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
+import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
 import au.com.safetychampion.data.domain.uncategory.setFilePath
-import au.com.safetychampion.data.domain.usecase.chemical.ChemicalSignoffParam
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.util.extension.toJsonString
 import kotlinx.coroutines.Job
@@ -98,44 +97,19 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
     }
 
     override suspend fun combineFetchAndTask(moduleId: String, taskId: String): Result<ChemicalSignoff> {
-        return when (val fetch = fetch(moduleId)) {
-            is Result.Error -> fetch
-            else -> Result.Success(
-                ChemicalSignoff(
-                    body = fetch.dataOrNull()!!,
-                    task = ChemicalTask(),
-                    taskId = taskId,
-                    moduleId = moduleId
-                )
-            )
-        }
+        // TODO: Figure out how to get taskId in chemical signoff
+        return fetch(moduleId).map { ChemicalSignoff(body = it, task = ChemicalTask()) }
     }
 
-    override suspend fun save(params: ChemicalSignoffParam): Result<SignoffStatus.OnlineSaved> {
+    override suspend fun signoff(
+        chemId: String,
+        taskId: String,
+        payload: ChemicalTaskPL
+    ): Result<ChemicalTask> {
         return ChemicalAPI.Signoff(
-            moduleId = params.moduleID,
-            taskId = params.id,
-            body = params.payload,
-            photos = params.attachmentList
-        )
-            .call<SignoffStatus.OnlineSaved>()
-            .doOnSucceed {
-                it.moduleName = ModuleName.CHEMICAL.name
-                it.title = "titleABC"
-            }
-    }
-
-    override suspend fun signoff(params: ChemicalSignoffParam): Result<SignoffStatus.OnlineCompleted> {
-        return ChemicalAPI.Signoff(
-            moduleId = params.moduleID,
-            taskId = params.id,
-            body = params.payload,
-            photos = params.attachmentList
-        )
-            .call<SignoffStatus.OnlineCompleted>()
-            .doOnSucceed {
-                it.moduleName = ModuleName.CHEMICAL.name
-                it.title = "titleABC"
-            }
+            moduleId = chemId,
+            taskId = taskId,
+            body = payload
+        ).call()
     }
 }

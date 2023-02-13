@@ -3,7 +3,7 @@ package au.com.safetychampion.data.data.api
 import au.com.safetychampion.data.data.local.IStorable
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
-import au.com.safetychampion.data.domain.models.crisk.CriskTask
+import au.com.safetychampion.data.domain.models.crisk.CriskTaskPL
 
 interface CriskAPI {
     class List(
@@ -51,12 +51,10 @@ interface CriskAPI {
     class Signoff(
         criskId: String,
         taskId: String,
-        body: CriskTask,
-        attachmentList: AttachmentList
+        body: CriskTaskPL
     ) : NetworkAPI.PostMultiParts(
         path = "/crisks/$criskId/tasks/$taskId/signoff",
-        body = body,
-        attachment = attachmentList
+        body = body
     )
 
     class Archive(
