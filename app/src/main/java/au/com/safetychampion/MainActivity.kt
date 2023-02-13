@@ -28,7 +28,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzUyMjIwMjksImV4cCI6MTY3NTMwODQyOX0.FNfue_TFsrsvCTOiQE98pNLLl4KpRJALEDmxNz49aYI"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzYyNjk1NDEsImV4cCI6MTY3NjM1NTk0MX0.sZbXYu9qXZ4F_nr3U_6CgcsRaSvUYbCy20zrnLB2NW8"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -75,8 +75,22 @@ class MainActivity : AppCompatActivity() {
                 index = 16
 
             )
+        },
+        "Fetch Hr Detail (hr/{hrId}/fetch)" to suspend {
+            viewModel.fetchHrDetail(
+                moduleId = "628b4ce2539b0c6b9760b38a",
+                index = 20
+            )
+        },
+        "Get List Hr (hr/list)" to suspend {
+            viewModel.getListHr(index = 21)
+        },
+        "Get List Linked Incidents (hr/{hrId}/listLinkedIncidents)" to suspend {
+            viewModel.getListLinkedIncidents(
+                moduleId = "getListLinkedIncidents",
+                index = 22
+            )
         }
-
     )
 
     val items = {

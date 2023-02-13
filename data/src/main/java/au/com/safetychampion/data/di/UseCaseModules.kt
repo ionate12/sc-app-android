@@ -12,6 +12,9 @@ import au.com.safetychampion.data.domain.usecase.chemical.GetChemicalSignoffDeta
 import au.com.safetychampion.data.domain.usecase.chemical.RefreshChemicalListUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.RefreshGHSCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -44,6 +47,12 @@ internal val useCasesModule = module {
     factoryOf(::RefreshGHSCodeUseCase)
 
     factoryOf(::GetListBannerUseCase)
+
+    factoryOf(::FetchHrDetailUseCase)
+
+    factoryOf(::GetListHrUseCase)
+
+    factoryOf(::GetListLinkedIncidentsUseCase)
     // Signoff
 
     factoryOf(::SignoffChemicalUseCase)

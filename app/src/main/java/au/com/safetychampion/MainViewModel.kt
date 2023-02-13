@@ -20,6 +20,9 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTask
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
 import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -44,6 +47,10 @@ class MainViewModel : ViewModel() {
     private val refreshGHSCodeUseCase: RefreshGHSCodeUseCase by koinInject()
     private val refreshChemicalUseCase: RefreshChemicalListUseCase by koinInject()
     private val signoffChemicalUseCase: SignoffChemicalUseCase by koinInject()
+
+    private val fetchHrDetailUseCase:FetchHrDetailUseCase by koinInject()
+    private val getListHrUseCase:GetListHrUseCase by koinInject()
+    private val getListLinkedIncidentsUseCase:GetListLinkedIncidentsUseCase by koinInject()
 
     val _apiCallStatus = MutableSharedFlow<Pair<Int, Result<*>>>()
     val apiCallStatus = _apiCallStatus.asSharedFlow()
@@ -173,5 +180,25 @@ class MainViewModel : ViewModel() {
                 )
             )
         )
+    }
+
+    suspend fun fetchHrDetail(
+        moduleId:String,
+        index:Int
+    ){
+        _apiCallStatus.emit(index to fetchHrDetailUseCase.invoke(moduleId))
+    }
+
+    suspend fun getListHr(
+        index:Int
+    ){
+        _apiCallStatus.emit(index to getListHrUseCase.invoke())
+    }
+
+    suspend fun getListLinkedIncidents(
+        moduleId:String,
+        index:Int
+    ){
+        _apiCallStatus.emit(index to getListLinkedIncidentsUseCase.invoke(moduleId))
     }
 }
