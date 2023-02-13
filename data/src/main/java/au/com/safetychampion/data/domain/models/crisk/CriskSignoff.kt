@@ -7,7 +7,7 @@ data class CriskSignoff(
     val body: Crisk, // TODO("this is notnull, fix CustomValueDropdown bug in cusval first ")
     override val task: CriskTask
 ) : BaseSignOff<CriskTask> {
-    override fun syncableKey(): String = "crisks/${body._id}/tasks/${task._id}/signoff"
+    override fun syncableKey(): String = BaseSignOff.criskSignoffSyncableKey(body._id, task._id)
 
     override fun type(): ModuleType = ModuleType.CRISK
 }

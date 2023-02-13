@@ -66,7 +66,7 @@ internal val useCasesModule = module {
 
     factoryOf(::FetchCriskUseCase)
 
-    factoryOf(::GetCriskSignoffDetailsUseCase)
+    factoryOf(::PrepareSignoffCriskUseCase)
 
     factoryOf(::GetCriskTaskEvidenceUseCase)
 

@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 internal class SyncableRepository {
-    val roomDts: RoomDataSource by koinInject()
+    private val roomDts: RoomDataSource by koinInject()
     private val gson by lazy { koinGet<IGsonManager>().gson }
 
-    suspend inline fun <reified T> getSyncableData(key: String): Result<T> {
+    suspend fun <T> getSyncableData(key: String): Result<T> {
         val type = object : TypeToken<T>() {}.type
         val data: T? = roomDts.getSyncable(key)?.data?.let { gson.fromJson(it, type) }
         return data?.let { Result.Success(it) } ?: Result.Error(SCError.EmptyResult)

@@ -97,8 +97,7 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
     }
 
     override suspend fun combineFetchAndTask(moduleId: String, taskId: String): Result<ChemicalSignoff> {
-        // TODO: Figure out how to get taskId in chemical signoff
-        return fetch(moduleId).map { ChemicalSignoff(body = it, task = ChemicalTask()) }
+        return fetch(moduleId).map { ChemicalSignoff(body = it, task = ChemicalTask(_id = taskId)) }
     }
 
     override suspend fun signoff(

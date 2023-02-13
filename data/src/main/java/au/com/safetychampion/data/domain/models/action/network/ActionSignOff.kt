@@ -9,6 +9,6 @@ data class ActionSignOff(
     var body: Action,
     override val task: ActionTask
 ) : BaseSignOff<ActionTask> {
-    override fun syncableKey(): String = "actions/${body._id}/task/signoff"
+    override fun syncableKey(): String = BaseSignOff.actionSignoffSyncableKey(body._id)
     override fun type(): ModuleType = ModuleType.ACTION
 }

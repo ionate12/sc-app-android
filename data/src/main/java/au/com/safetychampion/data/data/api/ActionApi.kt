@@ -2,12 +2,9 @@ package au.com.safetychampion.data.data.api
 
 import au.com.safetychampion.data.data.local.IStorable
 import au.com.safetychampion.data.data.local.ISyncable
-import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.action.ActionTaskPL
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
-
-typealias AttachmentList = List<Attachment>
 
 internal interface ActionApi {
     // Only use for actionLinks
@@ -35,8 +32,9 @@ internal interface ActionApi {
         body: BasePL?
     ) : NetworkAPI.Post("actions/list", body), IStorable
 
+    // Syncable is handled in BaseSignoffUseCase
     class Signoff(
         actionId: String,
         body: ActionTaskPL
-    ) : NetworkAPI.PostMultiParts("actions/$actionId/task/signoff", body), ISyncable
+    ) : NetworkAPI.PostMultiParts("actions/$actionId/task/signoff", body)
 }

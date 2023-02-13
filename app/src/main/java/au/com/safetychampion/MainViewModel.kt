@@ -47,7 +47,7 @@ class MainViewModel : ViewModel() {
     private val getListCriskUseCase: GetListCriskUseCase by koinInject()
     private val getListHrLookupUseCase: GetListHrLookupItemUseCase by koinInject()
     private val getListContractorLookupUseCase: GetListContractorLookupUseCase by koinInject()
-    private val getCriskSignoff: GetCriskSignoffDetailsUseCase by koinInject()
+    private val getCriskSignoff: PrepareSignoffCriskUseCase by koinInject()
     private val getCriskUseCase: FetchCriskUseCase by koinInject()
     private val getCriskEvidence: GetCriskTaskEvidenceUseCase by koinInject()
     private val archiveCrisk: ArchiveCriskUseCase by koinInject()
