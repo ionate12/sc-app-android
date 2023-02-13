@@ -9,8 +9,8 @@ import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.util.extension.itemOrNull
-import au.com.safetychampion.data.util.extension.listOrEmpty
+import au.com.safetychampion.data.util.extension.parseList
+import au.com.safetychampion.data.util.extension.parseObject
 
 private fun AssetManager.readAssetsFile(fileName: String): String = open(fileName).bufferedReader().use { it.readText() }
 
@@ -19,28 +19,28 @@ class AssetsManager(private val context: Context) {
         return context
             .assets
             .readAssetsFile("task")
-            .itemOrNull<Task>()!!
+            .parseObject<Task>()!!
     }
 
     suspend fun getListSampleTask(): List<Task> {
         return context
             .assets
             .readAssetsFile("tasks")
-            .listOrEmpty()
+            .parseList()
     }
 
     suspend fun getSampleTaskAssignStatusItem(): TaskAssignStatusItem {
         return context
             .assets
             .readAssetsFile("task_assign_status_item")
-            .itemOrNull<TaskAssignStatusItem>()!!
+            .parseObject<TaskAssignStatusItem>()!!
     }
 
     suspend fun getNewAction(): ActionPL {
         return context
             .assets
             .readAssetsFile("new_action")
-            .itemOrNull<ActionPL>()!!
+            .parseObject<ActionPL>()!!
     }
 
     suspend fun getActionId(): String = "63b5622b97f7ee1e8d3d639a"
@@ -49,14 +49,14 @@ class AssetsManager(private val context: Context) {
         return context
             .assets
             .readAssetsFile("edit_action_")
-            .itemOrNull<ActionPL>()!!
+            .parseObject<ActionPL>()!!
     }
 
     suspend fun getActionTask(): ActionTask {
         return context
             .assets
             .readAssetsFile("signoff_action")
-            .itemOrNull<ActionTask>()!!
+            .parseObject<ActionTask>()!!
     }
 
     suspend fun getPendingActionPL(): MutableList<PendingActionPL> {
@@ -72,7 +72,7 @@ class AssetsManager(private val context: Context) {
         return context
             .assets
             .readAssetsFile("chemical_task")
-            .itemOrNull<ChemicalTask>()!!
+            .parseObject<ChemicalTask>()!!
     }
 
     suspend fun getCriskArchivePL(): CriskArchivePayload {

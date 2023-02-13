@@ -2,8 +2,8 @@ package au.com.safetychampion.data.domain.core
 
 import au.com.safetychampion.data.data.handleAPIError
 import au.com.safetychampion.data.util.extension.isNullOrEmpty
-import au.com.safetychampion.data.util.extension.itemOrNull
-import au.com.safetychampion.data.util.extension.listOrEmpty
+import au.com.safetychampion.data.util.extension.parseList
+import au.com.safetychampion.data.util.extension.parseObject
 import com.google.gson.JsonObject
 
 interface IResponse {
@@ -35,10 +35,7 @@ suspend inline fun <reified T> APIResponse.toItem(
             if (this.result.isNullOrEmpty()) {
                 Result.Error(SCError.EmptyResult)
             } else {
-                if (T::class == Unit::class) {
-                    Result.Success(Unit)
-                }
-                Result.Success(result!![responseObjName].itemOrNull())
+                Result.Success(result!![responseObjName].parseObject())
             }
         }
         false -> {
@@ -55,10 +52,7 @@ suspend inline fun <reified T> APIResponse.toItems(objName: String = "items"): R
             if (result.isNullOrEmpty()) {
                 Result.Error(SCError.EmptyResult)
             } else {
-                if (T::class == Unit::class) {
-                    Result.Success(Unit)
-                }
-                Result.Success(result!![objName].listOrEmpty())
+                Result.Success(result!![objName].parseList())
             }
         }
         false -> {
