@@ -11,9 +11,7 @@ import au.com.safetychampion.data.domain.core.APIResponse
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.core.flatMap
-import au.com.safetychampion.data.domain.core.flatMapError
 import au.com.safetychampion.data.domain.core.toItem
-import au.com.safetychampion.data.domain.core.toItems
 import au.com.safetychampion.data.domain.manager.IDispatchers
 import au.com.safetychampion.data.domain.manager.IFileManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
@@ -34,13 +32,7 @@ abstract class BaseRepository {
 
     private val roomDts: RoomDataSource by koinInject()
 
-    internal suspend inline fun <reified T> NetworkAPI.callAsList(objName: String = "items"): Result<List<T>> {
-        return internalCall().flatMap {
-            it.toItems(objName)
-        }
-    }
-
-    internal suspend inline fun <reified T> NetworkAPI.call(objName: String = "item"): Result<T> {
+    internal suspend inline fun <reified T> NetworkAPI.call(objName: String? = null): Result<T> {
         return internalCall().flatMap {
             it.toItem(objName)
         }

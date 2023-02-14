@@ -64,8 +64,8 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
         }
     }
 
-    override suspend fun list(body: BasePL?): Result<List<Action>> {
-        return ActionApi.List(body).callAsList()
+    override suspend fun list(body: BasePL?): Result<List<ActionPL>> {
+        return ActionApi.List(body).call()
     }
 
     override suspend fun signoff(actionId: String, payload: ActionTaskPL): Result<ActionTask> {

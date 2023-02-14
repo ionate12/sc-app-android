@@ -28,7 +28,7 @@ import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzU0MjEzNTgsImV4cCI6MTY3NTQyMTY1OH0.tayZkKCwjKPtwmu7WnLAYqUNa6kH9fox3O21AuarxIE"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzYzNTY0NDIsImV4cCI6MTY3NjQ0Mjg0Mn0.LFvNu8iRSVXQIjr_CjhAlxlsHD1VcbMZ_D_sHWTLna8"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()

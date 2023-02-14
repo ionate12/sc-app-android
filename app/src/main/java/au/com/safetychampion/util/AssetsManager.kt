@@ -9,7 +9,6 @@ import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.util.extension.parseList
 import au.com.safetychampion.data.util.extension.parseObject
 
 private fun AssetManager.readAssetsFile(fileName: String): String = open(fileName).bufferedReader().use { it.readText() }
@@ -26,7 +25,7 @@ class AssetsManager(private val context: Context) {
         return context
             .assets
             .readAssetsFile("tasks")
-            .parseList()
+            .parseObject<List<Task>>()!!
     }
 
     suspend fun getSampleTaskAssignStatusItem(): TaskAssignStatusItem {
