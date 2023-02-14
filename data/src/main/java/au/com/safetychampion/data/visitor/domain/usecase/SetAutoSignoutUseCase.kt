@@ -1,8 +1,8 @@
 package au.com.safetychampion.data.visitor.domain.usecase
 
 import au.com.safetychampion.data.domain.manager.IGsonManager
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.data.VisitorEntityMapper
-import au.com.safetychampion.util.koinInject
 
 class SetAutoSignoutUseCase : BaseVisitorUseCase() {
     private val mapper: VisitorEntityMapper = VisitorEntityMapper()

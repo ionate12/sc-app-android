@@ -88,8 +88,7 @@ class MainActivity : AppCompatActivity() {
         "Get Crisk Signoff" to suspend { viewModel.getCriskSignoff(taskId = "63a2584497f7ee1e8d3d6369", criskId = "633fa33f4d59ca38fe91336e", index = 20) },
         "Get Crisk" to suspend { viewModel.getCrisk(criskId = "633fa33f4d59ca38fe91336e", index = 21) },
         "Crisk Evidence" to suspend { viewModel.getCriskEvidence(criskId = "633fa33f4d59ca38fe91336e", index = 22) },
-        "Archive Crisk" to suspend { viewModel.archiveCrisk(criskId = "633fa33f4d59ca38fe91336e", payload = sampleData.getCriskArchivePL(), index = 23) }
-        },
+        "Archive Crisk" to suspend { viewModel.archiveCrisk(criskId = "633fa33f4d59ca38fe91336e", payload = sampleData.getCriskArchivePL(), index = 23) },
         "QR CODE Visitor" to suspend {
             viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = 22)
         }

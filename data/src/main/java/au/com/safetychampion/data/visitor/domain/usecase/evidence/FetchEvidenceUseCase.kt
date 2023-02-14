@@ -3,10 +3,10 @@ package au.com.safetychampion.data.visitor.domain.usecase.evidence
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.core.flatMap
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.VisitorEvidence
 import au.com.safetychampion.data.visitor.domain.models.VisitorPayload
 import au.com.safetychampion.data.visitor.domain.models.VisitorSite
-import au.com.safetychampion.util.koinInject
 
 class FetchEvidenceUseCase {
     private val getLocalEvidence: GetLocalEvidenceUseCase by koinInject()

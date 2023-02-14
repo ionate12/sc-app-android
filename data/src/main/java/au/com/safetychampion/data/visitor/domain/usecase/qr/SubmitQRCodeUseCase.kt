@@ -1,10 +1,10 @@
 package au.com.safetychampion.data.visitor.domain.usecase.qr
 
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.visitor.domain.models.Destination
 import au.com.safetychampion.data.visitor.domain.models.VisitorToken
 import au.com.safetychampion.data.visitor.domain.usecase.BaseVisitorUseCase
-import au.com.safetychampion.util.koinGet
 import timber.log.Timber
 
 class SubmitQRCodeUseCase : BaseVisitorUseCase() {

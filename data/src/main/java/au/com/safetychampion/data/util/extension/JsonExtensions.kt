@@ -2,7 +2,6 @@ package au.com.safetychampion.data.util.extension
 
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import com.google.gson.Gson
-import au.com.safetychampion.util.koinGet
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
@@ -41,24 +40,13 @@ fun Any.toJsonString(
     return (customGson ?: koinGet<IGsonManager>().gson).toJson(this@toJsonString)
 }
 
-fun jsonObjectOf(customGson: Gson? = null, src: Any): JsonObject? {
-    return gson.toJsonTree(src).asJsonObject
-
+fun jsonObjectOf(src: Any, customGson: Gson? = null): JsonObject? {
+    return (customGson ?: koinGet<IGsonManager>().gson).toJsonTree(src).asJsonObject
 }
+
 /**
  * @return true if this JsonObject is null or its string representation is equal to "{}", false otherwise.
  */
 fun JsonObject?.isNullOrEmpty(): Boolean {
     return this == null || this.toString() == "{}"
-}
-
-
-fun JsonElement?.isNullOrEmpty(): Boolean {
-    if (this == null) return true
-    return when (this) {
-        is JsonPrimitive -> asString.trim().isEmpty()
-        is JsonArray -> asJsonArray.isEmpty
-        is JsonObject -> asJsonObject.entrySet().isEmpty()
-        else -> true
-    }
 }

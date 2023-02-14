@@ -23,7 +23,7 @@ internal class VisitorRemoteRepositoryImpl : BaseRepository(), IVisitorRemoteRep
 
     override suspend fun evidencesFetch(payload: VisitorPayload.EvidencesFetch): Result<List<VisitorEvidence>> {
         return VisitorApi.EvidenceFetch(payload)
-            .callAsList<VisitorEvidenceWrapper>()
+            .call<List<VisitorEvidenceWrapper>>()
             .flatMap { wrapper ->
                 Result.Success(
                     wrapper.map { it.item }
@@ -42,6 +42,6 @@ internal class VisitorRemoteRepositoryImpl : BaseRepository(), IVisitorRemoteRep
     }
 
     override suspend fun evidenceFetch(body: VisitorPayload.EvidencesFetch): Result<List<VisitorEvidence>> {
-        return VisitorApi.EvidenceFetch(body = body).callAsList()
+        return VisitorApi.EvidenceFetch(body = body).call()
     }
 }

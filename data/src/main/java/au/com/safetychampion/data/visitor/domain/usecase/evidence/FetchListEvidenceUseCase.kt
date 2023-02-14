@@ -3,11 +3,11 @@ package au.com.safetychampion.data.visitor.domain.usecase.evidence
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.doOnSucceed
 import au.com.safetychampion.data.domain.manager.IGsonManager
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.data.VisitorActivityEntity
 import au.com.safetychampion.data.visitor.domain.models.VisitorEvidence
 import au.com.safetychampion.data.visitor.domain.models.VisitorPayload
 import au.com.safetychampion.data.visitor.domain.usecase.BaseVisitorUseCase
-import au.com.safetychampion.util.koinInject
 
 class FetchListEvidenceUseCase : BaseVisitorUseCase() {
     private val updateActivitiesUseCase: UpdateActivitiesUseCase by koinInject()

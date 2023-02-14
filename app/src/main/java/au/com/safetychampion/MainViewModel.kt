@@ -1,10 +1,10 @@
 package au.com.safetychampion
 
+import PrepareSignoffActionUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
@@ -19,14 +19,14 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTask
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.qr.SubmitQRCodeUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.site.FetchSiteUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.site.UpdateSiteByFormFetchUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.util.extension.koinInject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -266,7 +266,7 @@ class MainViewModel : ViewModel() {
                 destination = Destination.Toast(scError = this) // Show toast: unable to Perform Sign Out because...
             }
 
-        return Result.Success(destination)
+        return Result.Success(destination!!)
     }
 
     private val updateSiteByFormFetchUseCase: UpdateSiteByFormFetchUseCase by koinInject()

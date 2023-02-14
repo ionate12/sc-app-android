@@ -1,8 +1,8 @@
 package au.com.safetychampion.data.visitor.data
 
 import au.com.safetychampion.data.domain.manager.IGsonManager
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.VisitorSite
-import au.com.safetychampion.util.koinInject
 
 internal class VisitorEntityMapper {
     private val gson: IGsonManager by koinInject()

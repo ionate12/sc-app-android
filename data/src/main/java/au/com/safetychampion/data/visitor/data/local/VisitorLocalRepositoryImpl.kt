@@ -1,11 +1,11 @@
 package au.com.safetychampion.data.visitor.data.local
 
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.data.VisitorActivityEntity
 import au.com.safetychampion.data.visitor.data.VisitorEntityMapper
 import au.com.safetychampion.data.visitor.domain.models.VisitorMockData
 import au.com.safetychampion.data.visitor.domain.models.VisitorProfile
 import au.com.safetychampion.data.visitor.domain.models.VisitorSite
-import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
