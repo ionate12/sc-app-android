@@ -77,7 +77,7 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
     }
 
     override suspend fun list(body: BasePL?): Result<List<ActionPL>> {
-        return ActionApi.List(body).callAsList()
+        return ActionApi.List(body).call()
     }
 
     override suspend fun save(params: ActionSignoffParams): Result<SignoffStatus.OnlineSaved> {

@@ -54,7 +54,7 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
         return withContext(dispatchers.io) {
             return@withContext launch {
                 ChemicalAPI.List()
-                    .callAsList<Chemical>()
+                    .call<List<Chemical>>()
                     .doOnSucceed {
                         it.forEach { chem ->
                             chem.attachments?.setFilePath(
@@ -80,7 +80,7 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
         return withContext(dispatchers.io) {
             return@withContext launch {
                 ChemicalAPI.ListCode()
-                    .callAsList<GHSCode>()
+                    .call<List<GHSCode>>("items")
                     .doOnSucceed {
                         Timber.tag(TAG).d(
                             "refresh GHS: ${
