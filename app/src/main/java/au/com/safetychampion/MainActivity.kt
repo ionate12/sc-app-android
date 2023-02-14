@@ -20,15 +20,15 @@ import au.com.safetychampion.data.domain.core.dataOrNull
 import au.com.safetychampion.data.domain.core.errorOrNull
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.domain.uncategory.AppToken
+import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.databinding.ActivityMainBinding
 import au.com.safetychampion.util.AssetsManager
-import au.com.safetychampion.util.koinGet
-import kotlinx.coroutines.*
+import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzUyMjIwMjksImV4cCI6MTY3NTMwODQyOX0.FNfue_TFsrsvCTOiQE98pNLLl4KpRJALEDmxNz49aYI"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjVlZmJlYmE0YzZiYWMzMTYxOWUxMWJlNCJ9LCJpYXQiOjE2NzYzNTY0NDIsImV4cCI6MTY3NjQ0Mjg0Mn0.LFvNu8iRSVXQIjr_CjhAlxlsHD1VcbMZ_D_sHWTLna8"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -41,12 +41,24 @@ class MainActivity : AppCompatActivity() {
         "Assign Task Status Many (tasks/assign/status)" to suspend { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask(), 3) },
         "Assign Task" to suspend { viewModel.assignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem(), index = 4) },
         "UnAssign Task" to suspend { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem(), index = 5) },
-        "Create new action" to suspend { viewModel.createNewAction(payload = sampleData.getNewAction(), attachments = emptyList(), index = 6) },
+        "Create new action" to suspend { viewModel.createNewAction(payload = sampleData.getNewAction(), index = 6) },
         "List Action" to suspend { viewModel.getListAction(7) },
         "Get Action SignOff" to suspend { viewModel.getActionSignOff(actionId = sampleData.getActionId(), id = sampleData.getSampleTask()._id, index = 8) },
-        "Edit Action" to suspend { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList(), index = 9) },
+        "Edit Action" to suspend {
+            viewModel.editAction(
+                actionPL = sampleData.getEditAction(),
+                id = sampleData.getEditAction()._id!!,
+                index = 9
+            )
+        },
         "Get List Banner" to suspend { viewModel.getListBanner(10) },
-        "Edit Action" to suspend { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList(), index = 11) },
+        "Edit Action" to suspend {
+            viewModel.editAction(
+                actionPL = sampleData.getEditAction(),
+                id = sampleData.getEditAction()._id!!,
+                index = 11
+            )
+        },
         "Refresh GHS code" to suspend { viewModel.refreshGHS(12) },
         "Refresh Chemical" to suspend { viewModel.refreshChemical(13) },
         "Get Chemical Signoff" to suspend {
@@ -59,23 +71,24 @@ class MainActivity : AppCompatActivity() {
 
         "Signoff Action" to suspend {
             viewModel.signOffAction(
-                actionId = sampleData.getActionId(),
-                attachments = emptyList(),
-                payload = sampleData.getActionTask(),
-                pendingAction = sampleData.getPendingActionPL(),
+                actionSignOff = TODO("Add sample actionSignoff"),
                 index = 15
             )
         },
         "Signoff Chemical" to suspend {
             viewModel.signoffChemical(
-                taskId = "61ad7aedb3ea32726aac3522",
-                moduleId = "61ad7aedb3ea32726aac3523",
-                task = sampleData.getChemicalTask(),
-                attachments = emptyList(),
+                signoff = TODO("Add sample chemicalSignoff"),
                 index = 16
 
             )
-        }
+        },
+        "Get Crisk List" to suspend { viewModel.getListCrisk(17) },
+        "Get Crisk HrLookup" to suspend { viewModel.getListHrLookup(18) },
+        "Get Crisk Contractor Lookup" to suspend { viewModel.getListContractorLookup(19) },
+        "Get Crisk Signoff" to suspend { viewModel.getCriskSignoff(taskId = "63a2584497f7ee1e8d3d6369", criskId = "633fa33f4d59ca38fe91336e", index = 20) },
+        "Get Crisk" to suspend { viewModel.getCrisk(criskId = "633fa33f4d59ca38fe91336e", index = 21) },
+        "Crisk Evidence" to suspend { viewModel.getCriskEvidence(criskId = "633fa33f4d59ca38fe91336e", index = 22) },
+        "Archive Crisk" to suspend { viewModel.archiveCrisk(criskId = "633fa33f4d59ca38fe91336e", payload = sampleData.getCriskArchivePL(), index = 23) }
 
     )
 
@@ -151,7 +164,7 @@ class MainActivity : AppCompatActivity() {
 
             loadAllJob = lifecycleScope.launch(Dispatchers.Default) {
                 listUseCase.forEach {
-                    it.second.invoke()
+                    launch { it.second.invoke() }
                 }
             }
         }
