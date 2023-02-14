@@ -11,6 +11,7 @@ import au.com.safetychampion.data.data.common.ITaskRepository
 import au.com.safetychampion.data.data.common.TaskRepositoryImpl
 import au.com.safetychampion.data.data.crisk.CriskRepositoryImpl
 import au.com.safetychampion.data.data.crisk.ICriskRepository
+import au.com.safetychampion.data.data.local.SyncableRepository
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -21,6 +22,7 @@ internal val repositoryModule = module {
     singleOf<IBannerRepository>(::BannerRepositoryImpl)
     singleOf<IChemicalRepository>(::ChemicalRepositoryImpl)
     singleOf<ICriskRepository>(::CriskRepositoryImpl)
+    singleOf(::SyncableRepository)
 
     single<RestApi> { get<INetworkManager>().retrofit.create(RestApi::class.java) }
 }
