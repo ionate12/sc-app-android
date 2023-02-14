@@ -2,7 +2,6 @@ package au.com.safetychampion.data.domain.core
 
 import au.com.safetychampion.data.data.handleAPIError
 import au.com.safetychampion.data.util.extension.isNullOrEmpty
-import au.com.safetychampion.data.util.extension.parseList
 import au.com.safetychampion.data.util.extension.parseObject
 import com.google.gson.JsonObject
 
@@ -21,38 +20,27 @@ data class APIResponse(
         val message: List<String>
     )
 }
-// data class SyncableResponse(
-//    override val success: Boolean,
-//    val msg: String,
-//    val extras: Map<String, Any>? = null // Temporary set as Map
-// ) : IResponse
 
-suspend inline fun <reified T> APIResponse.toItem(
-    responseObjName: String = "item"
+inline fun <reified T> APIResponse.toItem(
+    objName: String? = null
 ): Result<T> {
     return when (this.success) {
         true -> {
             if (this.result.isNullOrEmpty()) {
                 Result.Error(SCError.EmptyResult)
             } else {
-                Result.Success(result!![responseObjName].parseObject())
-            }
-        }
-        false -> {
-            return Result.Error(
-                handleAPIError(error)
-            )
-        }
-    }
-}
-
-suspend inline fun <reified T> APIResponse.toItems(objName: String = "items"): Result<List<T>> {
-    return when (success) {
-        true -> {
-            if (result.isNullOrEmpty()) {
-                Result.Error(SCError.EmptyResult)
-            } else {
-                Result.Success(result!![objName].parseList())
+                val mObjName = objName ?: when {
+                    result!!.has("item") -> "item"
+                    result.has("items") -> "items"
+                    else -> null
+                }
+                Result.Success(
+                    if (mObjName == null) {
+                        result!!.parseObject()
+                    } else {
+                        result!![mObjName].parseObject()
+                    }
+                )
             }
         }
         false -> {

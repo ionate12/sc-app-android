@@ -22,12 +22,12 @@ import kotlinx.coroutines.withContext
 
 class CriskRepositoryImpl : BaseRepository(), ICriskRepository {
     override suspend fun list(): Result<List<Crisk>> {
-        return CriskAPI.List().callAsList()
+        return CriskAPI.List().call()
     }
 
     override suspend fun hrLookup(): Result<List<HrLookupItem>> {
         return CriskAPI.HrLookUp()
-            .callAsList<List<String>>()
+            .call<List<List<String>>>()
             .flatMap {
                 Result.Success(
                     it.map(HrLookupItem::fromRawData)
@@ -37,7 +37,7 @@ class CriskRepositoryImpl : BaseRepository(), ICriskRepository {
 
     override suspend fun contractorLookup(): Result<List<ContractorLookup>> {
         return CriskAPI.ContractorLookUp()
-            .callAsList<List<Any>>("records")
+            .call<List<List<Any>>>("records")
             .flatMap {
                 Result.Success(
                     it.map(ContractorLookup::fromRawData)
@@ -59,7 +59,7 @@ class CriskRepositoryImpl : BaseRepository(), ICriskRepository {
     override suspend fun evidences(criskId: String): Result<List<UpdateLogListItem>> {
         return CriskAPI.Tasks(
             criskId = criskId
-        ).callAsList<CriskEvidenceTask>()
+        ).call<List<CriskEvidenceTask>>()
             .flatMap {
                 Result.Success(
                     it.map(

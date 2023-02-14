@@ -12,11 +12,11 @@ import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
 class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
 
     override suspend fun list(): Result<List<Chemical>> {
-        return ChemicalAPI.List().callAsList()
+        return ChemicalAPI.List().call()
     }
 
     override suspend fun ghsCode(): Result<List<GHSCode>> {
-        return ChemicalAPI.ListCode().callAsList()
+        return ChemicalAPI.ListCode().call()
     }
 
     override suspend fun fetch(moduleId: String): Result<Chemical> {
