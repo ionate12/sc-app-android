@@ -1,59 +1,34 @@
 package au.com.safetychampion.data.domain.usecase
 
-import au.com.safetychampion.data.data.common.TaskDAO
+import au.com.safetychampion.data.data.local.SyncableRepository
+import au.com.safetychampion.data.domain.base.BaseSignOff
+import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.manager.IOfflineConverter
-import au.com.safetychampion.util.koinInject
+import au.com.safetychampion.data.util.extension.koinInject
 
 /**
  * A base use-case with caching implementation to provide data for sign-off feature,
  * also save data to database whenever we fetch it from remote datasource
  **/
 
-abstract class BasePrepareSignoffUseCase<T> : BaseUseCase() {
+abstract class BasePrepareSignoffUseCase<R : BaseTask, T : BaseSignOff<R>> : BaseUseCase() {
 
-    protected val offlineTaskRepo: TaskDAO by koinInject()
+    private val syncableRepo: SyncableRepository by koinInject()
 
-    protected val offlineTaskConverter: IOfflineConverter by koinInject()
-
-    /**
-     * @return true if this task was closed, false otherwise
-     */
-    protected open fun closedCheck(it: T?): Boolean = false
-
-    protected open fun fromDatabase(): T? {
-        TODO()
+    private suspend fun <T> fromSyncable(moduleId: String, taskId: String?): Result<T> {
+        val key = getSyncableKey(moduleId, taskId)
+        return syncableRepo.getSyncableData(key)
     }
 
-    protected open fun insertToDatabase(data: T?) {
-    }
+    abstract suspend fun fetchData(moduleId: String, taskId: String? = null): Result<T>
 
-    protected suspend inline fun fromOfflineTaskFirst(
-        offlineTaskId: String?,
-        crossinline remote: suspend () -> Result<T>
-    ): Result<T> {
-        val offData: T? = offlineTaskConverter.toObject(
-            offlineTask = offlineTaskRepo.getOfflineTask(offlineTaskId)
-        )
-        if (offData != null) {
-            return Result.Success(offData)
+    abstract fun getSyncableKey(moduleId: String, taskId: String? = null): String
+
+    suspend operator fun invoke(moduleId: String, taskId: String? = null): Result<T> {
+        val synableData = fromSyncable<Result<T>>(moduleId, taskId).dataOrNull()
+        if (synableData != null) {
+            return synableData
         }
-
-        return remote.invoke()
-            .flatMap {
-                insertToDatabase(it)
-                if (closedCheck(it)) {
-                    Result.Error(SCError.AlreadySignedOff)
-                } else {
-                    Result.Success(it)
-                }
-            }
-            .flatMapError {
-                if (it is SCError.NoNetwork) {
-                    Result.Success(fromDatabase())
-                } else {
-                    Result.Error(it)
-                }
-            }
+        return fetchData(moduleId, taskId)
     }
 }

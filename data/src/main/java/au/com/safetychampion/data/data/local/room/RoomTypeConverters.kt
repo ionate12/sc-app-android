@@ -2,7 +2,7 @@ package au.com.safetychampion.data.data.local.room
 
 import androidx.room.TypeConverter
 import au.com.safetychampion.data.domain.manager.IGsonManager
-import au.com.safetychampion.util.koinGet
+import au.com.safetychampion.data.util.extension.koinGet
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
 import java.util.Date

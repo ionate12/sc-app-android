@@ -2,9 +2,9 @@ package au.com.safetychampion
 
 import au.com.safetychampion.data.di.dataModule
 import au.com.safetychampion.data.domain.manager.IDispatchers
+import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.di.appModules
 import au.com.safetychampion.di.commonModule
-import au.com.safetychampion.util.koinGet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

@@ -1,8 +1,8 @@
 package au.com.safetychampion.data.domain.core
 
 import au.com.safetychampion.data.data.handleAPIError
-import au.com.safetychampion.data.util.extension.itemOrNull
-import au.com.safetychampion.data.util.extension.listOrEmpty
+import au.com.safetychampion.data.util.extension.isNullOrEmpty
+import au.com.safetychampion.data.util.extension.parseObject
 import com.google.gson.JsonObject
 
 interface IResponse {
@@ -20,47 +20,27 @@ data class APIResponse(
         val message: List<String>
     )
 }
-// data class SyncableResponse(
-//    override val success: Boolean,
-//    val msg: String,
-//    val extras: Map<String, Any>? = null // Temporary set as Map
-// ) : IResponse
 
 inline fun <reified T> APIResponse.toItem(
-    responseObjName: String? = "item"
+    objName: String? = null
 ): Result<T> {
     return when (this.success) {
         true -> {
-            if (this.result == null) {
+            if (this.result.isNullOrEmpty()) {
                 Result.Error(SCError.EmptyResult)
             } else {
-                if (T::class == Unit::class) {
-                    Result.Success(Unit)
+                val mObjName = objName ?: when {
+                    result!!.has("item") -> "item"
+                    result.has("items") -> "items"
+                    else -> null
                 }
-                val jElement = responseObjName?.let { result[responseObjName] } ?: result
                 Result.Success(
-                    jElement.itemOrNull()
+                    if (mObjName == null) {
+                        result!!.parseObject()
+                    } else {
+                        result!![mObjName].parseObject()
+                    }
                 )
-            }
-        }
-        false -> {
-            return Result.Error(
-                handleAPIError(error)
-            )
-        }
-    }
-}
-
-inline fun <reified T> APIResponse.toItems(): Result<List<T>> {
-    return when (success) {
-        true -> {
-            if (result == null) {
-                Result.Error(SCError.EmptyResult)
-            } else {
-                if (T::class == Unit::class) {
-                    Result.Success(Unit)
-                }
-                Result.Success(result["items"].listOrEmpty())
             }
         }
         false -> {

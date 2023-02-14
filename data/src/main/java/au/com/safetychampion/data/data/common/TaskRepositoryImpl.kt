@@ -11,15 +11,15 @@ import au.com.safetychampion.data.domain.models.task.Task
 
 class TaskRepositoryImpl : BaseRepository(), ITaskRepository {
     override suspend fun getAllActiveTask(body: ActiveTaskPL): Result<List<Task>> {
-        return TaskAPI.Active(body).callAsList()
+        return TaskAPI.Active(body).call()
     }
 
     override suspend fun assignTaskStatus(body: AssignTaskStatusPL): Result<List<TaskAssignStatusItem>> {
-        return TaskAPI.AssignTaskStatus(body).callAsList()
+        return TaskAPI.AssignTaskStatus(body).call()
     }
 
     override suspend fun assignTaskStatusMany(body: AssignTaskStatusManyPL): Result<List<TaskAssignStatusItem>> {
-        return TaskAPI.AssignTaskStatusMany(body).callAsList()
+        return TaskAPI.AssignTaskStatusMany(body).call()
     }
 
     override suspend fun assignTask(body: AssignTaskStatusPL): Result<Task> {

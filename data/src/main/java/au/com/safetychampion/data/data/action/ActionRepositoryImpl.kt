@@ -2,50 +2,39 @@ package au.com.safetychampion.data.data.action
 
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.ActionApi
-import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.models.SignoffStatus
-import au.com.safetychampion.data.domain.models.action.ActionLink
+import au.com.safetychampion.data.domain.models.action.Action
 import au.com.safetychampion.data.domain.models.action.ActionTask
+import au.com.safetychampion.data.domain.models.action.ActionTaskPL
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
-import au.com.safetychampion.data.domain.models.action.network.ActionSignOffPL
+import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class ActionRepositoryImpl : BaseRepository(), IActionRepository {
-
     override suspend fun createAction(
-        payload: ActionPL,
-        attachments: List<Attachment>
-    ): Result<ActionPL> {
-        return ActionApi.New(payload, attachments).call()
+        payload: ActionPL
+    ): Result<Action> {
+        return ActionApi.New(payload).call()
     }
 
-    override suspend fun createPendingAction(
-        payload: ActionPL,
-        attachments: List<Attachment>
-    ): Result<ActionLink> {
-        return ActionApi.New(payload, attachments).call()
-    }
-
-    override suspend fun fetchAction(taskId: String): Result<ActionPL> {
+    override suspend fun fetchAction(taskId: String): Result<Action> {
         return ActionApi.Fetch(taskId).call()
     }
 
     override suspend fun editAction(
-        taskId: String,
-        payload: ActionPL,
-        attachments: List<Attachment>
-    ): Result<Unit> {
-        return ActionApi.Edit(taskId, payload, attachments).call()
+        actionId: String,
+        payload: ActionPL
+    ): Result<Action> {
+        return ActionApi.Edit(actionId, payload).call()
     }
 
     override suspend fun task(taskId: String): Result<ActionTask> {
         return ActionApi.Task(taskId).call()
     }
 
-    override suspend fun combineFetchAndTask(actionID: String): Result<ActionSignOffPL> {
+    override suspend fun combineFetchAndTask(actionID: String): Result<ActionSignOff> {
         return withContext(dispatchers.io) {
             val actionFetch = async { fetchAction(actionID) }
             val taskFetch = async { task(actionID) }
@@ -53,18 +42,19 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
             val fetch = actionFetch.await()
             val task = taskFetch.await()
 
+            // TODO: Need refactor precondition checks!!
             return@withContext when {
                 fetch.errorOrNull() is SCError.NoNetwork || task.errorOrNull() is SCError.NoNetwork -> Result.Error(
                     SCError.NoNetwork
                 )
-                fetch is Result.Error || task is Result.Error -> { Result.Error(err = fetch.errorOrNull() ?: task.errorOrNull()!!) }
+                fetch is Result.Error || task is Result.Error -> {
+                    Result.Error(err = fetch.errorOrNull() ?: task.errorOrNull()!!)
+                }
                 else -> {
                     val _task = task.dataOrNull()!!
                     val _fetch = fetch.dataOrNull()!!
                     Result.Success(
-                        data = ActionSignOffPL(
-                            _id = _task._id,
-                            moduleId = _fetch._id,
+                        data = ActionSignOff(
                             body = _fetch,
                             task = _task
                         )
@@ -75,40 +65,13 @@ class ActionRepositoryImpl : BaseRepository(), IActionRepository {
     }
 
     override suspend fun list(body: BasePL?): Result<List<ActionPL>> {
-        return ActionApi.List(body).callAsList()
+        return ActionApi.List(body).call()
     }
 
-    override suspend fun signoff(
-        actionId: String,
-        payload: ActionTask,
-        photos: List<Attachment>?
-    ): Result<SignoffStatus.OnlineCompleted> {
+    override suspend fun signoff(actionId: String, payload: ActionTaskPL): Result<ActionTask> {
         return ActionApi.Signoff(
             actionId = actionId,
-            body = payload,
-            photos = photos ?: listOf()
-        )
-            .call<SignoffStatus.OnlineCompleted>()
-            .doOnSucceed {
-                it.moduleName = ModuleName.ACTION.name
-                it.title = "Title1234"
-            }
-    }
-
-    override suspend fun save(
-        actionId: String,
-        payload: ActionTask,
-        photos: List<Attachment>?
-    ): Result<SignoffStatus.OnlineSaved> {
-        return ActionApi.Signoff(
-            actionId = actionId,
-            body = payload,
-            photos = photos ?: listOf()
-        )
-            .call<SignoffStatus.OnlineSaved>()
-            .doOnSucceed {
-                it.moduleName = ModuleName.ACTION.name
-                it.title = "Title1234"
-            }
+            body = payload
+        ).call()
     }
 }

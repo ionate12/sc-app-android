@@ -1,72 +1,31 @@
 package au.com.safetychampion.data.domain.usecase
 
-import au.com.safetychampion.data.data.common.TaskDAO
-import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.SCError
-import au.com.safetychampion.data.domain.core.flatMapError
-import au.com.safetychampion.data.domain.manager.IOfflineConverter
-import au.com.safetychampion.data.domain.models.SignoffStatus
-import au.com.safetychampion.data.domain.usecase.action.OfflineTask
-import au.com.safetychampion.data.domain.usecase.action.OfflineTaskInfo
-import au.com.safetychampion.util.koinInject
+import au.com.safetychampion.data.data.local.SyncableRepository
+import au.com.safetychampion.data.domain.base.BaseSignOff
+import au.com.safetychampion.data.domain.base.BaseTask
+import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.util.extension.koinInject
 
-abstract class BaseSignoffUseCase<T : OfflineTaskInfo> : BaseUseCase() {
+abstract class BaseSignoffUseCase<R : BaseTask, T : BaseSignOff<R>> : BaseUseCase() {
+    private val syncableRepo: SyncableRepository by koinInject()
 
-    private val offlineTaskConverter by koinInject<IOfflineConverter>()
-
-    private val taskDAO by koinInject<TaskDAO>()
-
-    private fun newOfflineTask(data: T): OfflineTask {
-        return offlineTaskConverter.toOfflineTask(data)
+    private suspend fun storeOrReplace(payload: T): Result<R> {
+        syncableRepo.insert(payload.syncableKey(), payload)
+        return Result.Success(payload.task)
     }
 
-    private fun overwrite(param: T): Result<SignoffStatus.OfflineCompleted>? {
-        return taskDAO.getOfflineTask(
-            taskId = param.id
-        )?.let {
-            taskDAO.insertOfflineTask(
-                // TODO("overwrite here")
-                it
-            )
-            return Result.Success(
-                SignoffStatus.OfflineCompleted(
-                    title = param.title,
-                    moduleName = param.moduleName.value,
-                    isOverwritten = true
-                )
-            )
-        }
-    }
+    protected abstract suspend fun signoffOnline(payload: T): Result<R>
 
-    private suspend fun signOff(param: T): Result<SignoffStatus> {
-        return signoffInternal(param)
-            .flatMapError {
-                if (it is SCError.NoNetwork) {
-                    // No internet connection case
-                    taskDAO.insertOfflineTask(
-                        newOfflineTask(param)
-                    )
-                    return@flatMapError Result.Success(
-                        SignoffStatus.OfflineCompleted(
-                            title = param.title,
-                            moduleName = param.moduleName.value,
-                            isOverwritten = false
-                        )
-                    )
+    suspend operator fun invoke(payload: T): Result<R> {
+        return if (syncableRepo.hasSyncable(payload.syncableKey())) {
+            storeOrReplace(payload)
+        } else {
+            signoffOnline(payload).flatMapError {
+                when (it) {
+                    is SCError.NoNetwork -> { storeOrReplace(payload) }
+                    else -> Result.Error(it)
                 }
-                return@flatMapError Result.Error(
-                    SCError.SignOffFailed(
-                        title = param.title,
-                        moduleName = param.moduleName.value,
-                        details = it.toString()
-                    )
-                )
             }
-    }
-
-    protected abstract suspend fun signoffInternal(param: T): Result<SignoffStatus>
-
-    suspend operator fun invoke(param: T): Result<SignoffStatus> {
-        return overwrite(param) ?: signOff(param)
+        }
     }
 }
