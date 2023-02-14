@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.models.visitor
+package au.com.safetychampion.data.visitor.domain.models
 
 import au.com.safetychampion.data.domain.models.ManualQRCodeInputModel
 

@@ -40,6 +40,10 @@ fun Any.toJsonString(
     return (customGson ?: koinGet<IGsonManager>().gson).toJson(this@toJsonString)
 }
 
+fun jsonObjectOf(src: Any, customGson: Gson? = null): JsonObject? {
+    return (customGson ?: koinGet<IGsonManager>().gson).toJsonTree(src).asJsonObject
+}
+
 /**
  * @return true if this JsonObject is null or its string representation is equal to "{}", false otherwise.
  */

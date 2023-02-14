@@ -3,9 +3,19 @@ package au.com.safetychampion.data.data.local.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import au.com.safetychampion.data.visitor.data.VisitorActivityEntity
+import au.com.safetychampion.data.visitor.data.VisitorSiteEntity
+import au.com.safetychampion.data.visitor.data.local.VisitorDAO
+import au.com.safetychampion.data.visitor.domain.models.VisitorProfileEntity
 
 @Database(
-    entities = [StorableEntity::class, SyncableEntity::class],
+    entities = [
+        StorableEntity::class,
+        SyncableEntity::class,
+        VisitorActivityEntity::class,
+        VisitorProfileEntity::class,
+        VisitorSiteEntity::class
+    ],
     version = AppDatabase.VERSION,
     exportSchema = false
 )
@@ -17,4 +27,5 @@ abstract class AppDatabase : RoomDatabase() {
     }
     internal abstract fun storableDao(): StorableDao
     internal abstract fun syncableDao(): SyncableDao
+    internal abstract fun visitorDao(): VisitorDAO
 }
