@@ -13,7 +13,6 @@ import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.core.flatMap
 import au.com.safetychampion.data.domain.core.toItem
 import au.com.safetychampion.data.domain.manager.IDispatchers
-import au.com.safetychampion.data.domain.manager.IFileManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.domain.models.IPendingActionPL
 import au.com.safetychampion.data.domain.models.action.Action
@@ -24,9 +23,7 @@ import kotlinx.coroutines.withContext
 abstract class BaseRepository {
     protected val dispatchers: IDispatchers by koinInject()
 
-    protected val networkManager: INetworkManager by koinInject()
-
-    protected val fileContentManager: IFileManager by koinInject()
+    private val networkManager: INetworkManager by koinInject()
 
     private val restAPI: RestApi by koinInject()
 
@@ -114,7 +111,6 @@ abstract class BaseRepository {
             }
             else -> Result.Success(results.mapNotNull { it.dataOrNull() })
         }
-//        iPendingAction.onPendingActionsCreated(results.mapNotNull { it.dataOrNull() })
     }
 
     private suspend fun NetworkAPI.handleOffline(): Result<APIResponse> = withContext(dispatchers.default) {
