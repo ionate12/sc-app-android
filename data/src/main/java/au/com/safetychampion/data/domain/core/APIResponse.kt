@@ -2,7 +2,6 @@ package au.com.safetychampion.data.domain.core
 
 import au.com.safetychampion.data.data.handleAPIError
 import au.com.safetychampion.data.util.extension.isNullOrEmpty
-import au.com.safetychampion.data.util.extension.parseList
 import au.com.safetychampion.data.util.extension.parseObject
 import com.google.gson.JsonObject
 
@@ -27,7 +26,7 @@ data class APIResponse(
 //    val extras: Map<String, Any>? = null // Temporary set as Map
 // ) : IResponse
 
-suspend inline fun <reified T> APIResponse.toItem(
+inline fun <reified T> APIResponse.toItem(
     responseObjName: String = "item"
 ): Result<T> {
     return when (this.success) {
@@ -46,13 +45,13 @@ suspend inline fun <reified T> APIResponse.toItem(
     }
 }
 
-suspend inline fun <reified T> APIResponse.toItems(objName: String = "items"): Result<List<T>> {
+inline fun <reified T> APIResponse.toItems(objName: String = "items"): Result<List<T>> {
     return when (success) {
         true -> {
             if (result.isNullOrEmpty()) {
                 Result.Error(SCError.EmptyResult)
             } else {
-                Result.Success(result!![objName].parseList())
+                Result.Success(result!![objName].parseObject())
             }
         }
         false -> {
