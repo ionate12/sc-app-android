@@ -1,5 +1,6 @@
 package au.com.safetychampion.data.data.api
 
+import au.com.safetychampion.data.data.local.IStorable
 import au.com.safetychampion.data.domain.models.action.network.ActiveTaskPL
 import au.com.safetychampion.data.domain.models.action.network.AssignTaskStatusManyPL
 import au.com.safetychampion.data.domain.models.action.network.AssignTaskStatusPL
@@ -10,7 +11,9 @@ interface TaskAPI {
     ) : NetworkAPI.Post(
         path = "tasks/list/active",
         body = body
-    )
+    ),
+        IStorable
+
     class AssignTaskStatus(
         body: AssignTaskStatusPL
     ) : NetworkAPI.Post(
