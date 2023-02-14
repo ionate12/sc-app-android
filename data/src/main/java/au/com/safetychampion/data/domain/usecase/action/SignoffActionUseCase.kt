@@ -1,53 +1,32 @@
 package au.com.safetychampion.data.domain.usecase.action
 
-import android.graphics.Bitmap
 import au.com.safetychampion.data.data.action.IActionRepository
 import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.SignaturePayload
 import au.com.safetychampion.data.domain.base.BaseTask
-import au.com.safetychampion.data.domain.core.ModuleName
+import au.com.safetychampion.data.domain.core.ModuleType
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.SignoffStatus
-import au.com.safetychampion.data.domain.models.action.ActionLink
+import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.action.ActionTask
+import au.com.safetychampion.data.domain.models.action.ActionTaskPL
+import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
-import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import au.com.safetychampion.data.domain.usecase.BaseSignoffUseCase
+import au.com.safetychampion.data.util.extension.koinInject
 
-class SignoffActionUseCase(repository: IActionRepository) : BaseSignoffUseCase<ActionSignoffParams, ActionTask>(repository) {
-    override fun onPayloadModifications(
-        mutablePayload: ActionTask,
-        actionLinks: List<ActionLink>?,
-        docAttachments: List<DocAttachment>?,
-        signatures: Pair<List<DocAttachment>, List<SignaturePayload>>?
-    ) {
-        if (actionLinks != null) {
-            mutablePayload.links?.clear()
-            mutablePayload.links?.addAll(actionLinks)
-        }
+class SignoffActionUseCase : BaseSignoffUseCase<ActionTask, ActionSignOff>() {
+    private val repo: IActionRepository by koinInject()
 
-        mutablePayload.attachment?.clear()
-        if (docAttachments != null) {
-            mutablePayload.attachment?.addAll(docAttachments)
-        }
-
-//        if (signatures != null) {
-//            mutableParams.attachment.addAll(signatures.first)
-//            mutableParams.signaturePayload.clear()
-//            mutableParams.signaturePayload.addAll(signatures.second)
-//        }
-    }
-    override suspend fun invoke(params: ActionSignoffParams): Result<SignoffStatus> {
-        return signoff(params)
+    override suspend fun signoffOnline(payload: ActionSignOff): Result<ActionTask> {
+        return repo.signoff(payload.body._id, ActionTaskPL.fromModel(payload.task))
     }
 }
 
 class ActionSignoffParams(
     val actionId: String,
     override val attachmentList: List<Attachment>,
-    override val moduleName: ModuleName,
+    override val moduleType: ModuleType,
     override val payload: ActionTask,
-    override val signaturesList: List<SignatureView>?,
+    override val signaturesList: List<Signature>?,
     override val title: String
 ) : SignoffParams()
 
@@ -59,27 +38,22 @@ abstract class SignoffParams {
 
     abstract val attachmentList: List<Attachment>
 
-    abstract val moduleName: ModuleName
+    abstract val moduleType: ModuleType
 
     /** Payload for signoff */
     abstract val payload: BaseTask
 
-    abstract val signaturesList: List<SignatureView>?
+    abstract val signaturesList: List<Signature>?
 
     abstract val title: String
 
     /** Pending action, will be submit before sign off. Can be null */
-    open val pendingAction: List<PendingActionPL>? = null
+    open val pendingAction: List<PendingActionPL> = listOf()
 
-    val offlineTitle: String get() = if (payload.complete == true) "[SIGN-OFF]" else "[SAVE] ${moduleName.value}: $title"
+    val offlineTitle: String get() = if (payload.complete == true) "[SIGN-OFF]" else "[SAVE] ${moduleType.value}: $title"
 }
 
 class OfflineTask(
     var title: String = "",
     var status: String = ""
-)
-
-class SignatureView(
-    val bitmap: Bitmap,
-    var name: String
 )

@@ -2,13 +2,20 @@ package au.com.safetychampion.data.data.crisk
 
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.CriskAPI
-import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.models.SignoffStatus
+import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.core.SCError
+import au.com.safetychampion.data.domain.core.dataOrNull
+import au.com.safetychampion.data.domain.core.errorOrNull
+import au.com.safetychampion.data.domain.core.flatMap
 import au.com.safetychampion.data.domain.models.UpdateLogListItem
 import au.com.safetychampion.data.domain.models.contractor.ContractorLookup
-import au.com.safetychampion.data.domain.models.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.models.crisk.Crisk
+import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
+import au.com.safetychampion.data.domain.models.crisk.CriskEvidenceTask
+import au.com.safetychampion.data.domain.models.crisk.CriskSignoff
+import au.com.safetychampion.data.domain.models.crisk.CriskTask
+import au.com.safetychampion.data.domain.models.crisk.CriskTaskPL
 import au.com.safetychampion.data.domain.models.hr.HrLookupItem
-import au.com.safetychampion.data.domain.usecase.crisk.CriskSignoffParams
 import com.google.gson.JsonObject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -90,7 +97,7 @@ class CriskRepositoryImpl : BaseRepository(), ICriskRepository {
                 fetch is Result.Error || task is Result.Error -> { Result.Error(err = fetch.errorOrNull() ?: task.errorOrNull()!!) }
                 else -> {
                     val _task = task.dataOrNull()!!
-                    val _fetch = fetch.dataOrNull() // TODO("this is notnull, fix bug in cusval first")
+                    val _fetch = fetch.dataOrNull()!! // TODO("this is notnull, fix bug in cusval first")
                     Result.Success(
                         data = CriskSignoff(
                             body = _fetch,
@@ -102,29 +109,11 @@ class CriskRepositoryImpl : BaseRepository(), ICriskRepository {
         }
     }
 
-    override suspend fun signoff(params: CriskSignoffParams): Result<SignoffStatus.OnlineCompleted> {
-        return CriskAPI.Signoff(
-            criskId = params.criskID,
-            taskId = params.id,
-            body = params.payload,
-            attachmentList = params.attachmentList
-        ).call<SignoffStatus.OnlineCompleted>()
-            .doOnSucceed {
-                it.moduleName = ModuleName.CRISK.name
-                it.title = "titleABC"
-            }
-    }
-
-    override suspend fun save(params: CriskSignoffParams): Result<SignoffStatus.OnlineSaved> {
-        return CriskAPI.Signoff(
-            criskId = params.criskID,
-            taskId = params.id,
-            body = params.payload,
-            attachmentList = params.attachmentList
-        ).call<SignoffStatus.OnlineSaved>()
-            .doOnSucceed {
-                it.moduleName = ModuleName.CRISK.name
-                it.title = "titleABC"
-            }
+    override suspend fun signoff(
+        criskId: String,
+        taskId: String,
+        payload: CriskTaskPL
+    ): Result<CriskTask> {
+        return CriskAPI.Signoff(criskId, taskId, payload).call()
     }
 }

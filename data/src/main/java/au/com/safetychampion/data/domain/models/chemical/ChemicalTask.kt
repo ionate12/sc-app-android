@@ -25,6 +25,6 @@ data class ChemicalTask(
     override val inExecution: Boolean? = null,
     override val tier: Tier? = null,
     override val title: String? = null,
-    override val _id: String? = null,
+    override val _id: String,
     override val type: String? = null
 ) : BasePL(), BaseTask

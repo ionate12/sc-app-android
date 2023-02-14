@@ -1,16 +1,33 @@
 package au.com.safetychampion.data.domain.models.crisk
 
-import au.com.safetychampion.data.domain.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.*
+import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.ForTask
+import au.com.safetychampion.data.domain.models.IAttachment
+import au.com.safetychampion.data.domain.models.ICusval
+import au.com.safetychampion.data.domain.models.IForceNullValues
+import au.com.safetychampion.data.domain.models.IPendingActionPL
+import au.com.safetychampion.data.domain.models.ISignature
+import au.com.safetychampion.data.domain.models.ISubcategoryCusval
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
-import au.com.safetychampion.data.domain.models.customvalues.CusvalPojo
+import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
+import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import com.google.gson.annotations.SerializedName
 
-data class CriskSignoffPayload(
+interface ICriskTaskPLComponents :
+    ICusval, ISubcategoryCusval, IAttachment, ISignature, IPendingActionPL, IForceNullValues {
+    override val forceNullKeys: List<String> get() = listOf(
+        "futureRiskRating",
+        "futureRiskRatingOther",
+        "futureMitigation"
+    )
+}
+
+data class CriskTaskPL(
     val _id: String? = null,
     val type: String? = null,
     val tier: Tier? = null,
@@ -33,10 +50,7 @@ data class CriskSignoffPayload(
     var riskOwner: String? = null,
     val riskOwnerOther: String? = null,
     val riskOwnerLinks: List<CriskOwnerLink>? = null,
-    val cusvals: List<CusvalPojo>? = null,
-    val subcategoryCusvals: List<CusvalPojo>? = null,
     val notes: String? = null,
-    val attachments: List<DocAttachment>? = null,
     val actionLinks: List<ActionLink>? = null,
     val dateIssued: String? = null,
     val dateExpiry: String? = null,
@@ -52,22 +66,29 @@ data class CriskSignoffPayload(
     val description: String? = null,
     val reviewNotes: String? = null,
     val dateCompleted: String? = null,
-    val signatures: List<SignaturePayload>? = null,
     val recurrent: Boolean? = null,
-    val tzDateSignedoff: String? = null
-) {
+    val tzDateSignedoff: String? = null,
+    override var attachments: MutableList<Attachment>,
+    override var signatures: MutableList<Signature>,
+    override var cusvals: MutableList<CustomValue>,
+    override var subcategoryCusvals: MutableList<CustomValue>,
+    override var pendingActions: MutableList<PendingActionPL>
+) : BasePL(), ICriskTaskPLComponents {
+
+    companion object {
+        fun fromModel(model: CriskTask): CriskTaskPL {
+            TODO("create criskTaskPL")
+        }
+    }
+
+    override fun onPendingActionsCreated(links: List<ActionLink>): CriskTaskPL {
+        return this.copy(actionLinks = (this.actionLinks ?: listOf()) + links)
+    }
+
     data class ArchivalDetails(
         val notes: String? = null,
         val by: CreatedBy? = null,
         val tz: String? = null,
         val date: String? = null
     )
-
-    companion object {
-        val forceNullValues = listOf(
-            "futureRiskRating",
-            "futureRiskRatingOther",
-            "futureMitigation"
-        )
-    }
 }

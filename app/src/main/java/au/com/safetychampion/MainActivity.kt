@@ -41,12 +41,24 @@ class MainActivity : AppCompatActivity() {
         "Assign Task Status Many (tasks/assign/status)" to suspend { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask(), 3) },
         "Assign Task" to suspend { viewModel.assignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem(), index = 4) },
         "UnAssign Task" to suspend { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem(), index = 5) },
-        "Create new action" to suspend { viewModel.createNewAction(payload = sampleData.getNewAction(), attachments = emptyList(), index = 6) },
+        "Create new action" to suspend { viewModel.createNewAction(payload = sampleData.getNewAction(), index = 6) },
         "List Action" to suspend { viewModel.getListAction(7) },
         "Get Action SignOff" to suspend { viewModel.getActionSignOff(actionId = sampleData.getActionId(), id = sampleData.getSampleTask()._id, index = 8) },
-        "Edit Action" to suspend { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList(), index = 9) },
+        "Edit Action" to suspend {
+            viewModel.editAction(
+                actionPL = sampleData.getEditAction(),
+                id = sampleData.getEditAction()._id!!,
+                index = 9
+            )
+        },
         "Get List Banner" to suspend { viewModel.getListBanner(10) },
-        "Edit Action" to suspend { viewModel.editAction(actionPL = sampleData.getEditAction(), id = sampleData.getEditAction()._id!!, attachments = emptyList(), index = 11) },
+        "Edit Action" to suspend {
+            viewModel.editAction(
+                actionPL = sampleData.getEditAction(),
+                id = sampleData.getEditAction()._id!!,
+                index = 11
+            )
+        },
         "Refresh GHS code" to suspend { viewModel.refreshGHS(12) },
         "Refresh Chemical" to suspend { viewModel.refreshChemical(13) },
         "Get Chemical Signoff" to suspend {
@@ -59,19 +71,13 @@ class MainActivity : AppCompatActivity() {
 
         "Signoff Action" to suspend {
             viewModel.signOffAction(
-                actionId = sampleData.getActionId(),
-                attachments = emptyList(),
-                payload = sampleData.getActionTask(),
-                pendingAction = sampleData.getPendingActionPL(),
+                actionSignOff = TODO("Add sample actionSignoff"),
                 index = 15
             )
         },
         "Signoff Chemical" to suspend {
             viewModel.signoffChemical(
-                taskId = "61ad7aedb3ea32726aac3522",
-                moduleId = "61ad7aedb3ea32726aac3523",
-                task = sampleData.getChemicalTask(),
-                attachments = emptyList(),
+                signoff = TODO("Add sample chemicalSignoff"),
                 index = 16
 
             )

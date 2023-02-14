@@ -3,23 +3,16 @@ package au.com.safetychampion.data.data.api
 import au.com.safetychampion.data.data.local.IStorable
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
-import au.com.safetychampion.data.domain.models.crisk.CriskTask
+import au.com.safetychampion.data.domain.models.crisk.CriskTaskPL
 
 interface CriskAPI {
     class List(
         body: BasePL = BasePL.empty()
-    ) : NetworkAPI.Post(
-        path = "crisks/list",
-        body = body
-    ),
-        IStorable
+    ) : NetworkAPI.Post(path = "crisks/list", body = body), IStorable
 
     class HrLookUp(
         body: BasePL = BasePL.empty()
-    ) : NetworkAPI.Post(
-        path = "crisks/hrlookup",
-        body = body
-    )
+    ) : NetworkAPI.Post(path = "crisks/hrlookup", body = body)
 
     class ContractorLookUp(
         body: BasePL = BasePL.empty()
@@ -30,33 +23,24 @@ interface CriskAPI {
 
     class Fetch(
         criskId: String
-    ) : NetworkAPI.Get(
-        path = "/crisks/$criskId/fetch"
-    ),
-        IStorable
+    ) : NetworkAPI.Get(path = "/crisks/$criskId/fetch"), IStorable
 
     class Tasks(
         criskId: String,
         taskId: String = ""
-    ) : NetworkAPI.Get(
-        path = "/crisks/$criskId/tasks/$taskId"
-    )
+    ) : NetworkAPI.Get(path = "/crisks/$criskId/tasks/$taskId"), IStorable
 
     class LinkedActions(
         criskId: String
-    ) : NetworkAPI.Get(
-        path = "/crisks/$criskId/links/actions"
-    )
+    ) : NetworkAPI.Get(path = "/crisks/$criskId/links/actions"), IStorable
 
     class Signoff(
         criskId: String,
         taskId: String,
-        body: CriskTask,
-        attachmentList: AttachmentList
+        body: CriskTaskPL
     ) : NetworkAPI.PostMultiParts(
         path = "/crisks/$criskId/tasks/$taskId/signoff",
-        body = body,
-        attachment = attachmentList
+        body = body
     )
 
     class Archive(

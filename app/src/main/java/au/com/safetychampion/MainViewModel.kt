@@ -1,16 +1,13 @@
 package au.com.safetychampion
 
-import GetActionSignOffDetailsUseCase
+import PrepareSignoffActionUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.core.ModuleName
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
-import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
-import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
+import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
+import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
@@ -37,20 +34,20 @@ class MainViewModel : ViewModel() {
 
     private val newActionUseCase: CreateActionUseCase by koinInject()
     private val allAction: GetListActionUseCase by koinInject()
-    private val getActionSignOffDetailsUseCase: GetActionSignOffDetailsUseCase by koinInject()
+    private val prepareSignoffActionUseCase: PrepareSignoffActionUseCase by koinInject()
     private val editActionUseCase: EditActionUseCase by koinInject()
     private val signOffActionUseCase: SignoffActionUseCase by koinInject()
 
     private val getListBannerUseCase: GetListBannerUseCase by koinInject()
-    private val getChemicalSignoffDetailsUseCase: GetChemicalSignoffDetailUseCase by koinInject()
-    private val refreshGHSCodeUseCase: RefreshGHSCodeUseCase by koinInject()
-    private val refreshChemicalUseCase: RefreshChemicalListUseCase by koinInject()
+    private val getChemicalSignoffDetailsUseCase: PerpareSignoffChemicalUseCase by koinInject()
+    private val getGhsCodeUseCase: GetGhsCodeUseCase by koinInject()
+    private val refreshChemicalUseCase: GetListChemicalUseCase by koinInject()
     private val signoffChemicalUseCase: SignoffChemicalUseCase by koinInject()
 
     private val getListCriskUseCase: GetListCriskUseCase by koinInject()
     private val getListHrLookupUseCase: GetListHrLookupItemUseCase by koinInject()
     private val getListContractorLookupUseCase: GetListContractorLookupUseCase by koinInject()
-    private val getCriskSignoff: GetCriskSignoffDetailsUseCase by koinInject()
+    private val getCriskSignoff: PrepareSignoffCriskUseCase by koinInject()
     private val getCriskUseCase: FetchCriskUseCase by koinInject()
     private val getCriskEvidence: GetCriskTaskEvidenceUseCase by koinInject()
     private val archiveCrisk: ArchiveCriskUseCase by koinInject()
@@ -100,11 +97,10 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to result)
     }
 
-    suspend fun createNewAction(payload: ActionPL, attachments: List<Attachment>, index: Int) {
+    suspend fun createNewAction(payload: ActionPL, index: Int) {
         _apiCallStatus.emit(
             index to newActionUseCase.invoke(
-                payload = payload,
-                attachments = attachments
+                payload = payload
             )
         )
     }
@@ -115,32 +111,22 @@ class MainViewModel : ViewModel() {
 
     suspend fun getActionSignOff(actionId: String, id: String, index: Int) {
         _apiCallStatus.emit(
-            index to getActionSignOffDetailsUseCase.invoke(id, actionId)
+            index to prepareSignoffActionUseCase.invoke(id, actionId)
         )
 //
     }
 
-    suspend fun editAction(actionPL: ActionPL, id: String, attachments: List<Attachment>, index: Int) {
-        _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL, attachments))
+    suspend fun editAction(actionPL: ActionPL, id: String, index: Int) {
+        _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL))
     }
 
     suspend fun signOffAction(
-        actionId: String,
-        attachments: List<Attachment>,
-        payload: ActionTask,
-        pendingAction: MutableList<PendingActionPL>,
+        actionSignOff: ActionSignOff,
         index: Int
     ) {
         _apiCallStatus.emit(
             index to signOffActionUseCase.invoke(
-                ActionSignoffParams(
-                    actionId = actionId,
-                    attachmentList = attachments,
-                    moduleName = ModuleName.ACTION,
-                    payload = payload,
-                    signaturesList = emptyList(),
-                    title = "ABC"
-                )
+                actionSignOff
             )
         )
     }
@@ -154,7 +140,7 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun refreshGHS(index: Int) {
-        refreshGHSCodeUseCase.invoke()
+        getGhsCodeUseCase.invoke()
         _apiCallStatus.emit(index to Result.Success("Done. Please check the logcat for more info"))
     }
 
@@ -166,23 +152,11 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun signoffChemical(
-        taskId: String,
-        moduleId: String,
-        task: ChemicalTask,
-        attachments: List<Attachment>,
+        signoff: ChemicalSignoff,
         index: Int
     ) {
         _apiCallStatus.emit(
-            index to signoffChemicalUseCase.invoke(
-                ChemicalSignoffParam(
-                    moduleID = moduleId,
-                    attachmentList = attachments,
-                    moduleName = ModuleName.CHEMICAL,
-                    signaturesList = emptyList(),
-                    payload = task,
-                    title = "ABC"
-                )
-            )
+            index to signoffChemicalUseCase.invoke(signoff)
         )
     }
 

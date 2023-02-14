@@ -1,15 +1,15 @@
 package au.com.safetychampion.data.domain.models.action.network
 
+import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.CreatedBy
+import au.com.safetychampion.data.domain.models.IAttachment
+import au.com.safetychampion.data.domain.models.ICategoryCusval
+import au.com.safetychampion.data.domain.models.ICusval
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
-import au.com.safetychampion.data.domain.models.customvalues.ICategoryCusval
-import au.com.safetychampion.data.domain.models.customvalues.ICusval
-import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class ActionPL(
-    val attachments: MutableList<DocAttachment>,
     val category: String,
     val date: String,
     val dateDue: String,
@@ -35,5 +35,25 @@ data class ActionPL(
     val type: String,
 
     override var categoryCusvals: MutableList<CustomValue>,
-    override var cusvals: MutableList<CustomValue>
-) : BasePL(), ICusval, ICategoryCusval
+    override var cusvals: MutableList<CustomValue>,
+    override var attachments: MutableList<Attachment>
+) : BasePL(), ICusval, ICategoryCusval, IAttachment
+
+data class ActionPL2(
+    val date: String,
+    val tzDateCreated: String,
+    val dateIdentified: String,
+    val personReporting: String,
+    val overview: String,
+    val category: String,
+    val categoryOther: String? = null,
+    val dateDue: String,
+    val personResponsible: String,
+    val personResponsibleEmail: String? = null,
+    val description: String,
+    val tz: String,
+    override var cusvals: MutableList<CustomValue>,
+    override var categoryCusvals: MutableList<CustomValue>,
+    override var attachments: MutableList<Attachment> = mutableListOf(),
+    val comment: String? = null // For Edit only
+) : BasePL(), ICusval, ICategoryCusval, IAttachment

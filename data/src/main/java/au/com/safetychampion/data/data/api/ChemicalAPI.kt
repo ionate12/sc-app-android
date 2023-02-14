@@ -1,36 +1,27 @@
 package au.com.safetychampion.data.data.api
 
+import au.com.safetychampion.data.data.local.IStorable
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
-import au.com.safetychampion.data.domain.usecase.ISignoffGeneral
-import au.com.safetychampion.data.domain.usecase.chemical.ChemicalSignoffParam
+import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
 
-interface ChemicalAPI : ISignoffGeneral<ChemicalSignoffParam> {
+interface ChemicalAPI {
     class List(
         body: BasePL = BasePL.empty()
-    ) : NetworkAPI.Post(
-        path = "/chemicals/list",
-        body = body
-    )
+    ) : NetworkAPI.Post(path = "/chemicals/list", body = body), IStorable
 
-    class ListCode() : NetworkAPI.Get(
-        path = "chemicals/list/ghs/codes"
-    )
+    class ListCode :
+        NetworkAPI.Get(path = "chemicals/list/ghs/codes"), IStorable
 
     class Fetch(
         moduleId: String
-    ) : NetworkAPI.Get(
-        path = "chemicals/$moduleId/fetch"
-    )
+    ) : NetworkAPI.Get(path = "chemicals/$moduleId/fetch"), IStorable
 
     class Signoff(
         moduleId: String?,
         taskId: String?,
-        body: ChemicalTask,
-        photos: AttachmentList?
+        body: ChemicalTaskPL
     ) : NetworkAPI.PostMultiParts(
         path = "chemicals/$moduleId/tasks/$taskId/signoff",
-        body = body,
-        attachment = photos ?: emptyList()
+        body = body
     )
 }
