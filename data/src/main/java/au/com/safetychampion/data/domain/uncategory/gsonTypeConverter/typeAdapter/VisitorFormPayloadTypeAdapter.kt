@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter
 
-import au.com.safetychampion.data.domain.models.visitor.VisitorPayload
+import au.com.safetychampion.data.visitor.domain.models.VisitorPayload
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext

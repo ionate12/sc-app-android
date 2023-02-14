@@ -6,18 +6,22 @@ import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.koinInject
-import com.google.gson.reflect.TypeToken
+import au.com.safetychampion.data.util.extension.parseObject
+import com.google.gson.JsonObject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-internal class SyncableRepository {
+class SyncableRepository {
     private val roomDts: RoomDataSource by koinInject()
     private val gson by lazy { koinGet<IGsonManager>().gson }
 
-    suspend fun <T> getSyncableData(key: String): Result<T> {
-        val type = object : TypeToken<T>() {}.type
-        val data: T? = roomDts.getSyncable(key)?.data?.let { gson.fromJson(it, type) }
-        return data?.let { Result.Success(it) } ?: Result.Error(SCError.EmptyResult)
+    internal suspend fun getSyncableDataObj(key: String): JsonObject? {
+        return roomDts.getSyncable(key)?.data
+    }
+    internal suspend inline fun <reified T> getSyncableData(key: String): Result<T> {
+        return getSyncableDataObj(key)
+            ?.parseObject<T>()
+            ?.let { Result.Success(it) } ?: Result.Error(SCError.EmptyResult)
     }
 
     suspend fun hasSyncable(key: String): Boolean {

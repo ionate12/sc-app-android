@@ -15,7 +15,7 @@ abstract class BasePrepareSignoffUseCase<R : BaseTask, T : BaseSignOff<R>> : Bas
 
     private val syncableRepo: SyncableRepository by koinInject()
 
-    private suspend fun <T> fromSyncable(moduleId: String, taskId: String?): Result<T> {
+    private suspend inline fun <reified T> fromSyncable(moduleId: String, taskId: String?): Result<T> {
         val key = getSyncableKey(moduleId, taskId)
         return syncableRepo.getSyncableData(key)
     }
