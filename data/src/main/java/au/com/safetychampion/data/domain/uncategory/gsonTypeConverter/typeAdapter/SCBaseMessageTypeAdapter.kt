@@ -1,10 +1,10 @@
 package au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter
 
-import au.com.safetychampion.data.domain.models.visitor.SCBaseMessage
-import au.com.safetychampion.data.domain.models.visitor.SCQuillDeltaMessage
-import au.com.safetychampion.data.domain.models.visitor.SCTextMessage
+import au.com.safetychampion.data.domain.models.SCBaseMessage
+import au.com.safetychampion.data.domain.models.SCQuillDeltaMessage
 import au.com.safetychampion.data.domain.uncategory.GsonHelper
 import au.com.safetychampion.data.domain.uncategory.getGson
+import au.com.safetychampion.data.visitor.domain.models.SCTextMessage
 import com.google.gson.* // ktlint-disable no-wildcard-imports
 import java.lang.reflect.Type
 

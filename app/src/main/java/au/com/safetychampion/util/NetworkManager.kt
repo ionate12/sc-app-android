@@ -93,4 +93,19 @@ class NetworkManager : INetworkManager {
             }
         }
     }
+
+    override fun getVisitorRetrofit(): Retrofit {
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor(
+                interceptor = HttpLoggingInterceptor()
+                    .apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
+            )
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(httpClient)
+            .addConverterFactory(GsonConverterFactory.create(gsonManager.gson))
+            .build()
+    }
 }

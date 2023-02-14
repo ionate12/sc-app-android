@@ -1,6 +1,7 @@
-package au.com.safetychampion.data.domain.models.visitor
+package au.com.safetychampion.data.visitor.domain.models
 
-import au.com.safetychampion.data.domain.models.customvalues.CusvalPojo
+import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.uncategory.Constants
 
 /**
@@ -9,28 +10,28 @@ import au.com.safetychampion.data.domain.uncategory.Constants
  * ALL PAYLOADs from Visitor Module need to specify in here
  */
 
-class VisitorPayload {
+sealed class VisitorPayload : BasePL() {
     data class Token(
         val org: IdObject,
         val site: IdObject,
         val pin: String?
-    )
+    ) : VisitorPayload()
 
     data class SiteFetch(
         val token: String
-    )
+    ) : VisitorPayload()
 
     data class FormFetch(
         val token: String,
         val _id: String
-    )
+    ) : VisitorPayload()
 
     data class Arrive(
         val token: String,
         val arrive: Form,
         val visitor: Visitor,
         val tz: String = Constants.tz
-    ) {
+    ) : VisitorPayload() {
         companion object {
             fun create(profile: VisitorProfile, site: VisitorSite, roleTitle: String) {
             }
@@ -41,15 +42,15 @@ class VisitorPayload {
         val token: String,
         val leave: Form,
         val tz: String = Constants.tz
-    )
+    ) : VisitorPayload()
 
-    data class VisitFetch(val tokens: List<String>)
+    data class EvidencesFetch(val tokens: List<String>) : VisitorPayload()
 
     //region SUB classes
     data class Form(
         val _id: String?,
         val type: String = "core.module.visitor.form",
-        val cusvals: List<CusvalPojo> = listOf()
+        val cusvals: List<CustomValue> = listOf()
     ) {
         companion object {
             fun emptyForm(): Form = Form(null)
