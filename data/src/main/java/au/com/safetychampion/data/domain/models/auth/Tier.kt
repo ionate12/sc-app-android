@@ -1,12 +1,15 @@
 package au.com.safetychampion.data.domain.models
 
 data class Tier(
-    var _id: String,
-    var type: TierType,
+    val _id: String,
+    val type: TierType,
     val name: String? = null,
     val referenceId: String? = null,
-    var parent: Tier? = null,
-    var parentTierId: String? = null
+    val parent: Tier? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val address: String? = null
 )
 
 enum class TierType(val value: String) {

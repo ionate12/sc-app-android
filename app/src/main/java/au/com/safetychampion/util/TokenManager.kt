@@ -1,5 +1,7 @@
 package au.com.safetychampion.util
 
+import au.com.safetychampion.data.data.local.BaseAppDataStore
+import au.com.safetychampion.data.data.local.StoreKey
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.domain.uncategory.AppToken
 import au.com.safetychampion.data.util.extension.koinInject
@@ -32,10 +34,10 @@ class TokenManager : ITokenManager {
 
     private suspend fun getStoredTokens(): SortedSet<AppToken> {
         val set: SortedSet<AppToken> = sortedSetOf()
-        dataStore.get(StoreKey.AsString.TokenAuthed)?.let {
+        dataStore.get(StoreKey.TokenAuthed)?.let {
             set.add(AppToken.Authed(it))
         }
-        dataStore.get(StoreKey.AsString.TokenMorphed)?.let {
+        dataStore.get(StoreKey.TokenMorphed)?.let {
             set.add(AppToken.Morphed(it))
         }
         return set
@@ -44,8 +46,8 @@ class TokenManager : ITokenManager {
     private fun storeTokenIfNeeded(token: AppToken) {
         CoroutineScope(dispatchers().io).launch {
             when (token) {
-                is AppToken.Morphed -> dataStore.store(StoreKey.AsString.TokenMorphed, token.value)
-                is AppToken.Authed -> dataStore.store(StoreKey.AsString.TokenAuthed, token.value)
+                is AppToken.Morphed -> dataStore.store(StoreKey.TokenMorphed, token.value)
+                is AppToken.Authed -> dataStore.store(StoreKey.TokenAuthed, token.value)
                 else -> Unit
             }
         }

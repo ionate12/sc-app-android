@@ -46,8 +46,11 @@ suspend fun <T, R> Result<T>.map(block: suspend (T) -> R): Result<R> {
  * @return self
  */
 
-fun <T> Result<T>.doOnSucceed(action: (T) -> Unit): Result<T> {
-    dataOrNull()?.let(action)
+suspend fun <T> Result<T>.doOnSucceed(action: suspend (T) -> Unit): Result<T> {
+    val data = dataOrNull()
+    if (data != null) {
+        action(data)
+    }
     return this
 }
 

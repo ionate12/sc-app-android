@@ -1,4 +1,4 @@
-package au.com.safetychampion.util
+package au.com.safetychampion.data.data.local
 
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -10,9 +10,6 @@ sealed class StoreKey<T : Any>(protected open val key: String) {
     abstract fun prefKey(): Preferences.Key<T>
     sealed class AsString(override val key: String) : StoreKey<String>(key) {
         override fun prefKey(): Preferences.Key<String> = stringPreferencesKey(key)
-
-        object TokenAuthed : AsString("token_authed")
-        object TokenMorphed : AsString("token_morphed")
     }
 
     sealed class AsBoolean(override val key: String) : StoreKey<Boolean>(key) {
@@ -25,6 +22,15 @@ sealed class StoreKey<T : Any>(protected open val key: String) {
     }
     sealed class AsStringSet(override val key: String) : StoreKey<Set<String>>(key) {
         override fun prefKey(): Preferences.Key<Set<String>> = stringSetPreferencesKey(key)
-        // To add more String Set Value
     }
+
+    // region String
+    object TokenAuthed : AsString("token_authed")
+    object TokenMorphed : AsString("token_morphed")
+// endregion
+
+    // region String Set
+    object UserCredential : AsStringSet("user_credential")
+
+// endregion
 }

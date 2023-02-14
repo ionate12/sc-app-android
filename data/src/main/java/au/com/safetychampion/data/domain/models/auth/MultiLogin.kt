@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.models.login
+package au.com.safetychampion.data.domain.models.auth
 
 import au.com.safetychampion.data.domain.models.CreatedBy
 
