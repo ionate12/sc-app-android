@@ -28,7 +28,7 @@ import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzYyNjk1NDEsImV4cCI6MTY3NjM1NTk0MX0.sZbXYu9qXZ4F_nr3U_6CgcsRaSvUYbCy20zrnLB2NW8"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzY0Mzk1NjgsImV4cCI6MTY3NjUyNTk2OH0.WKrouemcAkCl9khT34mx2khNJjYl-Hl_CUN3m0z36w4"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -90,39 +90,43 @@ class MainActivity : AppCompatActivity() {
         "Crisk Evidence" to suspend { viewModel.getCriskEvidence(criskId = "633fa33f4d59ca38fe91336e", index = 20) },
         "Archive Crisk" to suspend { viewModel.archiveCrisk(criskId = "633fa33f4d59ca38fe91336e", payload = sampleData.getCriskArchivePL(), index = 21) },
         "QR CODE Visitor" to suspend {
-            viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = 22)
-        "Signoff Action" to suspend {
-            viewModel.signOffAction(
-                actionId = sampleData.getActionId(),
-                attachments = emptyList(),
-                payload = sampleData.getActionTask(),
-                pendingAction = sampleData.getPendingActionPL(),
-                index = 15
+            viewModel.signIn(
+                qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55",
+                index = 22
             )
         },
-        "Signoff Chemical" to suspend {
-            viewModel.signoffChemical(
-                taskId = "61ad7aedb3ea32726aac3522",
-                moduleId = "61ad7aedb3ea32726aac3523",
-                task = sampleData.getChemicalTask(),
-                attachments = emptyList(),
-                index = 16
-
-            )
-        },
+//        "Signoff Action" to suspend {
+//            viewModel.signOffAction(
+//                actionId = sampleData.getActionId(),
+//                attachments = emptyList(),
+//                payload = sampleData.getActionTask(),
+//                pendingAction = sampleData.getPendingActionPL(),
+//                index = 15
+//            )
+//        },
+//        "Signoff Chemical" to suspend {
+//            viewModel.signoffChemical(
+//                taskId = "61ad7aedb3ea32726aac3522",
+//                moduleId = "61ad7aedb3ea32726aac3523",
+//                task = sampleData.getChemicalTask(),
+//                attachments = emptyList(),
+//                index = 16
+//
+//            )
+//        },
         "Fetch Hr Detail (hr/{hrId}/fetch)" to suspend {
             viewModel.fetchHrDetail(
                 moduleId = "628b4ce2539b0c6b9760b38a",
-                index = 20
+                index = 23
             )
         },
         "Get List Hr (hr/list)" to suspend {
-            viewModel.getListHr(index = 21)
+            viewModel.getListHr(index = 24)
         },
         "Get List Linked Incidents (hr/{hrId}/listLinkedIncidents)" to suspend {
             viewModel.getListLinkedIncidents(
                 moduleId = "getListLinkedIncidents",
-                index = 22
+                index = 25
             )
         }
     )

@@ -22,7 +22,6 @@ import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no
 import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
-import au.com.safetychampion.util.koinInject
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports

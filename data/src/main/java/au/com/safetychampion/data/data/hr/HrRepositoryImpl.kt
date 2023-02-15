@@ -9,7 +9,7 @@ import au.com.safetychampion.data.domain.models.incidents.LinkedIncident
 
 class HrRepositoryImpl : BaseRepository(), IHrRepository {
     override suspend fun list(): Result<List<HRProfile>>{
-        return HrAPI.List().callAsList()
+        return HrAPI.List().call()
     }
 
     override suspend fun fetch(moduleId: String): Result<HRProfile> {
@@ -17,6 +17,6 @@ class HrRepositoryImpl : BaseRepository(), IHrRepository {
     }
 
     override suspend fun listLinkedIncidents(moduleId: String): Result<List<LinkedIncident>> {
-        return HrAPI.ListLinkedIncidents(moduleId).callAsList()
+        return HrAPI.ListLinkedIncidents(moduleId).call()
     }
 }
