@@ -69,25 +69,25 @@ class MainActivity : AppCompatActivity() {
             )
         },
 
-        "Signoff Action" to suspend {
-            viewModel.signOffAction(
-                actionId = sampleData.getActionId(),
-                attachments = emptyList(),
-                payload = sampleData.getActionTask(),
-                pendingAction = sampleData.getPendingActionPL(),
-                index = 15
-            )
-        },
-        "Signoff Chemical" to suspend {
-            viewModel.signoffChemical(
-                taskId = "61ad7aedb3ea32726aac3522",
-                moduleId = "61ad7aedb3ea32726aac3523",
-                task = sampleData.getChemicalTask(),
-                attachments = emptyList(),
-                index = 16
-
-            )
-        },
+//        "Signoff Action" to suspend {
+//            viewModel.signOffAction(
+//                actionId = sampleData.getActionId(),
+//                attachments = emptyList(),
+//                payload = sampleData.getActionTask(),
+//                pendingAction = sampleData.getPendingActionPL(),
+//                index = 15
+//            )
+//        },
+//        "Signoff Chemical" to suspend {
+//            viewModel.signoffChemical(
+//                taskId = "61ad7aedb3ea32726aac3522",
+//                moduleId = "61ad7aedb3ea32726aac3523",
+//                task = sampleData.getChemicalTask(),
+//                attachments = emptyList(),
+//                index = 16
+//
+//            )
+//        },
         "Fetch Contractor" to suspend {
             viewModel.fetchContractor(
                 index = 17,
@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity() {
         },
         "Get Linked Contractor" to suspend {
             viewModel.getLinkedTask(19, payload = sampleData.getLinkedTaskPayload())
+        },
 //        "Signoff Action" to suspend {
 //            viewModel.signOffAction(
 //                actionSignOff = TODO("Add sample actionSignoff"),

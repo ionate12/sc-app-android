@@ -7,12 +7,8 @@ import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-im
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
-import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
-import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
-import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
-import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskPL
+import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
@@ -22,6 +18,9 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTask
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
@@ -30,10 +29,6 @@ import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceU
 import au.com.safetychampion.data.visitor.domain.usecase.qr.SubmitQRCodeUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.site.FetchSiteUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.site.UpdateSiteByFormFetchUseCase
-import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
-import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
-import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
-import au.com.safetychampion.util.koinInject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -51,13 +46,11 @@ class MainViewModel : ViewModel() {
     private val allAction: GetListActionUseCase by koinInject()
     private val prepareSignoffActionUseCase: PrepareSignoffActionUseCase by koinInject()
     private val editActionUseCase: EditActionUseCase by koinInject()
-    private val signOffActionUseCase: SignoffActionUseCase by koinInject()
 
     private val getListBannerUseCase: GetListBannerUseCase by koinInject()
     private val getChemicalSignoffDetailsUseCase: PerpareSignoffChemicalUseCase by koinInject()
     private val getGhsCodeUseCase: GetGhsCodeUseCase by koinInject()
     private val refreshChemicalUseCase: GetListChemicalUseCase by koinInject()
-    private val signoffChemicalUseCase: SignoffChemicalUseCase by koinInject()
 
     private val getListCriskUseCase: GetListCriskUseCase by koinInject()
     private val getListHrLookupUseCase: GetListHrLookupItemUseCase by koinInject()
@@ -139,16 +132,16 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL))
     }
 
-    suspend fun signOffAction(
-        actionSignOff: ActionSignOff,
-        index: Int
-    ) {
-        _apiCallStatus.emit(
-            index to signOffActionUseCase.invoke(
-                actionSignOff
-            )
-        )
-    }
+//    suspend fun signOffAction(
+//        actionSignOff: ActionSignOff,
+//        index: Int
+//    ) {
+//        _apiCallStatus.emit(
+//            index to signOffActionUseCase.invoke(
+//                actionSignOff
+//            )
+//        )
+//    }
 
     suspend fun getListBanner(index: Int) {
         _apiCallStatus.emit(index to getListBannerUseCase.invoke())
@@ -170,14 +163,14 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    suspend fun signoffChemical(
-        signoff: ChemicalSignoff,
-        index: Int
-    ) {
-        _apiCallStatus.emit(
-            index to signoffChemicalUseCase.invoke(signoff)
-        )
-    }
+//    suspend fun signoffChemical(
+//        signoff: ChemicalSignoff,
+//        index: Int
+//    ) {
+//        _apiCallStatus.emit(
+//            index to signoffChemicalUseCase.invoke(signoff)
+//        )
+//    }
 
     suspend fun getListCrisk(index: Int) {
         _apiCallStatus.emit(

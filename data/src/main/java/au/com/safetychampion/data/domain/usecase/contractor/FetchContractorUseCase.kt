@@ -1,6 +1,5 @@
 package au.com.safetychampion.data.domain.usecase.contractor
 
-import android.util.Log
 import au.com.safetychampion.data.data.contractor.IContractorRepository
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.contractor.ContractorProfile
