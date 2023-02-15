@@ -3,7 +3,7 @@ package au.com.safetychampion.data.data.api
 import au.com.safetychampion.data.data.local.IStorable
 import au.com.safetychampion.data.data.local.ISyncable
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
+import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
 
 interface ChemicalAPI {
     class List(
@@ -30,12 +30,10 @@ interface ChemicalAPI {
     class Signoff(
         moduleId: String?,
         taskId: String?,
-        body: ChemicalTask,
-        photos: AttachmentList?
+        body: ChemicalTaskPL
     ) : NetworkAPI.PostMultiParts(
         path = "chemicals/$moduleId/tasks/$taskId/signoff",
-        body = body,
-        attachment = photos ?: emptyList()
+        body = body
     ),
         ISyncable
 }

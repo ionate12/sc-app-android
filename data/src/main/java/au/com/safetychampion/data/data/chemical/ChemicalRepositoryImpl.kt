@@ -2,87 +2,21 @@ package au.com.safetychampion.data.data.chemical
 
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.ChemicalAPI
-import au.com.safetychampion.data.data.common.MasterDAO
-import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.GHSCode
-import au.com.safetychampion.data.domain.models.SignoffStatus
 import au.com.safetychampion.data.domain.models.chemical.Chemical
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
-import au.com.safetychampion.data.domain.uncategory.setFilePath
-import au.com.safetychampion.data.util.extension.toJsonString
-import au.com.safetychampion.util.koinInject
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
+import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
 
 class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
 
-    private val masterRepo: MasterDAO by koinInject()
-
-    private val TAG = "chemical"
-
-    /**
-     * Expose a flow of chemicals since we can remotely fetch it in service, in viewModel..
-     * so to make sure the data is latest, whenever we fetch data, we save it to database
-     * and this flow will be trigger by Room automatically.
-     */
-
-    override val chemicalList: Flow<List<Chemical>> by lazy { masterRepo.getChemicalList() }
-
-    /**
-     * @see [chemicalList]
-     */
-
-    override val GHSCode: Flow<GHSCode> by lazy { masterRepo.getGHSCode() }
-
-    override val latestChemicalData by lazy {
-        chemicalList.combine(GHSCode) { chems, ghs ->
-            // TODO()
-            chems to ghs
-        }
+    override suspend fun list(): Result<List<Chemical>> {
+        return ChemicalAPI.List().call()
     }
 
-    /**
-     * Synchronize local chemicals with remote data
-     */
-    override suspend fun refreshChemicalList(): Job {
-        return withContext(dispatchers.io) {
-            return@withContext launch {
-                ChemicalAPI.List()
-                    .callAsList<Chemical>()
-                    .doOnSucceed {
-                        it.forEach { chem ->
-                            chem.attachments?.setFilePath(
-                                filePath = fileContentManager.externalFilesDir
-                            )
-                            chem.setWPName("abc") // TODO("WPName")
-                        }
-                        masterRepo.insertToDB(it)
-                        Timber.tag(TAG).d("refresh Chemicals: ${it.toJsonString()}")
-                    }
-            }
-        }
-    }
-
-    /**
-     * Synchronize local GHSCode with remote data
-     */
-    override suspend fun refreshGHSCodeList(): Job {
-        return withContext(dispatchers.io) {
-            return@withContext launch {
-                ChemicalAPI.ListCode()
-                    .callAsList<GHSCode>()
-                    .doOnSucceed {
-                        Timber.tag(TAG).d("refresh GHS: ${it.toJsonString()}")
-                        masterRepo.insertToDB(it)
-                    }
-            }
-        }
+    override suspend fun ghsCode(): Result<List<GHSCode>> {
+        return ChemicalAPI.ListCode().call()
     }
 
     override suspend fun fetch(moduleId: String): Result<Chemical> {
@@ -90,54 +24,18 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
     }
 
     override suspend fun combineFetchAndTask(moduleId: String, taskId: String): Result<ChemicalSignoff> {
-        return when (val fetch = fetch(moduleId)) {
-            is Result.Error -> fetch
-            else -> Result.Success(
-                ChemicalSignoff(
-                    body = fetch.dataOrNull()!!,
-                    task = ChemicalTask(),
-                    taskId = taskId,
-                    moduleId = moduleId
-                )
-            )
-        }
+        return fetch(moduleId).map { ChemicalSignoff(body = it, task = ChemicalTask(_id = taskId)) }
     }
 
     override suspend fun signoff(
-        moduleId: String,
+        chemId: String,
         taskId: String,
-        body: ChemicalTask,
-        photos: List<Attachment>
-    ): Result<SignoffStatus.OnlineCompleted> {
+        payload: ChemicalTaskPL
+    ): Result<ChemicalTask> {
         return ChemicalAPI.Signoff(
-            moduleId = moduleId,
+            moduleId = chemId,
             taskId = taskId,
-            body = body,
-            photos = photos
-        )
-            .call<SignoffStatus.OnlineCompleted>()
-            .doOnSucceed {
-                it.moduleName = ModuleName.CHEMICAL.name
-                it.title = "titleABC"
-            }
-    }
-
-    override suspend fun save(
-        moduleId: String,
-        taskId: String,
-        body: ChemicalTask,
-        photos: List<Attachment>
-    ): Result<SignoffStatus.OnlineSaved> {
-        return ChemicalAPI.Signoff(
-            moduleId = moduleId,
-            taskId = taskId,
-            body = body,
-            photos = photos
-        )
-            .call<SignoffStatus.OnlineSaved>()
-            .doOnSucceed {
-                it.moduleName = ModuleName.CHEMICAL.name
-                it.title = "titleABC"
-            }
+            body = payload
+        ).call()
     }
 }

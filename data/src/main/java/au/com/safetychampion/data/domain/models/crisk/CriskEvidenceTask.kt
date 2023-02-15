@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.domain.models.crisk
 
-import au.com.safetychampion.data.domain.InspectionFormPayload
+import au.com.safetychampion.data.domain.SignaturePayload
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.login.LoginUser
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
@@ -19,7 +19,7 @@ data class CriskEvidenceTask(
     val reviewNotes: String,
     val signedoffBy: LoginUser?,
     val tzDateSignedoff: String,
-    val signatures: List<InspectionFormPayload.SignaturePayload>,
+    val signatures: List<SignaturePayload>,
     val attachments: List<DocAttachment>,
     val dateDue: String,
     val dateCompleted: String,

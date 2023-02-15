@@ -3,7 +3,7 @@ package au.com.safetychampion.data.domain.models.reviewplan
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import au.com.safetychampion.data.domain.InspectionFormPayload
+import au.com.safetychampion.data.domain.SignaturePayload
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
@@ -39,7 +39,7 @@ open class ReviewPlanSignoffTask(
     var cusvals: MutableLiveData<MutableList<CustomValue>> = MutableLiveData(mutableListOf()),
     var subcategoryCusvals: MutableLiveData<MutableList<CustomValue>> = MutableLiveData(mutableListOf()),
     var attachments: MutableList<DocAttachment> = mutableListOf(),
-    var signatures: MutableList<InspectionFormPayload.SignaturePayload> ? = mutableListOf(),
+    var signatures: MutableList<SignaturePayload> ? = mutableListOf(),
     var actionLinks: MutableList<ActionLink> = mutableListOf(),
     var newActions: MutableList<ActionPL> = mutableListOf()
 ) {
@@ -63,6 +63,6 @@ open class ReviewPlanSignoffTask(
         var reviewNotes: String? = null
         var recurrent = false
         var tzDateSignedoff: String = Constants.tz
-        var signatures: MutableList<InspectionFormPayload.SignaturePayload> ? = null
+        var signatures: MutableList<SignaturePayload> ? = null
     }
 }

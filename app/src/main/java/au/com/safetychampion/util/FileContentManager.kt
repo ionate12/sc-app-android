@@ -22,12 +22,12 @@ class FileContentManager(
     }
 
     @SuppressLint("Range")
-    override suspend fun getDisplayNameFromURI(vararg uris: Uri?): List<String> {
+    override suspend fun getDisplayNameFromURI(uris: List<Uri>): List<String> {
         return withContext(Dispatchers.IO) {
             uris.indices.map { i ->
                 contentResolver
                     .query(
-                        uris[i]!!,
+                        uris[i],
                         null,
                         null,
                         null,
@@ -43,4 +43,24 @@ class FileContentManager(
             }
         }
     }
+
+    override fun getFileName(uri: Uri) = contentResolver
+        .query(
+            uri,
+            null,
+            null,
+            null,
+            null
+        )?.use {
+            val columnIndex = it.getColumnIndex(
+                MediaStore.Images.Media.DISPLAY_NAME
+            )
+            if (columnIndex < 0) return@use ""
+            it.moveToFirst()
+            it.getString(columnIndex)
+        } ?: ""
+
+    override fun getFileType(uri: Uri) = contentResolver.getType(uri)
 }
+
+data class UriInfo(val fileName: String, val type: String?)
