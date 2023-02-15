@@ -1,6 +1,5 @@
 package au.com.safetychampion.data.data.api
 
-import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.APIResponse
 import okhttp3.MultipartBody
@@ -27,5 +26,5 @@ interface RestApi {
 sealed class NetworkAPI(val path: String) {
     sealed class Get(path: String) : NetworkAPI(path)
     sealed class Post(path: String, val body: BasePL?) : NetworkAPI(path)
-    sealed class PostMultiParts(path: String, val body: BasePL, val attachment: List<Attachment>?) : NetworkAPI(path)
+    sealed class PostMultiParts(path: String, val body: BasePL) : NetworkAPI(path)
 }

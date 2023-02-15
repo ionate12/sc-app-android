@@ -90,6 +90,22 @@ class CustomValueDropdown(
     override fun isNullOrEmpty(): Boolean = value.isNullOrEmpty()
 }
 
+class CustomValueCheckbox(
+    _id: String,
+    type: CusvalType,
+    title: String,
+    value: List<String>? = null,
+    description: String? = null,
+    required: Boolean = false
+) : BaseCustomValue<List<String>>(_id, type, title, value, description, required) {
+
+    public override fun updateValue(value: List<String>?) {
+        this.value = value
+    }
+
+    override fun isNullOrEmpty(): Boolean = value.isNullOrEmpty()
+}
+
 class CustomValueCurrency(
     _id: String,
     type: CusvalType,

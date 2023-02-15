@@ -1,5 +1,13 @@
 package au.com.safetychampion.data.domain.core
 
+import au.com.safetychampion.data.visitor.domain.models.Destination
+
+fun errorOf(message: String) = Result.Error(
+    SCError.Failure(
+        listOf(message)
+    )
+)
+
 sealed class SCError(val code: String, val errDescription: String) {
     override fun toString(): String {
         return "An error has occurred: $code \n $errDescription"
@@ -8,20 +16,13 @@ sealed class SCError(val code: String, val errDescription: String) {
     class Failure(detailsMsg: List<String> = emptyList()) : SCError(
         code = "backend_response_error",
         errDescription = "You can not perform this action because: $detailsMsg"
-    )
+    ) {
+        constructor(message: String) : this(listOf(message))
+    }
+
     object EmptyResult : SCError(
         code = "success_no_result",
         errDescription = "Succeed but empty result."
-    )
-
-    object Unknown : SCError(
-        code = "unknown_error",
-        errDescription = "Unknown error has occurred."
-    )
-
-    class JsonSyntaxException(detailsMsg: String) : SCError(
-        code = detailsMsg,
-        errDescription = "Data not available"
     )
 
     object LoginTokenExpired : SCError(
@@ -51,5 +52,15 @@ sealed class SCError(val code: String, val errDescription: String) {
     class SyncableStored(val syncableId: String) : SCError(
         code = "syncable_stored",
         errDescription = "Due to offline network, this task has been stored as a Offline Task, and it will be synced with Safety Champion System when going back online."
+    )
+
+    /**
+     *  Represents an invalid QR code request.
+     *  @param [des] the [Destination] would like to go, this is an optional*/
+    class InvalidQRCodeRequest(
+        val des: Destination? = null
+    ) : SCError(
+        "invalid_qr",
+        "Invalid Token"
     )
 }

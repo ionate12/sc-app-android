@@ -80,8 +80,9 @@ data class InspectionFormPayload(
         val _id: String,
         val reference: String
     )
-    data class SignaturePayload(val _id: String, val name: String)
 }
+
+data class SignaturePayload(val _id: String, val name: String)
 
 /**
  * Created by @Minh_Khoi_MAI on 2020-02-17

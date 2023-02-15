@@ -3,6 +3,7 @@ package au.com.safetychampion.util
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.domain.manager.ITokenManager
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.dispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,5 +92,20 @@ class NetworkManager : INetworkManager {
                 false
             }
         }
+    }
+
+    override fun getVisitorRetrofit(): Retrofit {
+        val httpClient = OkHttpClient.Builder()
+            .addInterceptor(
+                interceptor = HttpLoggingInterceptor()
+                    .apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
+            )
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(httpClient)
+            .addConverterFactory(GsonConverterFactory.create(gsonManager.gson))
+            .build()
     }
 }

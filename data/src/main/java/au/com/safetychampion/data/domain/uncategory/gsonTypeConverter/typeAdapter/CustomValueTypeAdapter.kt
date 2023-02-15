@@ -1,6 +1,7 @@
 package au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter
 
 import au.com.safetychampion.data.domain.models.customvalues.BaseCustomValue
+import au.com.safetychampion.data.domain.models.customvalues.CustomValueCheckbox
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueCurrency
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueDropdown
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueInt
@@ -29,7 +30,7 @@ class CustomValueTypeAdapter : JsonDeserializer<BaseCustomValue<*>> {
         return json.asJsonObject.createCusval(context)
     }
 
-    fun JsonObject.createCusval(context: JsonDeserializationContext): BaseCustomValue<*>? {
+    private fun JsonObject.createCusval(context: JsonDeserializationContext): BaseCustomValue<*>? {
         val type = this["type"]?.asString?.let { CusvalType.fromString(it) }
         if (type == null) {
             Timber.e("Can't deserialize Custom value because of missing or invalid \"type\" field.")
@@ -45,9 +46,9 @@ class CustomValueTypeAdapter : JsonDeserializer<BaseCustomValue<*>> {
             CusvalType.Number -> context.deserialize(this, CustomValueInt::class.java)
             CusvalType.Time -> context.deserialize(this, CustomValueTime::class.java)
             CusvalType.SingleDrop,
-            CusvalType.MultipleDrop,
+            CusvalType.MultipleDrop -> context.deserialize(this, CustomValueDropdown::class.java)
             CusvalType.Checkbox,
-            CusvalType.Radio -> context.deserialize(this, CustomValueDropdown::class.java)
+            CusvalType.Radio -> context.deserialize(this, CustomValueCheckbox::class.java)
             CusvalType.Currency -> context.deserialize(this, CustomValueCurrency::class.java)
         }
 
