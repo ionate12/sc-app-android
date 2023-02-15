@@ -36,7 +36,7 @@ data class ActionPL(
 
     override var categoryCusvals: MutableList<CustomValue>,
     override var cusvals: MutableList<CustomValue>,
-    override var attachments: MutableList<Attachment>
+    override var attachments: MutableList<Attachment>?
 ) : BasePL(), ICusval, ICategoryCusval, IAttachment
 
 data class ActionPL2(
@@ -54,6 +54,6 @@ data class ActionPL2(
     val tz: String,
     override var cusvals: MutableList<CustomValue>,
     override var categoryCusvals: MutableList<CustomValue>,
-    override var attachments: MutableList<Attachment> = mutableListOf(),
+    override var attachments: MutableList<Attachment>? = mutableListOf(),
     val comment: String? = null // For Edit only
 ) : BasePL(), ICusval, ICategoryCusval, IAttachment

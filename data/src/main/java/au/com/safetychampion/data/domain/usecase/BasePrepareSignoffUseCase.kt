@@ -6,11 +6,6 @@ import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.util.extension.koinInject
 
-/**
- * A base use-case with caching implementation to provide data for sign-off feature,
- * also save data to database whenever we fetch it from remote datasource
- **/
-
 abstract class BasePrepareSignoffUseCase<R : BaseTask, T : BaseSignOff<R>> : BaseUseCase() {
 
     private val syncableRepo: SyncableRepository by koinInject()
