@@ -8,8 +8,9 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
-import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
+import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
+import au.com.safetychampion.data.domain.models.document.DocumentSignoff
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
@@ -20,6 +21,9 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStat
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.document.FetchCopySourceUseCase
+import au.com.safetychampion.data.domain.usecase.document.FetchDocumentUseCase
+import au.com.safetychampion.data.domain.usecase.document.SignoffDocumentUseCase
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
@@ -160,7 +164,7 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun signoffChemical(
-        signoff: ChemicalSignoff,
+        signoff: ChemicalSignoffPL,
         index: Int
     ) {
         _apiCallStatus.emit(
@@ -325,5 +329,30 @@ class MainViewModel : ViewModel() {
             site = site,
             profile = profile
         )
+    }
+
+    private val fetchCopySourceUseCase: FetchCopySourceUseCase by koinInject()
+    suspend fun copySource(moduleId: String, index: Int) {
+        _apiCallStatus.emit(index to fetchCopySourceUseCase.invoke(moduleId))
+    }
+
+    private val fetchDocuseCase: FetchDocumentUseCase by koinInject()
+    suspend fun fetchDoc(moduleId: String, index: Int) {
+        _apiCallStatus.emit(index to fetchDocuseCase.invoke(moduleId))
+    }
+
+    private val fetchListDocUsecase: FetchDocumentUseCase by koinInject()
+    suspend fun fetchListDoc(moduleId: String, index: Int) {
+        _apiCallStatus.emit(index to fetchListDocUsecase.invoke(moduleId))
+    }
+
+    private val prepareDocUseCase: FetchDocumentUseCase by koinInject()
+    suspend fun prepareDoc(moduleId: String, index: Int) {
+        _apiCallStatus.emit(index to prepareDocUseCase.invoke(moduleId))
+    }
+
+    private val signoffDocUseCase: SignoffDocumentUseCase by koinInject()
+    suspend fun signoffDoc(payload: DocumentSignoff, index: Int) {
+        _apiCallStatus.emit(index to signoffDocUseCase.invoke(payload))
     }
 }

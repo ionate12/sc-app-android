@@ -40,5 +40,5 @@ data class Crisk(
     val tzDateCreated: String? = null,
     override var cusvals: MutableList<CustomValue>,
     override var subcategoryCusvals: MutableList<CustomValue>,
-    override var attachments: MutableList<Attachment>
+    override var attachments: MutableList<Attachment>?
 ) : BaseModule, ICusval, ISubcategoryCusval, IAttachment

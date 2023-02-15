@@ -91,8 +91,11 @@ class MainActivity : AppCompatActivity() {
         "Archive Crisk" to suspend { viewModel.archiveCrisk(criskId = "633fa33f4d59ca38fe91336e", payload = sampleData.getCriskArchivePL(), index = 21) },
         "QR CODE Visitor" to suspend {
             viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = 22)
-        }
-
+        },
+        "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", 23) },
+        "Fetch List Document" to suspend { viewModel.fetchListDoc("63ec866dde4d671748fe6a91", 24) },
+        "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", 25) }
+//        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
     )
 
     val items = {

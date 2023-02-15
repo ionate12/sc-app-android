@@ -36,7 +36,7 @@ interface ISignature {
 }
 
 interface IAttachment {
-    var attachments: MutableList<Attachment>
+    var attachments: MutableList<Attachment>?
 }
 
 // Pending Actions

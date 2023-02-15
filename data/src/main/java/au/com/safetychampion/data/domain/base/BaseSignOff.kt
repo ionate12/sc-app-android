@@ -18,5 +18,10 @@ interface BaseSignOff<T : BaseTask> {
             criskId: String,
             taskId: String
         ) = "crisks/$criskId/tasks/$taskId/signoff"
+
+        fun documentSignoffSyncableKey(
+            moduleId: String,
+            taskId: String
+        ) = "vdocs/$moduleId/tasks/$taskId/signoff"
     }
 }
