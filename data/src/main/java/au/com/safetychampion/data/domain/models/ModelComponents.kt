@@ -27,12 +27,16 @@ interface ISubcategoryCusval : IBaseCusval {
     var subcategoryCusvals: MutableList<CustomValue>
 }
 
+interface IEnvCusval : IBaseCusval {
+    var propOrEnvDamageCusvals: MutableList<CustomValue>
+}
+
 interface IForceNullValues {
     val forceNullKeys: List<String>
 }
 
 interface ISignature {
-    var signatures: MutableList<Signature>
+    var signatures: MutableList<Signature>?
 }
 
 interface IAttachment {

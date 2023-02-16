@@ -15,9 +15,9 @@ abstract class BasePrepareSignoffUseCase<R : BaseTask, T : BaseSignOff<R>> : Bas
         return syncableRepo.getSyncableData(key)
     }
 
-    abstract suspend fun fetchData(moduleId: String, taskId: String? = null): Result<T>
+    protected abstract suspend fun fetchData(moduleId: String, taskId: String? = null): Result<T>
 
-    abstract fun getSyncableKey(moduleId: String, taskId: String? = null): String
+    protected abstract fun getSyncableKey(moduleId: String, taskId: String? = null): String
 
     suspend operator fun invoke(moduleId: String, taskId: String? = null): Result<T> {
         val synableData = fromSyncable<Result<T>>(moduleId, taskId).dataOrNull()

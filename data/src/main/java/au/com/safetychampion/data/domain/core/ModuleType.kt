@@ -4,5 +4,6 @@ enum class ModuleType(val code: String, val value: String) {
     ACTION("core.module.action", "Action"),
     CHEMICAL("core.module.chemical", "Chemical"),
     CRISK("core.module.crisk", "Crisk"),
-    DOCUMENT("core.module.vdoc", "Document")
+    DOCUMENT("core.module.vdoc", "Document"),
+    INCIDENT("core.module.incident", "Incident")
 }

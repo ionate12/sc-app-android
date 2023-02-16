@@ -1,0 +1,125 @@
+{
+  "attachments": [],
+  "category": "Cut",
+  "categoryCusvals": [],
+  "cusvals": [
+    {
+      "_id": "2wM37XRQk6",
+      "title": "Text",
+      "type": "text",
+      "value": "rerer"
+    },
+    {
+      "_id": "Rehqzo7x0",
+      "title": "Checkbox",
+      "type": "checkbox",
+      "value": [
+        "Yes"
+      ]
+    },
+    {
+      "_id": "3nWY2UOe4",
+      "title": "phone",
+      "type": "tel",
+      "value": "re554"
+    },
+    {
+      "_id": "WBuS5McCmM",
+      "title": "number",
+      "type": "number",
+      "value": null
+    },
+    {
+      "_id": "nOewtTjkm",
+      "title": "Test Text",
+      "type": "text",
+      "value": null
+    },
+    {
+      "_id": "jbLRjr26nH",
+      "title": "Option 1(*)",
+      "type": "text",
+      "value": "rererre"
+    },
+    {
+      "_id": "6yC1Mt2Bg_",
+      "title": "**Multi Select",
+      "type": "select_multiple",
+      "value": [
+        [
+          "2"
+        ]
+      ]
+    },
+    {
+      "_id": "0CII_pBhuM",
+      "title": "&8!233@#$$",
+      "type": "text",
+      "value": "rerere"
+    },
+    {
+      "_id": "2V6o-BepJ",
+      "title": "SELECT *",
+      "type": "select_single",
+      "value": [
+        [
+          "Option 1 (*)"
+        ]
+      ]
+    },
+    {
+      "_id": "NdbMEynOg",
+      "title": "MultiSelect",
+      "type": "select_multiple",
+      "value": [
+        [
+          "*1"
+        ],
+        [
+          "*2"
+        ]
+      ]
+    },
+    {
+      "_id": "hJFoTSrTB",
+      "title": "New values",
+      "type": "text",
+      "value": "rterr"
+    }
+  ],
+  "dateOccurred": "2023-02-08",
+  "description": "errer",
+  "editComments": [],
+  "injuredBodyParts": [
+    {
+      "bodyPart": "Head",
+      "comment": "rrr",
+      "injury": "Burn"
+    }
+  ],
+  "injuredPersonLinks": [],
+  "injuredPersonName": "THu",
+  "injuredPersonPhone": "0345454545456",
+  "injuredPersonRole": "Contractor",
+  "injuryDescription": "rerere",
+  "location": "trtr",
+  "overview": "ewew",
+  "personReporting": "ewewewe",
+  "propOrEnvDamage": true,
+  "propOrEnvDamageCusvals": [
+    {
+      "_id": "Br3WFasI3",
+      "title": "test add",
+      "type": "text",
+      "value": null
+    }
+  ],
+  "propOrEnvDamageDescription": "rer",
+  "sessionId": "9a35edb4-95f3-4e3f-a8d3-fe6195c05807",
+  "signatures": [],
+  "timeOccurred": {
+    "hours": 16,
+    "minutes": 13
+  },
+  "tzDateCreated": "Asia/Ho_Chi_Minh"
+}

@@ -13,7 +13,8 @@ import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.document.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.incident.* // ktlint-disable no-wildcard-imports
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -81,15 +82,31 @@ internal val useCasesModule = module {
 
     factoryOf(::PrepareDocumentSignoffUseCase)
 
-    factoryOf(::SignoffDocumentUseCase)
-
     factoryOf(::FetchListDocumentUseCase)
+
+    // Incident *_*
+
+    factoryOf(::CreateIncidentUseCase)
+
+    factoryOf(::FetchIncidentUseCase)
+
+    factoryOf(::FetchListIncidentUseCase)
+
+    factoryOf(::FetchLocationConfigUseCase)
+
+    factoryOf(::LookUpIncidentUseCase)
+
+    factoryOf(::PrepareIncidentSignoffUseCase)
 
     // Signoff
 
-    factoryOf(::SignoffChemicalUseCase)
-
     factoryOf(::SignoffActionUseCase)
 
+    factoryOf(::SignoffChemicalUseCase)
+
+    factoryOf(::SignoffDocumentUseCase)
+
     factoryOf(::SignoffCriskUseCase)
+
+    factoryOf(::SignoffIncidentUseCase)
 }

@@ -69,7 +69,7 @@ data class CriskTaskPL(
     val recurrent: Boolean? = null,
     val tzDateSignedoff: String? = null,
     override var attachments: MutableList<Attachment>?,
-    override var signatures: MutableList<Signature>,
+    override var signatures: MutableList<Signature>?,
     override var cusvals: MutableList<CustomValue>,
     override var subcategoryCusvals: MutableList<CustomValue>,
     override var pendingActions: MutableList<PendingActionPL>

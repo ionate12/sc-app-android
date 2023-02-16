@@ -9,6 +9,7 @@ import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
+import au.com.safetychampion.data.domain.models.incidents.IncidentNewPL
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.util.extension.parseObject
 
@@ -83,5 +84,12 @@ class AssetsManager(private val context: Context) {
             .assets
             .readAssetsFile("document_signoff")
             .parseObject<DocumentSignoff>()!!
+    }
+
+    fun getNewIncident(): IncidentNewPL {
+        return context
+            .assets
+            .readAssetsFile("incident_new")
+            .parseObject()!!
     }
 }

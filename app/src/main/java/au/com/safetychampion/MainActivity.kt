@@ -28,7 +28,7 @@ import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzYzNjE5NzgsImV4cCI6MTY3NjQ0ODM3OH0.65ZCAChq3imDES5GNo_N_JtkChhc73rAxcwKnx3jb-8"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzY1NDQwMTMsImV4cCI6MTY3NjYzMDQxM30.kTIh1o0PQF2zDRDq4_Kzua3lC6rFgtufCrUJ0tMeIG4"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -94,7 +94,14 @@ class MainActivity : AppCompatActivity() {
         },
         "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", 23) },
         "Fetch List Document" to suspend { viewModel.fetchListDoc("63ec866dde4d671748fe6a91", 24) },
-        "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", 25) }
+        "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", 25) },
+//        "Prepare Document" to suspend { viewModel.prepareDoc("",) } TODO("add task id")
+        "Create incident" to suspend { viewModel.createIncident(payload = sampleData.getNewIncident(), 26) },
+        "Fetch Incident" to suspend { viewModel.fetchIncident(moduleId = "630d5de6ca562f742c1a2988", 27) },
+        "List Incident" to suspend { viewModel.fetchListIncident(28) },
+//        "Lookup incident" to suspend { viewModel.lookupIncident(29) }, // TODO("crash hrLookUp, have not consistent in response, maybe need custom adapter")
+        "Prepare Incident" to suspend { viewModel.prepareIncident(moduleId = "630d5de6ca562f742c1a2988", taskId = "630d5de6ca562f742c1a2988", 29) }
+
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
     )
 
