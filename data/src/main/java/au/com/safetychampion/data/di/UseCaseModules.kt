@@ -19,6 +19,7 @@ import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.document.*
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -86,6 +87,18 @@ internal val useCasesModule = module {
     factoryOf(::GetCriskTaskEvidenceUseCase)
 
     factoryOf(::ArchiveCriskUseCase)
+
+    // Document
+
+    factoryOf(::FetchCopySourceUseCase)
+
+    factoryOf(::FetchDocumentUseCase)
+
+    factoryOf(::PrepareDocumentSignoffUseCase)
+
+    factoryOf(::SignoffDocumentUseCase)
+
+    factoryOf(::FetchListDocumentUseCase)
 
     // Signoff
 

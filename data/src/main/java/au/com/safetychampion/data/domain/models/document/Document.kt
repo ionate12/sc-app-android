@@ -16,7 +16,7 @@ class Document(
     var allocationOf: AllocationOf? = null,
     var allocationActive: Boolean = false,
     var copySource: DocumentCopySource? = null,
-    var allocationList: ArrayList<String>? = null // a list of workplace ids that are assigned to this document) : Queryable {
+    val allocationList: MutableList<String> = mutableListOf()
 
 ) : Queryable {
 
