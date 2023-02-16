@@ -34,38 +34,40 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
     private val sampleData = AssetsManager(this)
     private lateinit var binding: ActivityMainBinding
+    private var counter = -1
     private val listUseCase = listOf(
-        "Get Active Task (tasks/list/active)" to suspend { viewModel.loadActiveTasks(0) },
-        "Load Active Tasks ReViewPlan (tasks/list/active)" to suspend { viewModel.loadActiveTasksReViewPlan(1) },
-        "Assign Task Status (tasks/assign/status)" to suspend { viewModel.assignTaskStatus(sampleData.getSampleTask(), 2) },
-        "Assign Task Status Many (tasks/assign/status)" to suspend { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask(), 3) },
-        "Assign Task" to suspend { viewModel.assignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem(), index = 4) },
-        "UnAssign Task" to suspend { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem(), index = 5) },
-        "Create new action" to suspend { viewModel.createNewAction(payload = sampleData.getNewAction(), index = 6) },
-        "List Action" to suspend { viewModel.getListAction(7) },
-        "Get Action SignOff" to suspend { viewModel.getActionSignOff(actionId = sampleData.getActionId(), id = sampleData.getSampleTask()._id, index = 8) },
+        "Login as u3_2@minh1.co" to suspend { viewModel.login(++counter) },
+        "Get Active Task (tasks/list/active)" to suspend { viewModel.loadActiveTasks(++counter) },
+        "Load Active Tasks ReViewPlan (tasks/list/active)" to suspend { viewModel.loadActiveTasksReViewPlan(++counter) },
+        "Assign Task Status (tasks/assign/status)" to suspend { viewModel.assignTaskStatus(sampleData.getSampleTask(), ++counter) },
+        "Assign Task Status Many (tasks/assign/status)" to suspend { viewModel.assignTaskStatusForMany(sampleData.getListSampleTask(), ++counter) },
+        "Assign Task" to suspend { viewModel.assignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem(), index = ++counter) },
+        "UnAssign Task" to suspend { viewModel.unAssignTask(ownerTask = sampleData.getSampleTask(), assignTask = sampleData.getSampleTaskAssignStatusItem(), index = ++counter) },
+        "Create new action" to suspend { viewModel.createNewAction(payload = sampleData.getNewAction(), index = ++counter) },
+        "List Action" to suspend { viewModel.getListAction(++counter) },
+        "Get Action SignOff" to suspend { viewModel.getActionSignOff(actionId = sampleData.getActionId(), id = sampleData.getSampleTask()._id, index = ++counter) },
         "Edit Action" to suspend {
             viewModel.editAction(
                 actionPL = sampleData.getEditAction(),
                 id = sampleData.getEditAction()._id!!,
-                index = 9
+                index = ++counter,
             )
         },
-        "Get List Banner" to suspend { viewModel.getListBanner(10) },
+        "Get List Banner" to suspend { viewModel.getListBanner(++counter) },
         "Edit Action" to suspend {
             viewModel.editAction(
                 actionPL = sampleData.getEditAction(),
                 id = sampleData.getEditAction()._id!!,
-                index = 11
+                index = 11,
             )
         },
-        "Refresh GHS code" to suspend { viewModel.refreshGHS(12) },
-        "Refresh Chemical" to suspend { viewModel.refreshChemical(13) },
+        "Refresh GHS code" to suspend { viewModel.refreshGHS(++counter) },
+        "Refresh Chemical" to suspend { viewModel.refreshChemical(++counter) },
         "Get Chemical Signoff" to suspend {
             viewModel.getChemicalSignoff(
                 moduleId = "61ad7aedb3ea32726aac3523",
                 id = "0123456",
-                index = 14
+                index = ++counter,
             )
         },
 
@@ -82,16 +84,16 @@ class MainActivity : AppCompatActivity() {
 //
 //            )
 //        },
-        "Get Crisk List" to suspend { viewModel.getListCrisk(15) },
-        "Get Crisk HrLookup" to suspend { viewModel.getListHrLookup(16) },
-        "Get Crisk Contractor Lookup" to suspend { viewModel.getListContractorLookup(17) },
-        "Get Crisk Signoff" to suspend { viewModel.getCriskSignoff(taskId = "63a2584497f7ee1e8d3d6369", criskId = "633fa33f4d59ca38fe91336e", index = 18) },
-        "Get Crisk" to suspend { viewModel.getCrisk(criskId = "633fa33f4d59ca38fe91336e", index = 19) },
-        "Crisk Evidence" to suspend { viewModel.getCriskEvidence(criskId = "633fa33f4d59ca38fe91336e", index = 20) },
-        "Archive Crisk" to suspend { viewModel.archiveCrisk(criskId = "633fa33f4d59ca38fe91336e", payload = sampleData.getCriskArchivePL(), index = 21) },
+        "Get Crisk List" to suspend { viewModel.getListCrisk(++counter) },
+        "Get Crisk HrLookup" to suspend { viewModel.getListHrLookup(++counter) },
+        "Get Crisk Contractor Lookup" to suspend { viewModel.getListContractorLookup(++counter) },
+        "Get Crisk Signoff" to suspend { viewModel.getCriskSignoff(taskId = "63a2584497f7ee1e8d3d6369", criskId = "633fa33f4d59ca38fe91336e", index = ++counter) },
+        "Get Crisk" to suspend { viewModel.getCrisk(criskId = "633fa33f4d59ca38fe91336e", index = ++counter) },
+        "Crisk Evidence" to suspend { viewModel.getCriskEvidence(criskId = "633fa33f4d59ca38fe91336e", index = ++counter) },
+        "Archive Crisk" to suspend { viewModel.archiveCrisk(criskId = "633fa33f4d59ca38fe91336e", payload = sampleData.getCriskArchivePL(), index = ++counter) },
         "QR CODE Visitor" to suspend {
-            viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = 22)
-        }
+            viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = ++counter)
+        },
 
     )
 
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 path = it.first,
                 status = "Loading",
                 loading = true,
-                result = ""
+                result = "",
             )
         }
     }
@@ -137,7 +139,7 @@ class MainActivity : AppCompatActivity() {
         val spinnerArrayAdapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
             this,
             R.layout.simple_spinner_dropdown_item,
-            listUseCase.map { it.first }
+            listUseCase.map { it.first },
         )
 
         val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -161,7 +163,7 @@ class MainActivity : AppCompatActivity() {
             binding.test.isEnabled = false
             mAdpater.list.clear()
             mAdpater.list.addAll(
-                items()
+                items(),
             )
             mAdpater.notifyDataSetChanged()
 

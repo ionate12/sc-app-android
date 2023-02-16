@@ -1,6 +1,7 @@
 package au.com.safetychampion.util
 
 import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.core.ModuleType
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.models.TierType
 import au.com.safetychampion.data.domain.models.customvalues.BaseCustomValue
@@ -10,6 +11,7 @@ import au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapte
 import au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter.CustomValueTypeAdapter
 import au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter.CusvalTypeTypeAdapter
 import au.com.safetychampion.data.util.gsonadapters.BasePLTypeAdapter
+import au.com.safetychampion.data.util.gsonadapters.ModuleTypeConverter
 import au.com.safetychampion.data.util.gsonadapters.TierTypeConverter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -19,6 +21,7 @@ class GsonManager : IGsonManager {
         GsonBuilder()
             .registerTypeHierarchyAdapter(BasePL::class.java, BasePLTypeAdapter())
             .registerTypeAdapter(TierType::class.java, TierTypeConverter())
+            .registerTypeAdapter(ModuleType::class.java, ModuleTypeConverter())
             .registerTypeAdapter(CustomValueOption::class.java, CustomValueOptionTypeAdapter())
             .registerTypeAdapter(BaseCustomValue::class.java, CustomValueTypeAdapter())
             .registerTypeAdapter(CusvalType::class.java, CusvalTypeTypeAdapter())

@@ -8,6 +8,7 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
+import au.com.safetychampion.data.domain.models.auth.LoginPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.task.Task
@@ -17,6 +18,12 @@ import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseC
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
+import au.com.safetychampion.data.domain.usecase.auth.GetWhoAmIUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserLoginUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserMorphUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserMultiLoginUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserUnMorphUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserVerifyMfaUseCase
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
@@ -60,8 +67,45 @@ class MainViewModel : ViewModel() {
     private val getCriskEvidence: GetCriskTaskEvidenceUseCase by koinInject()
     private val archiveCrisk: ArchiveCriskUseCase by koinInject()
 
+    private val loginUseCase: UserLoginUseCase by koinInject()
+    private val multiLoginUseCase: UserMultiLoginUseCase by koinInject()
+    private val verifyMfaUseCase: UserVerifyMfaUseCase by koinInject()
+    private val morphUseCase: UserMorphUseCase by koinInject()
+    private val unmorphUseCase: UserUnMorphUseCase by koinInject()
+    private val whoAmIUseCase: GetWhoAmIUseCase by koinInject()
+
     val _apiCallStatus = MutableSharedFlow<Pair<Int, Result<*>>>()
     val apiCallStatus = _apiCallStatus.asSharedFlow()
+
+    suspend fun login(index: Int) {
+        loginUseCase(LoginPL(email = "u3_2@minh1.co", password = "123"))
+            .let { _apiCallStatus.emit(index to it) }
+    }
+
+    suspend fun multiLogin(index: Int) {
+        val pl = LoginPL(email = "demomanager@safetychampion.online", password = "12345678a")
+        val userId = "5efbeba4c6bac31619e11be4"
+        loginUseCase(pl).doOnSucceed {
+            multiLoginUseCase(userId, pl)
+                .let { _apiCallStatus.emit(index to it) }
+        }
+    }
+
+    suspend fun whoAmI(index: Int) {
+        whoAmIUseCase().let { _apiCallStatus.emit(index to it) }
+    }
+
+    // require login as demomanager tier3
+    suspend fun morph(index: Int) {
+        morphUseCase("5efbeba1c6bac31619e11bd8").let {
+            _apiCallStatus.emit(index to it)
+        }
+    }
+
+    // require morphed
+    suspend fun unmorph(index: Int) {
+        unmorphUseCase().let { _apiCallStatus.emit(index to it) }
+    }
 
     suspend fun loadActiveTasks(index: Int) {
         val result = getActiveTaskUseCase.invoke(null)

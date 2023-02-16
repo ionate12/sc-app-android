@@ -29,7 +29,7 @@ abstract class BaseRepository {
 
     private val roomDts: RoomDataSource by koinInject()
 
-    internal suspend inline fun <reified T> NetworkAPI.call(objName: String? = null): Result<T> {
+    internal suspend inline fun <reified T : Any> NetworkAPI.call(objName: String? = null): Result<T> {
         return internalCall().flatMap {
             it.toItem(objName)
         }
@@ -77,7 +77,7 @@ abstract class BaseRepository {
                             when (it) {
                                 is Result.Error -> return@withContext Result.Error(it.err)
                                 is Result.Success -> {
-                                    nBody = this@handleOnline.body.onPendingActionsCreated(it.data!!)
+                                    nBody = this.onPendingActionsCreated(it.data!!)
                                 }
                                 else -> TODO("To be removed")
                             }

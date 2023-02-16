@@ -9,7 +9,8 @@ data class Tier(
     val city: String? = null,
     val state: String? = null,
     val country: String? = null,
-    val address: String? = null
+    val address: String? = null,
+    val access: Boolean? = null // For morph
 )
 
 enum class TierType(val value: String) {

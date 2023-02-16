@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 
-sealed class StoreKey<T : Any>(protected open val key: String) {
+sealed class StoreKey<T : Any>(open val key: String) {
     abstract fun prefKey(): Preferences.Key<T>
     sealed class AsString(override val key: String) : StoreKey<String>(key) {
         override fun prefKey(): Preferences.Key<String> = stringPreferencesKey(key)
@@ -24,13 +24,19 @@ sealed class StoreKey<T : Any>(protected open val key: String) {
         override fun prefKey(): Preferences.Key<Set<String>> = stringSetPreferencesKey(key)
     }
 
+    sealed class AsObject(override val key: String) : AsString(key)
+
     // region String
     object TokenAuthed : AsString("token_authed")
     object TokenMorphed : AsString("token_morphed")
-// endregion
+    // endregion
+
+    // region Object
+    object UserInfo : AsObject("user_info")
+    object UserCredential : AsObject("user_credential")
+    // endregion
 
     // region String Set
-    object UserCredential : AsStringSet("user_credential")
 
 // endregion
 }
