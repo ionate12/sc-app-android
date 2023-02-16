@@ -4,12 +4,14 @@ import android.R
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -114,6 +116,13 @@ class MainActivity : AppCompatActivity() {
     val mAdpater = Adapter()
     private var loadAllJob: Job? = null
 
+    private val dispatchers = Dispatchers.Main + CoroutineExceptionHandler { coroutineContext, throwable ->
+        binding.result.apply {
+            text = throwable.stackTraceToString()
+            setTextColor(ContextCompat.getColor(this@MainActivity, R.color.holo_red_dark))
+        }
+    }
+
     fun initRecycleview() {
         mAdpater.testAgainn = {
             testAll = false
@@ -123,7 +132,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 viewModel._apiCallStatus.emit(0 to Result.Loading)
             }
-            lifecycleScope.launch { listUseCase.get(it).second.invoke() }
+            lifecycleScope.launch(dispatchers) { listUseCase.get(it).second.invoke() }
         }
         binding.recyclerView.adapter = mAdpater
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
