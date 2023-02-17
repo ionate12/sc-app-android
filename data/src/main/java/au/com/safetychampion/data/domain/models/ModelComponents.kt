@@ -36,11 +36,11 @@ interface IForceNullValues {
 }
 
 interface ISignature {
-    var signatures: MutableList<Signature>?
+    var signatures: MutableList<Signature>
 }
 
 interface IAttachment {
-    var attachments: MutableList<Attachment>?
+    var attachments: MutableList<Attachment>
 }
 
 // Pending Actions

@@ -3,13 +3,7 @@ package au.com.safetychampion.data.domain.models.crisk
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.core.Signature
-import au.com.safetychampion.data.domain.models.IAttachment
-import au.com.safetychampion.data.domain.models.ICusval
-import au.com.safetychampion.data.domain.models.IPendingAction
-import au.com.safetychampion.data.domain.models.ISignature
-import au.com.safetychampion.data.domain.models.ISubcategoryCusval
-import au.com.safetychampion.data.domain.models.SCHolderLink
-import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
@@ -40,7 +34,7 @@ data class CriskTask(
     override val type: String,
     override var cusvals: MutableList<CustomValue>,
     override var subcategoryCusvals: MutableList<CustomValue>,
-    override var signatures: MutableList<Signature>?,
-    override var attachments: MutableList<Attachment>?,
+    override var signatures: MutableList<Signature>,
+    override var attachments: MutableList<Attachment>,
     override var pendingActions: MutableList<PendingActionPL>
 ) : BaseTask, ICusval, ICriskTaskComponents

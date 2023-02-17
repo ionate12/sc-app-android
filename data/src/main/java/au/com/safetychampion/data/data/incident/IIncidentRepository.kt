@@ -7,8 +7,8 @@ import au.com.safetychampion.scmobile.modules.incident.model.ConfiguredLocations
 interface IIncidentRepository {
     suspend fun list(): Result<List<Incident>>
     suspend fun new(body: IncidentNewPL): Result<Incident>
-    suspend fun fetchIncident(taskID: String): Result<Incident>
-    suspend fun fetchTask(taskID: String): Result<IncidentTask>
+    suspend fun fetchIncident(incidentId: String): Result<Incident>
+    suspend fun fetchTask(taskId: String): Result<IncidentTask>
     suspend fun fetchConfigLocation(): Result<ConfiguredLocations>
     suspend fun signOff(payload: IncidentTaskPL): Result<IncidentTask>
     suspend fun hrLookUp(): Result<List<HrLookupItem>>

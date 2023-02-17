@@ -39,7 +39,7 @@ data class DocumentTask(
     override val inExecution: Boolean? = null,
     override val tier: Tier? = null,
     override val title: String? = null,
-    override var attachments: MutableList<Attachment>? = mutableListOf()
+    override var attachments: MutableList<Attachment> = mutableListOf()
 ) : BasePL(), BaseTask, IAttachment {
     // TODO("tz")
 }

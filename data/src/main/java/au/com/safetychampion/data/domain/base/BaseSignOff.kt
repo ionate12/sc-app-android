@@ -24,6 +24,6 @@ interface BaseSignOff<T : BaseTask> {
             taskId: String
         ) = "vdocs/$moduleId/tasks/$taskId/signoff"
 
-        fun incidentSignoffSyncableKey(taskId: String) = "incidents/$taskId/task/signoff"
+        fun incidentSignoffSyncableKey(incidentId: String) = "incidents/$incidentId/task/signoff"
     }
 }
