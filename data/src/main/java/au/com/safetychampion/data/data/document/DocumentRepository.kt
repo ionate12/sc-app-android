@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.flatMap
 import au.com.safetychampion.data.domain.models.document.* // ktlint-disable no-wildcard-imports
 
-class DocumentRepositoryImpl : BaseRepository(), IDocumentRepository {
+class DocumentRepository : BaseRepository(), IDocumentRepository {
     override suspend fun list(): Result<List<Document>> {
         return DocumentAPI.List().call()
     }

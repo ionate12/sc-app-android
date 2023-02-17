@@ -12,7 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
-class NoticeboardRepositoryImpl : BaseRepository(), INoticeboardRepository {
+class NoticeboardRepository : BaseRepository(), INoticeboardRepository {
     override suspend fun list(): Result<List<Noticeboard>> {
         return NoticeboardAPI.List().call()
     }

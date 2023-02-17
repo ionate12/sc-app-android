@@ -1,51 +1,51 @@
 package au.com.safetychampion.data.di
 
-import au.com.safetychampion.data.data.action.ActionRepositoryImpl
+import au.com.safetychampion.data.data.action.ActionRepository
 import au.com.safetychampion.data.data.action.IActionRepository
 import au.com.safetychampion.data.data.api.RestApi
-import au.com.safetychampion.data.data.banner.BannerRepositoryImpl
+import au.com.safetychampion.data.data.banner.BannerRepository
 import au.com.safetychampion.data.data.banner.IBannerRepository
-import au.com.safetychampion.data.data.chemical.ChemicalRepositoryImpl
+import au.com.safetychampion.data.data.chemical.ChemicalRepository
 import au.com.safetychampion.data.data.chemical.IChemicalRepository
 import au.com.safetychampion.data.data.common.ITaskRepository
-import au.com.safetychampion.data.data.common.TaskRepositoryImpl
-import au.com.safetychampion.data.data.crisk.CriskRepositoryImpl
+import au.com.safetychampion.data.data.common.TaskRepository
+import au.com.safetychampion.data.data.crisk.CriskRepository
 import au.com.safetychampion.data.data.crisk.ICriskRepository
-import au.com.safetychampion.data.data.document.DocumentRepositoryImpl
+import au.com.safetychampion.data.data.document.DocumentRepository
 import au.com.safetychampion.data.data.document.IDocumentRepository
 import au.com.safetychampion.data.data.incident.IIncidentRepository
-import au.com.safetychampion.data.data.incident.IncidentRepositoryImpl
+import au.com.safetychampion.data.data.incident.IncidentRepository
 import au.com.safetychampion.data.data.local.SyncableRepository
 import au.com.safetychampion.data.data.noticeboard.INoticeboardRepository
-import au.com.safetychampion.data.data.noticeboard.NoticeboardRepositoryImpl
+import au.com.safetychampion.data.data.noticeboard.NoticeboardRepository
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.visitor.data.local.IVisitorLocalRepository
-import au.com.safetychampion.data.visitor.data.local.VisitorLocalRepositoryImpl
+import au.com.safetychampion.data.visitor.data.local.VisitorLocalRepository
 import au.com.safetychampion.data.visitor.data.remote.IVisitorRemoteRepository
-import au.com.safetychampion.data.visitor.data.remote.VisitorRemoteRepositoryImpl
+import au.com.safetychampion.data.visitor.data.remote.VisitorRemoteRepository
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 internal val repositoryModule = module {
-    singleOf<IActionRepository>(::ActionRepositoryImpl)
+    singleOf<IActionRepository>(::ActionRepository)
 
-    singleOf<IBannerRepository>(::BannerRepositoryImpl)
+    singleOf<IBannerRepository>(::BannerRepository)
 
-    singleOf<IChemicalRepository>(::ChemicalRepositoryImpl)
+    singleOf<IChemicalRepository>(::ChemicalRepository)
 
-    singleOf<ICriskRepository>(::CriskRepositoryImpl)
+    singleOf<ICriskRepository>(::CriskRepository)
 
-    singleOf<IDocumentRepository>(::DocumentRepositoryImpl)
+    singleOf<IDocumentRepository>(::DocumentRepository)
 
-    singleOf<IIncidentRepository>(::IncidentRepositoryImpl)
+    singleOf<IIncidentRepository>(::IncidentRepository)
 
-    singleOf<INoticeboardRepository>(::NoticeboardRepositoryImpl)
+    singleOf<INoticeboardRepository>(::NoticeboardRepository)
 
-    singleOf<ITaskRepository> (::TaskRepositoryImpl)
+    singleOf<ITaskRepository> (::TaskRepository)
 
-    singleOf<IVisitorRemoteRepository>(::VisitorRemoteRepositoryImpl)
+    singleOf<IVisitorRemoteRepository>(::VisitorRemoteRepository)
 
-    singleOf<IVisitorLocalRepository>(::VisitorLocalRepositoryImpl)
+    singleOf<IVisitorLocalRepository>(::VisitorLocalRepository)
 
     singleOf(::SyncableRepository)
 

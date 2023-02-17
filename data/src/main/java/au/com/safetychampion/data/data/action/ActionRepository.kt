@@ -12,7 +12,7 @@ import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class ActionRepositoryImpl : BaseRepository(), IActionRepository {
+class ActionRepository : BaseRepository(), IActionRepository {
     override suspend fun createAction(
         payload: ActionPL
     ): Result<Action> {

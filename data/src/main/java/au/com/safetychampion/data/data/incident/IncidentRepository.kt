@@ -11,7 +11,7 @@ import au.com.safetychampion.scmobile.modules.incident.model.ConfiguredLocations
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class IncidentRepositoryImpl : BaseRepository(), IIncidentRepository {
+class IncidentRepository : BaseRepository(), IIncidentRepository {
     override suspend fun list(): Result<List<Incident>> {
         return IncidentAPI.List().call()
     }

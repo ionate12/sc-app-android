@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.flatMap
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
 
-internal class VisitorRemoteRepositoryImpl : BaseRepository(), IVisitorRemoteRepository {
+internal class VisitorRemoteRepository : BaseRepository(), IVisitorRemoteRepository {
 
     override suspend fun token(orgId: String, siteId: String, pin: String?): Result<VisitorToken> {
         val payload = VisitorPayload.Token(IdObject(orgId), IdObject(siteId), pin)

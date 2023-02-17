@@ -9,7 +9,7 @@ import au.com.safetychampion.data.visitor.domain.models.VisitorSite
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
-internal class VisitorLocalRepositoryImpl : IVisitorLocalRepository {
+internal class VisitorLocalRepository : IVisitorLocalRepository {
     private val dao: VisitorDAO by koinInject()
     private val mapper by lazy { VisitorEntityMapper() }
 
