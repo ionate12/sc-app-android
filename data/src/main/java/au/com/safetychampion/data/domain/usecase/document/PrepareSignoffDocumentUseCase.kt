@@ -8,7 +8,7 @@ import au.com.safetychampion.data.domain.models.document.DocumentTask
 import au.com.safetychampion.data.domain.usecase.BasePrepareSignoffUseCase
 import au.com.safetychampion.data.util.extension.koinInject
 
-class PrepareDocumentSignoffUseCase : BasePrepareSignoffUseCase<DocumentTask, DocumentSignoff>() {
+class PrepareSignoffDocumentUseCase : BasePrepareSignoffUseCase<DocumentTask, DocumentSignoff>() {
     private val repository: IDocumentRepository by koinInject()
 
     override suspend fun fetchData(moduleId: String, taskId: String?): Result<DocumentSignoff> {

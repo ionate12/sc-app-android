@@ -81,9 +81,9 @@ internal val useCasesModule = module {
 
     factoryOf(::FetchDocumentUseCase)
 
-    factoryOf(::PrepareDocumentSignoffUseCase)
+    factoryOf(::PrepareSignoffDocumentUseCase)
 
-    factoryOf(::FetchListDocumentUseCase)
+    factoryOf(::GetListDocumentUseCase)
 
     // Incident *_*
 

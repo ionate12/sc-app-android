@@ -349,12 +349,12 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to fetchDocuseCase.invoke(moduleId))
     }
 
-    private val fetchListDocUsecase: FetchListDocumentUseCase by koinInject()
+    private val fetchListDocUsecase: GetListDocumentUseCase by koinInject()
     suspend fun fetchListDoc(moduleId: String, index: Int) {
         _apiCallStatus.emit(index to fetchListDocUsecase.invoke(moduleId, TierType.T4))
     }
 
-    private val prepareDocUseCase: PrepareDocumentSignoffUseCase by koinInject()
+    private val prepareDocUseCase: PrepareSignoffDocumentUseCase by koinInject()
     suspend fun prepareDoc(moduleId: String, index: Int) {
         _apiCallStatus.emit(index to prepareDocUseCase.invoke(moduleId))
     }
