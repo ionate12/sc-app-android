@@ -2,6 +2,7 @@ package au.com.safetychampion.util
 
 import au.com.safetychampion.data.data.local.BaseAppDataStore
 import au.com.safetychampion.data.data.local.StoreKey
+import au.com.safetychampion.data.domain.core.SuspendableInit
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.domain.uncategory.AppToken
 import au.com.safetychampion.data.util.extension.koinInject
@@ -9,26 +10,35 @@ import au.com.safetychampion.dispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.reflect.KClass
 
-class TokenManager : ITokenManager {
+class TokenManager : SuspendableInit(), ITokenManager {
     private lateinit var tokens: SortedSet<AppToken>
     private val dataStore: BaseAppDataStore by koinInject()
-    override suspend fun getToken(): AppToken? {
-        initTokensIfNeeded()
-        return tokens.firstOrNull()
-    }
 
-    override suspend fun updateToken(token: AppToken) {
-        initTokensIfNeeded()
+    override suspend fun suspendInit() {
+        tokens = getStoredTokens()
+    }
+    override suspend fun getToken(): AppToken? = didInit { tokens.firstOrNull() }
+
+    override suspend fun updateToken(token: AppToken) = didInit {
         tokens.removeIf { it.priority == token.priority }
         tokens.add(token)
         storeTokenIfNeeded(token)
     }
 
-    private suspend fun initTokensIfNeeded() {
-        // lazy init
-        if (!this::tokens.isInitialized) {
-            tokens = getStoredTokens()
+    override suspend fun clearTokens() = didInit {
+        tokens.clear()
+    }
+
+    override suspend fun deleteToken(type: KClass<AppToken>) = didInit {
+        tokens.removeIf { it::class == type }
+        when (type) {
+            AppToken.Morphed::class -> {
+                dataStore.store(StoreKey.TokenMorphed, null)
+            }
+            AppToken.Authed::class -> dataStore.store(StoreKey.TokenAuthed, null)
+            else -> Unit
         }
     }
 

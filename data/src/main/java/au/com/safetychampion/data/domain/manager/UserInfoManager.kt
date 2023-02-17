@@ -3,23 +3,22 @@ package au.com.safetychampion.data.domain.manager
 import au.com.safetychampion.data.data.local.BaseAppDataStore
 import au.com.safetychampion.data.data.local.StoreKey
 import au.com.safetychampion.data.domain.core.ModuleType
+import au.com.safetychampion.data.domain.core.SuspendableInit
 import au.com.safetychampion.data.domain.models.auth.LoginUser
 import au.com.safetychampion.data.domain.models.config.PermissionType
 import au.com.safetychampion.data.domain.models.config.module.BaseConfig
 import au.com.safetychampion.data.util.extension.koinInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 interface IUserInfoManager {
     suspend fun getUser(): LoginUser?
     suspend fun <T : BaseConfig> getConfig(type: ModuleType): T?
     suspend fun storeUser(nUser: LoginUser)
+    suspend fun clearUser()
     suspend fun hasPermission(type: ModuleType, permissionType: PermissionType): Boolean
     suspend fun hasMorphPermission(type: ModuleType, permissionType: PermissionType): Boolean
     suspend fun moduleTitle(type: ModuleType): String
 }
-class UserInfoManager : IUserInfoManager {
+class UserInfoManager : SuspendableInit(), IUserInfoManager {
     // Cache Data
     private var loginUser: LoginUser? = null
     private var config: Map<ModuleType, BaseConfig>? = null
@@ -27,20 +26,8 @@ class UserInfoManager : IUserInfoManager {
 
     // Deps
     private val appDataStore: BaseAppDataStore by koinInject()
-    private val dispatchers: IDispatchers by koinInject()
 
-    private var initJob: Job? = null
-
-    init {
-        initJob = initialize()
-    }
-
-    private suspend fun <T : Any?> didInit(block: suspend () -> T): T {
-        initJob?.join()
-        return block.invoke()
-    }
-
-    private fun initialize(): Job = CoroutineScope(dispatchers.io).launch {
+    override suspend fun suspendInit() {
         loginUser = appDataStore.get(StoreKey.UserInfo)
         setupConfig(loginUser)
     }
@@ -62,16 +49,22 @@ class UserInfoManager : IUserInfoManager {
         setupConfig(loginUser)
     }
 
+    override suspend fun clearUser() {
+        appDataStore.store(StoreKey.UserInfo, null)
+        loginUser = null
+        setupConfig(null)
+    }
+
     override suspend fun hasPermission(
         type: ModuleType,
-        permissionType: PermissionType
+        permissionType: PermissionType,
     ): Boolean {
         return getConfig<BaseConfig>(type)?.permissions?.contains(permissionType) == true
     }
 
     override suspend fun hasMorphPermission(
         type: ModuleType,
-        permissionType: PermissionType
+        permissionType: PermissionType,
     ): Boolean {
         return getConfig<BaseConfig>(type)?.morphPermissions?.contains(permissionType) == true
     }

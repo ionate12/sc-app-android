@@ -11,7 +11,9 @@ data class Configuration(
     val type: ModuleType,
     private val values: List<ConfigurationItem>,
 ) {
-    val valuesMap: ConfigItemMap by lazy { values.associate { it.name to it.value } }
+    fun valueMaps(): ConfigItemMap {
+        return values.associate { it.name to it.value }
+    }
 }
 
 enum class PermissionType(val value: String) {

@@ -9,6 +9,7 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTask
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.auth.GetWhoAmIUseCase
 import au.com.safetychampion.data.domain.usecase.auth.UserLoginUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserLogoutUseCase
 import au.com.safetychampion.data.domain.usecase.auth.UserMorphUseCase
 import au.com.safetychampion.data.domain.usecase.auth.UserMultiLoginUseCase
 import au.com.safetychampion.data.domain.usecase.auth.UserUnMorphUseCase
@@ -18,7 +19,7 @@ import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -33,6 +34,7 @@ internal val useCasesModule = module {
     factoryOf(::UserMorphUseCase)
     factoryOf(::UserUnMorphUseCase)
     factoryOf(::GetWhoAmIUseCase)
+    factoryOf(::UserLogoutUseCase)
 
     // Active tasks
 

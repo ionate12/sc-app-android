@@ -10,7 +10,7 @@ import au.com.safetychampion.data.util.extension.asIntOrNull
 import au.com.safetychampion.data.util.extension.asStringOrNull
 import au.com.safetychampion.data.util.extension.parseObject
 
-class IncidentConfig(config: Configuration) : BaseConfig(config.valuesMap) {
+class IncidentConfig(config: Configuration) : BaseConfig(config.valueMaps()) {
     val referencePrefix: String
     val createIncidentCategoryList: List<ConfigCreationCategory>
     val createIncidentCusvals: List<CustomValue>
@@ -37,10 +37,9 @@ class IncidentConfig(config: Configuration) : BaseConfig(config.valuesMap) {
     val bodyPartImgLink: String?
 
     init {
-        if (config.type != ModuleType.ACTION) {
+        if (config.type != ModuleType.INCIDENT) {
             throw IllegalArgumentException("set wrong params, module Type must be Action")
         }
-        val configMap = config.valuesMap
         this.referencePrefix = configMap["REFERENCE_PREFIX"]?.asStringOrNull() ?: "INC"
         // creation
         this.createIncidentCategoryList = configMap["CREATE_INCIDENT_CATEGORY_LIST"]?.parseObject() ?: listOf()

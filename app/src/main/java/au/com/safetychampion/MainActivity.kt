@@ -4,7 +4,6 @@ import android.R
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.View
@@ -13,15 +12,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import au.com.Adapter
 import au.com.Item
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.dataOrNull
 import au.com.safetychampion.data.domain.core.errorOrNull
-import au.com.safetychampion.data.domain.manager.ITokenManager
-import au.com.safetychampion.data.domain.uncategory.AppToken
+import au.com.safetychampion.data.domain.manager.IUserInfoManager
 import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.databinding.ActivityMainBinding
@@ -30,7 +30,6 @@ import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzYzNjE5NzgsImV4cCI6MTY3NjQ0ODM3OH0.65ZCAChq3imDES5GNo_N_JtkChhc73rAxcwKnx3jb-8"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -39,6 +38,13 @@ class MainActivity : AppCompatActivity() {
     private var counter = -1
     private val listUseCase = listOf(
         "Login as u3_2@minh1.co" to suspend { viewModel.login(++counter) },
+        "Login Multi w demomanager@safetychampion.online " to suspend { viewModel.multiLogin(++counter) },
+        "Morph (required login as demomanager) " to suspend { viewModel.morph(++counter) },
+        "UnMorph (required  morph) " to suspend { viewModel.unmorph(++counter) },
+        "Sign out" to suspend {
+            viewModel.logout(++counter)
+            checkUserData()
+        },
         "Get Active Task (tasks/list/active)" to suspend { viewModel.loadActiveTasks(++counter) },
         "Load Active Tasks ReViewPlan (tasks/list/active)" to suspend { viewModel.loadActiveTasksReViewPlan(++counter) },
         "Assign Task Status (tasks/assign/status)" to suspend { viewModel.assignTaskStatus(sampleData.getSampleTask(), ++counter) },
@@ -98,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         },
         "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", ++counter) },
         "Fetch List Document" to suspend { viewModel.fetchListDoc("63ec866dde4d671748fe6a91", ++counter) },
-        "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", ++counter) }
+        "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", ++counter) },
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
     )
 
@@ -132,21 +138,21 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 viewModel._apiCallStatus.emit(0 to Result.Loading)
             }
-            lifecycleScope.launch(dispatchers) { listUseCase.get(it).second.invoke() }
+            lifecycleScope.launch(dispatchers) {
+                listUseCase.get(it).second.invoke()
+            }
         }
         binding.recyclerView.adapter = mAdpater
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Append Token Manually
-        CoroutineScope(dispatchers().main).launch {
-            koinGet<ITokenManager>().updateToken(AppToken.Authed(getToken()))
-        }
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initRecycleview()
+
+        checkUserData()
 
         val spinnerArrayAdapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
             this,
@@ -186,43 +192,70 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        observeFlows()
+
+        binding.result.movementMethod = ScrollingMovementMethod()
+    }
+
+    private fun observeFlows() {
         lifecycleScope.launch {
-            viewModel.apiCallStatus.collectLatest {
-                if (testAll) {
-                    val i = it.first
-                    val rs = it.second
-                    mAdpater.list[i].apply {
-                        this.loading = (false)
-                        this.status = (
-                            if (rs is Result.Success) "Success" else "Error"
-                            )
-                        this.color = if (rs is Result.Success) au.com.safetychampion.R.color.success else au.com.safetychampion.R.color.error
-                        this.result = (it.second.dataOrNull()?.toJsonString() ?: it.second.errorOrNull()?.toString()!!)
-                        this.testAgain = if (rs is Result.Error) View.VISIBLE else View.GONE
-                        mAdpater.notifyItemChanged(i)
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.uiMessage.collect {
+                        when (it) {
+                            UiMessage.RefreshUserInfo -> checkUserData()
+                        }
                     }
-                } else {
-                    binding.progress.isVisible = it.second is Result.Loading
-                    when (it.second) {
-                        is Result.Loading -> {
-                            binding.status.text = "This is Result.Loading"
-                            binding.result.text = ""
-                            binding.count.text = "[]"
-                        }
-                        is Result.Error -> {
-                            binding.status.text = "This is Result.ERROR"
-                            binding.result.text = (it.second as Result.Error).err.toString()
-                        }
-                        is Result.Success -> {
-                            binding.status.text = "This is Result.Success"
-                            binding.result.text = (it.second as Result.Success<*>).data?.toJsonString()
-                            binding.count.text = "[${((it.second as Result.Success<*>).data as? List<*>)?.size}]"
+                }
+
+                launch {
+                    viewModel.apiCallStatus.collectLatest {
+                        if (testAll) {
+                            val i = it.first
+                            val rs = it.second
+                            mAdpater.list[i].apply {
+                                this.loading = (false)
+                                this.status = (
+                                    if (rs is Result.Success) "Success" else "Error"
+                                    )
+                                this.color = if (rs is Result.Success) au.com.safetychampion.R.color.success else au.com.safetychampion.R.color.error
+                                this.result = (it.second.dataOrNull()?.toJsonString() ?: it.second.errorOrNull()?.toString()!!)
+                                this.testAgain = if (rs is Result.Error) View.VISIBLE else View.GONE
+                                mAdpater.notifyItemChanged(i)
+                            }
+                        } else {
+                            binding.progress.isVisible = it.second is Result.Loading
+                            when (it.second) {
+                                is Result.Loading -> {
+                                    binding.status.text = "This is Result.Loading"
+                                    binding.result.text = ""
+                                    binding.count.text = "[]"
+                                }
+                                is Result.Error -> {
+                                    binding.status.text = "This is Result.ERROR"
+                                    binding.result.text = (it.second as Result.Error).err.toString()
+                                }
+                                is Result.Success -> {
+                                    binding.status.text = "This is Result.Success"
+                                    binding.result.text = (it.second as Result.Success<*>).data?.toJsonString()
+                                    binding.count.text = "[${((it.second as Result.Success<*>).data as? List<*>)?.size}]"
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+    }
 
-        binding.result.movementMethod = ScrollingMovementMethod()
+    private fun checkUserData() {
+        lifecycleScope.launch {
+            val text = koinGet<IUserInfoManager>().getUser()?.let {
+                // update UI
+                "Logged in as ${it.email}"
+            } ?: "Not logged in"
+
+            binding.loginStatus.text = text
+        }
     }
 }

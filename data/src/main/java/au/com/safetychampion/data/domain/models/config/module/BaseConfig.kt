@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.models.config.Configuration
 import au.com.safetychampion.data.domain.models.config.PermissionType
 import au.com.safetychampion.data.util.extension.asStringOrNull
 
-abstract class BaseConfig(configMap: ConfigItemMap) {
+abstract class BaseConfig(protected val configMap: ConfigItemMap) {
     val permissions: List<PermissionType>
     val morphPermissions: List<PermissionType>
     val title: String

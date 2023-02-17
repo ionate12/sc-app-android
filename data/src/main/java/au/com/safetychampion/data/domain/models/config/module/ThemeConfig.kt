@@ -5,7 +5,7 @@ import au.com.safetychampion.data.domain.core.ModuleType
 import au.com.safetychampion.data.domain.models.config.Configuration
 import au.com.safetychampion.data.util.extension.asStringOrNull
 
-class ThemeConfig(config: Configuration) : BaseConfig(config.valuesMap) {
+class ThemeConfig(config: Configuration) : BaseConfig(config.valueMaps()) {
     private val logoUrl: String?
     private val mainBgColor: String?
     private val headerBarBgColor: String?
@@ -17,7 +17,6 @@ class ThemeConfig(config: Configuration) : BaseConfig(config.valuesMap) {
         if (config.type != ModuleType.THEME) {
             throw IllegalArgumentException("set wrong params, module Type must be THEME")
         }
-        val configMap = config.valuesMap
         logoUrl = configMap["ORGANIZATION_LOGO"]?.asStringOrNull()
         mainBgColor = configMap["MAIN_BG_COLOR"]?.asStringOrNull()
         headerBarBgColor = configMap["HEADER_BAR_BG_COLOR"]?.asStringOrNull()

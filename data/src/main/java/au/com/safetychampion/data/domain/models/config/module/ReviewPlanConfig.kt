@@ -5,7 +5,7 @@ import au.com.safetychampion.data.domain.models.config.Configuration
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.util.extension.parseObject
 
-class ReviewPlanConfig(config: Configuration) : BaseConfig(config.valuesMap) {
+class ReviewPlanConfig(config: Configuration) : BaseConfig(config.valueMaps()) {
 
     val classificationList: List<ConfigReviewPlanClassification>
     val holderList: List<String>
@@ -14,7 +14,6 @@ class ReviewPlanConfig(config: Configuration) : BaseConfig(config.valuesMap) {
         if (config.type != ModuleType.REVIEW_PLAN) {
             throw IllegalArgumentException("set wrong params, module Type must be REVIEW PLAN")
         }
-        val configMap = config.valuesMap
         holderList = configMap["HOLDER_LIST"]?.parseObject() ?: listOf()
         holderLookUp = configMap["HOLDER_LOOKUP"]?.parseObject() ?: listOf()
         classificationList = configMap["CLASSIFICATION_LIST"]?.parseObject() ?: listOf()

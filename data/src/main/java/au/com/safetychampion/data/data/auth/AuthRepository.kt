@@ -27,6 +27,7 @@ interface IAuthRepository {
     suspend fun mfaVerify(mfaVerifyPL: MfaVerifyPL, loginPL: LoginPL): Result<LoginResponse>
     suspend fun morph(morphPL: MorphPL): Result<LoginResponse.Single>
     suspend fun unmorph(): Result<LoginResponse.Single>
+    suspend fun logout(): Result<Unit>
     suspend fun whoami(): Result<WhoAmI>
 }
 
@@ -47,6 +48,7 @@ class AuthRepository : BaseRepository(), IAuthRepository {
         val jsonResult: Result<JsonObject> = AuthApi.Login(loginPL).call(objName = "")
         return jsonResult.map { customGson.fromJson(it, LoginResponse::class.java) }
             .doOnSucceed {
+                tokenManager.clearTokens()
                 updateToken(it)
                 if (it is LoginResponse.Single) {
                     storeUserCredential(loginPL)
@@ -57,10 +59,12 @@ class AuthRepository : BaseRepository(), IAuthRepository {
 
     override suspend fun multiLogin(
         multiLoginPL: MultiLoginPL,
-        loginPL: LoginPL
+        loginPL: LoginPL,
     ): Result<LoginResponse.Single> {
-        return AuthApi.MultiUserAuth(multiLoginPL).call<LoginResponse.Single>(objName = "")
+        return AuthApi.MultiUserAuth(multiLoginPL).call<LoginEnvFromMulti>(objName = "")
+            .map { LoginResponse.Single(LoginEnv(it.item, it.token)) }
             .doOnSucceed {
+                tokenManager.clearTokens()
                 updateToken(it)
                 storeUserCredential(loginPL)
                 storeUserInfo(it.data.user)
@@ -71,6 +75,7 @@ class AuthRepository : BaseRepository(), IAuthRepository {
         val jsonResult: Result<JsonObject> = AuthApi.MfaVerify(mfaVerifyPL).call(objName = "")
         return jsonResult.map { customGson.fromJson(it, LoginResponse::class.java) }
             .doOnSucceed {
+                tokenManager.clearTokens()
                 updateToken(it)
                 if (it is LoginResponse.Single) {
                     storeUserCredential(loginPL)
@@ -95,6 +100,15 @@ class AuthRepository : BaseRepository(), IAuthRepository {
             }
     }
 
+    override suspend fun logout(): Result<Unit> {
+        // 1. clear token
+        tokenManager.clearTokens()
+        // 2. clear user
+        userInfoManager.clearUser()
+        // 3. clear credential
+        appDataStore.store(StoreKey.UserCredential, null)
+        return Result.Success(Unit)
+    }
     override suspend fun whoami(): Result<WhoAmI> {
         return AuthApi.GetWhoAmI().call(objName = "")
     }
@@ -126,7 +140,7 @@ private class LoginResponseDeserializer : JsonDeserializer<LoginResponse> {
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
-        context: JsonDeserializationContext?
+        context: JsonDeserializationContext?,
     ): LoginResponse {
         val jsonObject = json!!.asJsonObject
         return when {

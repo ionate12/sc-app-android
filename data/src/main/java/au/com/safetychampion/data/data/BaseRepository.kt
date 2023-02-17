@@ -120,10 +120,17 @@ abstract class BaseRepository {
                     Result.Success(it.toAPIResponse(), offline = true)
                 } ?: Result.Error(SCError.NoNetwork)
             }
-            this is ISyncable && this is NetworkAPI.PostMultiParts -> {
-                val key = customKey() ?: path
-                roomDts.insertSyncable(key, data = body)
-                Result.Error(SCError.SyncableStored(key))
+            this is ISyncable -> {
+                val body = when {
+                    this is NetworkAPI.Post -> this.body
+                    this is NetworkAPI.PostMultiParts -> this.body
+                    else -> null
+                }
+                body?.let {
+                    val key = customKey() ?: path
+                    roomDts.insertSyncable(key, data = body)
+                    Result.Error(SCError.SyncableStored(key))
+                } ?: Result.Error(SCError.NoNetwork)
             }
             else -> Result.Error(SCError.NoNetwork)
         }

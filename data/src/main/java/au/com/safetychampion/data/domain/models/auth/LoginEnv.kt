@@ -8,6 +8,11 @@ data class LoginEnv(
     val token: String
 )
 
+data class LoginEnvFromMulti(
+    val item: LoginUser,
+    val token: String
+)
+
 data class MultiLoginEnv(
     val item: MultiLogin,
     val token: String

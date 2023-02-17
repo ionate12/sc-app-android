@@ -7,7 +7,7 @@ import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.util.extension.asStringOrNull
 import au.com.safetychampion.data.util.extension.parseObject
 
-class ActionConfig(config: Configuration) : BaseConfig(config.valuesMap) {
+class ActionConfig(config: Configuration) : BaseConfig(config.valueMaps()) {
     val titleExtra: ConfigTitleExtra?
     val referencePrefix: String
     val createActionCategoryList: List<ConfigCreationCategory>
@@ -22,7 +22,6 @@ class ActionConfig(config: Configuration) : BaseConfig(config.valuesMap) {
         if (config.type != ModuleType.ACTION) {
             throw IllegalArgumentException("set wrong params, module Type must be Action")
         }
-        val configMap = config.valuesMap
         this.titleExtra = configMap["TITLE_EXTRA"]?.parseObject()
         this.referencePrefix = configMap["REFERENCE_PREFIX"]?.asStringOrNull() ?: "ACT"
         this.createActionCategoryList = configMap["CREATE_ACTION_CATEGORY_LIST"]?.parseObject() ?: listOf()

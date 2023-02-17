@@ -6,7 +6,7 @@ import au.com.safetychampion.data.util.extension.asBooleanOrDefault
 import au.com.safetychampion.data.util.extension.asStringOrNull
 import au.com.safetychampion.data.util.extension.parseObject
 
-class CriskConfig(config: Configuration) : BaseConfig(config.valuesMap) {
+class CriskConfig(config: Configuration) : BaseConfig(config.valueMaps()) {
 
     val criskOwnerList: List<String>
     val criskOwnerLookup: List<ConfigHolderLookUp>
@@ -19,7 +19,6 @@ class CriskConfig(config: Configuration) : BaseConfig(config.valuesMap) {
         if (config.type != ModuleType.CRISK) {
             throw IllegalArgumentException("set wrong params, module Type must be CRISK")
         }
-        val configMap = config.valuesMap
         criskOwnerList = configMap["RISK_OWNER_LIST"]?.parseObject() ?: listOf()
         criskOwnerLookup = configMap["RISK_OWNER_LOOKUP"]?.parseObject() ?: listOf()
         signatureEnabled = configMap["SIGNOFF_HAND_SIGNATURES"].asBooleanOrDefault()
