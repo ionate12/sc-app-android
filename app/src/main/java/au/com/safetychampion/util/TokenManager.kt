@@ -13,13 +13,15 @@ import java.util.*
 import kotlin.reflect.KClass
 
 class TokenManager : SuspendableInit(), ITokenManager {
-    private lateinit var tokens: SortedSet<AppToken>
+    private var tokens: SortedSet<AppToken> = sortedSetOf()
     private val dataStore: BaseAppDataStore by koinInject()
 
     override suspend fun suspendInit() {
         tokens = getStoredTokens()
     }
-    override suspend fun getToken(): AppToken? = didInit { tokens.firstOrNull() }
+    override suspend fun getToken(): AppToken? = didInit(onTimedOut = { null }) {
+        tokens.firstOrNull()
+    }
 
     override suspend fun updateToken(token: AppToken) = didInit {
         tokens.removeIf { it.priority == token.priority }
