@@ -4,7 +4,6 @@ import PrepareSignoffActionUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.TierType
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
@@ -13,18 +12,26 @@ import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
 import au.com.safetychampion.data.domain.models.incidents.IncidentNewPL
+import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardFormPL
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.action.CreateActionUseCase
+import au.com.safetychampion.data.domain.usecase.action.EditActionUseCase
+import au.com.safetychampion.data.domain.usecase.action.GetListActionUseCase
+import au.com.safetychampion.data.domain.usecase.action.SignoffActionUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.document.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.incident.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.noticeboard.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
@@ -381,4 +388,19 @@ class MainViewModel : ViewModel() {
     suspend fun signoffIncident(payload: DocumentSignoff, index: Int) {
 //        _apiCallStatus.emit(index to signoffIncidentUseCase.invoke(payload))
     }
+
+    private val fetchBlock: FetchListNoticeboardBlockUseCase by koinInject()
+    suspend fun fetchBlock(noticeboardId: String, index: Int) = _apiCallStatus.emit(index to fetchBlock.invoke(noticeboardId))
+
+    private val fetchBoards: FetchListNoticeboardUseCase by koinInject()
+    suspend fun fetchBoards(index: Int) = _apiCallStatus.emit(index to fetchBoards.invoke(TierType.T3))
+
+    private val fetchVdocNoticeboard: FetchListVdocUseCase by koinInject()
+    suspend fun fetchVdocNoticeboard(noticeboardId: String, index: Int) = _apiCallStatus.emit(index to fetchVdocNoticeboard.invoke(noticeboardId))
+
+    private val fetchNoticeboardForms: FetchNoticeboardFormsUseCase by koinInject()
+    suspend fun fetchNoticeboardForms(idList: List<String>, index: Int) = _apiCallStatus.emit(index to fetchNoticeboardForms.invoke(idList))
+
+    private val submitNoticeboardForms: SubmitNoticeboardFormUseCase by koinInject()
+    suspend fun submitNoticeboardForms(payload: NoticeboardFormPL, index: Int) = _apiCallStatus.emit(index to submitNoticeboardForms.invoke(payload))
 }

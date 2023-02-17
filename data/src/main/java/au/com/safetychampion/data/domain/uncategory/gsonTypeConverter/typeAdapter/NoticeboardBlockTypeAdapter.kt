@@ -1,14 +1,6 @@
 package au.com.safetychampion.scmobile.gsonTypeConverter.typeAdapter
 
-import au.com.safetychampion.data.domain.models.ExternalLinkBlockData
-import au.com.safetychampion.data.domain.models.noticeboard.AttachmentBlockData
-import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardBlock
-import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardBlock.Companion.TYPE_ATTACHMENT
-import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardBlock.Companion.TYPE_EXTERNAL_LINK
-import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardBlock.Companion.TYPE_VDOC
-import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardBlock.Companion.TYPE_YOUTUBE
-import au.com.safetychampion.data.domain.models.noticeboard.VDocBlockData
-import au.com.safetychampion.data.domain.models.noticeboard.XYoutubeBlockData
+import au.com.safetychampion.data.domain.models.noticeboard.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.uncategory.GsonHelper
 import au.com.safetychampion.data.domain.uncategory.getGson
 import com.google.gson.* // ktlint-disable no-wildcard-imports
@@ -34,7 +26,7 @@ class NoticeboardBlockTypeAdapter :
                 return NoticeboardBlock(typeOfBlock, gson.fromJson(data, VDocBlockData::class.java))
 
             TYPE_ATTACHMENT ->
-                return NoticeboardBlock(typeOfBlock, gson.fromJson(data, AttachmentBlockData::class.java))
+                return NoticeboardBlock(typeOfBlock, gson.fromJson(data, BlockData::class.java))
 
             TYPE_YOUTUBE ->
                 return NoticeboardBlock(typeOfBlock, gson.fromJson(data, XYoutubeBlockData::class.java))
