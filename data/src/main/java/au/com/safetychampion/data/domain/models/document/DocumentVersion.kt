@@ -21,3 +21,6 @@ data class DocumentVersion(
     var customVersion: String? = null,
     var attachments: List<DocAttachment>? = null
 )
+class VersionFrom {
+    var vNumber: Int = 0
+}

@@ -2,7 +2,7 @@ package au.com.safetychampion.data.domain.usecase.activetask
 
 import au.com.safetychampion.data.data.common.ITaskRepository
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.action.payload.AssignTaskStatusPL
+import au.com.safetychampion.data.domain.models.action.network.AssignTaskStatusPL
 import au.com.safetychampion.data.domain.models.task.Task
 
 class AssignTaskUseCase(

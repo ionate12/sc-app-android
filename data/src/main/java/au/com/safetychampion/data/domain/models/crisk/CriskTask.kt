@@ -1,56 +1,46 @@
 package au.com.safetychampion.data.domain.models.crisk
 
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
-import au.com.safetychampion.data.domain.InspectionFormPayload
+import au.com.safetychampion.data.domain.Attachment
+import au.com.safetychampion.data.domain.base.BaseTask
+import au.com.safetychampion.data.domain.core.Signature
+import au.com.safetychampion.data.domain.models.IAttachment
+import au.com.safetychampion.data.domain.models.ICusval
+import au.com.safetychampion.data.domain.models.IPendingAction
+import au.com.safetychampion.data.domain.models.ISignature
+import au.com.safetychampion.data.domain.models.ISubcategoryCusval
 import au.com.safetychampion.data.domain.models.SCHolderLink
+import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
-import au.com.safetychampion.data.domain.models.action.payload.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
-import au.com.safetychampion.data.domain.uncategory.Constants
-import au.com.safetychampion.data.domain.uncategory.DocAttachment
-import com.google.gson.annotations.SerializedName
 
+interface ICriskTaskComponents :
+    ICusval, ISubcategoryCusval, IAttachment, ISignature, IPendingAction
+
+// TODO: redo CriskTask, needs add more properties.
 data class CriskTask(
-    var _id: String = "",
-    @SerializedName("for")
-    var _for: Crisk? = null,
-    var dateDue: String? = null,
-    var save: Boolean = false,
-    var description: String = "",
-    var tzDateSignedoff: String = Constants.tz,
-    var complete: ObservableBoolean = ObservableBoolean(true),
-    var dateCompleted: ObservableField<String> = ObservableField(),
-    var title: ObservableField<String> = ObservableField(""),
-    var reviewNotes: ObservableField<String> = ObservableField(),
-    var recurrent: ObservableBoolean = ObservableBoolean(true),
-    var referenceId: ObservableField<String> = ObservableField(),
-    var notes: ObservableField<String> = ObservableField(),
-    var archiveNotes: ObservableField<String> = ObservableField(),
-    var inherentRiskRating: ObservableField<String> = ObservableField(),
-    var inherentRiskRatingOther: ObservableField<String?> = ObservableField(),
-    var currentMitigation: ObservableField<String> = ObservableField(""),
-    var residualRisk: ObservableField<String> = ObservableField(""),
-    var residualRiskOther: ObservableField<String?> = ObservableField(),
-    var futureControl: ObservableBoolean = ObservableBoolean(),
-    var futureMitigation: ObservableField<String?> = ObservableField(),
-    var futureRiskRating: ObservableField<String?> = ObservableField(),
-    var futureRiskRatingOther: ObservableField<String?> = ObservableField(),
-    var riskOwner: MutableLiveData<String> = MutableLiveData(),
-    var riskOwnerOther: ObservableField<String?> = ObservableField(),
-    var dateIssued: ObservableField<String> = ObservableField(),
-    var dateExpiry: ObservableField<String> = ObservableField(),
-    var cusvals: MutableLiveData<MutableList<CustomValue>> = MutableLiveData(mutableListOf()),
-    var subcategoryCusvals: MutableLiveData<MutableList<CustomValue>> = MutableLiveData(
-        mutableListOf()
-    ),
-    var riskOwnerLinks: MutableLiveData<MutableList<SCHolderLink>> = MutableLiveData(mutableListOf()),
-    var attachments: MutableList<DocAttachment> = mutableListOf(),
-    var signatures: MutableList<InspectionFormPayload.SignaturePayload>? = mutableListOf(),
-    var actionLinks: MutableList<ActionLink> = mutableListOf(),
-    var newActions: MutableList<ActionPL> = mutableListOf(),
-
-    @Transient
-    var autoSuggestShowing: ObservableBoolean = ObservableBoolean(false)
-)
+    val actionLinks: MutableList<ActionLink>,
+    val currentMitigation: String,
+    val futureControl: Boolean,
+    val newAction: MutableList<ActionPL>,
+    val recurrent: Boolean,
+    val residualRisk: String,
+    val riskOwnerLinks: MutableList<SCHolderLink>,
+    val save: Boolean,
+    val tzDateSignedoff: String,
+    override val complete: Boolean?,
+    override val dateDue: String?,
+    override val description: String?,
+    override val _for: Crisk?,
+    override val inExecution: Boolean?,
+    override val tier: Tier?,
+    override val title: String?,
+    override val _id: String,
+    override val type: String,
+    override var cusvals: MutableList<CustomValue>,
+    override var subcategoryCusvals: MutableList<CustomValue>,
+    override var signatures: MutableList<Signature>,
+    override var attachments: MutableList<Attachment>?,
+    override var pendingActions: MutableList<PendingActionPL>
+) : BaseTask, ICusval, ICriskTaskComponents

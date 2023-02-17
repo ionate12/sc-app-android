@@ -1,0 +1,26 @@
+{
+  "attachment": [],
+  "dateCompleted": "2023-01-26",
+  "completionNotes": "NGUY",
+  "hazardCategory": "Alcohol and/or other drugs",
+  "complete": true,
+  "tzDateSignedoff": "Asia/Saigon",
+  "attachments": [],
+  "severity": "Low",
+  "controlLevel": "Administrative control (training)",
+  "cusvals": [
+    {
+      "_id": "iej5BuJp4A",
+      "title": "Action Description",
+      "type": "text",
+      "value": "ttttt"
+    },
+    {
+      "_id": "IinIB7NYX",
+      "title": "AAAA",
+      "type": "text",
+      "value": "tttt"
+    }
+  ],
+  "links": []
+}
