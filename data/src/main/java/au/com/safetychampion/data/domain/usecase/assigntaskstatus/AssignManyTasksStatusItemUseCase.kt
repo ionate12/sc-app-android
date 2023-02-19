@@ -4,7 +4,7 @@ import au.com.safetychampion.data.data.common.ITaskRepository
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.AssignTaskStatusManyPL
-import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.trainning.task.Task
 
 class AssignManyTasksStatusItemUseCase(
     private val activeTaskRepository: ITaskRepository

@@ -11,7 +11,7 @@ import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
-import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.trainning.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase

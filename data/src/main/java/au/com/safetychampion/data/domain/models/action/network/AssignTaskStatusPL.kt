@@ -2,7 +2,7 @@ package au.com.safetychampion.data.domain.models.action.network
 
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.CreatedBy
-import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.trainning.task.Task
 import com.google.gson.annotations.SerializedName
 
 class AssignTaskStatusPL(

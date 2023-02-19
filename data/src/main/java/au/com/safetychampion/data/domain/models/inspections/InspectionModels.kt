@@ -5,7 +5,7 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.TimeField
 import au.com.safetychampion.data.domain.models.document.Document
 import au.com.safetychampion.data.domain.models.inspections.InspectionFormPojo
-import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.trainning.task.Task
 import au.com.safetychampion.data.domain.uncategory.* // ktlint-disable no-wildcard-imports
 
 /**

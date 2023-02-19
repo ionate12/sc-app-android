@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.models
+package au.com.safetychampion.data.domain.models.mobileadmin
 
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 

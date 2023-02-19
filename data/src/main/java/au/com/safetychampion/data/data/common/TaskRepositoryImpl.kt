@@ -7,7 +7,7 @@ import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.ActiveTaskPL
 import au.com.safetychampion.data.domain.models.action.network.AssignTaskStatusManyPL
 import au.com.safetychampion.data.domain.models.action.network.AssignTaskStatusPL
-import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.trainning.task.Task
 
 class TaskRepositoryImpl : BaseRepository(), ITaskRepository {
     override suspend fun getAllActiveTask(body: ActiveTaskPL): Result<List<Task>> {

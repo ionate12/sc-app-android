@@ -15,7 +15,7 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
-import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.trainning.task.Task
 import com.google.gson.annotations.SerializedName
 
 interface ICriskTaskPLComponents :

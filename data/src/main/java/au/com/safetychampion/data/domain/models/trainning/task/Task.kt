@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.models.task
+package au.com.safetychampion.data.domain.models.trainning.task
 
 import au.com.safetychampion.data.domain.base.BaseModuleImpl
 import au.com.safetychampion.data.domain.base.BaseTask
