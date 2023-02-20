@@ -17,7 +17,6 @@ abstract class SuspendableInit {
         initJob = initialize()
     }
 
-    @Throws(TimeoutCancellationException::class)
     protected suspend fun <T : Any?> didInit(
         onTimedOut: (suspend () -> T)? = null,
         block: suspend () -> T
