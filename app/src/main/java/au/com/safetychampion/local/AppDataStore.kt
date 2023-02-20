@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import au.com.safetychampion.util.BaseAppDataStore
+import au.com.safetychampion.data.data.local.BaseAppDataStore
 
 class AppDataStore(context: Context) : BaseAppDataStore() {
     companion object {

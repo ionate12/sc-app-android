@@ -8,6 +8,7 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
+import au.com.safetychampion.data.domain.models.auth.LoginPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
@@ -18,6 +19,13 @@ import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseC
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
+import au.com.safetychampion.data.domain.usecase.auth.GetWhoAmIUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserLoginUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserLogoutUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserMorphUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserMultiLoginUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserUnMorphUseCase
+import au.com.safetychampion.data.domain.usecase.auth.UserVerifyMfaUseCase
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
@@ -64,8 +72,63 @@ class MainViewModel : ViewModel() {
     private val getCriskEvidence: GetCriskTaskEvidenceUseCase by koinInject()
     private val archiveCrisk: ArchiveCriskUseCase by koinInject()
 
+    private val loginUseCase: UserLoginUseCase by koinInject()
+    private val multiLoginUseCase: UserMultiLoginUseCase by koinInject()
+    private val verifyMfaUseCase: UserVerifyMfaUseCase by koinInject()
+    private val morphUseCase: UserMorphUseCase by koinInject()
+    private val unmorphUseCase: UserUnMorphUseCase by koinInject()
+    private val whoAmIUseCase: GetWhoAmIUseCase by koinInject()
+    private val logoutUseCase: UserLogoutUseCase by koinInject()
+
     val _apiCallStatus = MutableSharedFlow<Pair<Int, Result<*>>>()
     val apiCallStatus = _apiCallStatus.asSharedFlow()
+
+    private val _uiMessage = MutableSharedFlow<UiMessage>()
+    val uiMessage = _uiMessage.asSharedFlow()
+
+    suspend fun login(index: Int) {
+        loginUseCase(LoginPL(email = "u3_2@minh1.co", password = "123"))
+            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .let { _apiCallStatus.emit(index to it) }
+    }
+
+    suspend fun multiLogin(index: Int) {
+        val pl = LoginPL(email = "demomanager@safetychampion.online", password = "12345678a")
+        val userId = "5efbeba4c6bac31619e11be4"
+        loginUseCase(pl).doOnSucceed {
+            multiLoginUseCase(userId, pl)
+                .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+                .let { _apiCallStatus.emit(index to it) }
+        }
+    }
+
+    suspend fun whoAmI(index: Int) {
+        whoAmIUseCase().let { _apiCallStatus.emit(index to it) }
+    }
+
+    // require login as demomanager tier3
+    suspend fun morph(index: Int) {
+        morphUseCase("5efbeba1c6bac31619e11bd8")
+            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .let {
+                _apiCallStatus.emit(index to it)
+            }
+    }
+
+    // require morphed
+    suspend fun unmorph(index: Int) {
+        unmorphUseCase()
+            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .let { _apiCallStatus.emit(index to it) }
+    }
+
+    suspend fun logout(index: Int) {
+        logoutUseCase()
+            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .let {
+                _apiCallStatus.emit(index to it)
+            }
+    }
 
     suspend fun loadActiveTasks(index: Int) {
         val result = getActiveTaskUseCase.invoke(null)
@@ -93,7 +156,7 @@ class MainViewModel : ViewModel() {
             toUserId = assignTask._id,
             moduleName = "Action",
             notes = assignTask.optionalMessage,
-            dateDue = ownerTask.dateDue
+            dateDue = ownerTask.dateDue,
         )
         _apiCallStatus.emit(index to result)
     }
@@ -104,7 +167,7 @@ class MainViewModel : ViewModel() {
             toUserId = assignTask._id,
             moduleName = "Action",
             notes = assignTask.optionalMessage,
-            dateDue = ownerTask.dateDue
+            dateDue = ownerTask.dateDue,
         )
         _apiCallStatus.emit(index to result)
     }
@@ -112,8 +175,8 @@ class MainViewModel : ViewModel() {
     suspend fun createNewAction(payload: ActionPL, index: Int) {
         _apiCallStatus.emit(
             index to newActionUseCase.invoke(
-                payload = payload
-            )
+                payload = payload,
+            ),
         )
     }
 
@@ -123,7 +186,7 @@ class MainViewModel : ViewModel() {
 
     suspend fun getActionSignOff(actionId: String, id: String, index: Int) {
         _apiCallStatus.emit(
-            index to prepareSignoffActionUseCase.invoke(id, actionId)
+            index to prepareSignoffActionUseCase.invoke(id, actionId),
         )
 //
     }
@@ -134,12 +197,12 @@ class MainViewModel : ViewModel() {
 
     suspend fun signOffAction(
         actionSignOff: ActionSignOff,
-        index: Int
+        index: Int,
     ) {
         _apiCallStatus.emit(
             index to signOffActionUseCase.invoke(
-                actionSignOff
-            )
+                actionSignOff,
+            ),
         )
     }
 
@@ -165,33 +228,33 @@ class MainViewModel : ViewModel() {
 
     suspend fun signoffChemical(
         signoff: ChemicalSignoffPL,
-        index: Int
+        index: Int,
     ) {
         _apiCallStatus.emit(
-            index to signoffChemicalUseCase.invoke(signoff)
+            index to signoffChemicalUseCase.invoke(signoff),
         )
     }
 
     suspend fun getListCrisk(index: Int) {
         _apiCallStatus.emit(
-            index to getListCriskUseCase.invoke()
+            index to getListCriskUseCase.invoke(),
         )
     }
 
     suspend fun getListHrLookup(index: Int) {
         _apiCallStatus.emit(
-            index to getListHrLookupUseCase.invoke()
+            index to getListHrLookupUseCase.invoke(),
         )
     }
     suspend fun getListContractorLookup(index: Int) {
         _apiCallStatus.emit(
-            index to getListContractorLookupUseCase.invoke()
+            index to getListContractorLookupUseCase.invoke(),
         )
     }
 
     suspend fun getCriskSignoff(taskId: String, criskId: String, index: Int) {
         _apiCallStatus.emit(
-            index to getCriskSignoff.invoke(taskId, criskId)
+            index to getCriskSignoff.invoke(taskId, criskId),
         )
     }
 
@@ -219,7 +282,7 @@ class MainViewModel : ViewModel() {
     private suspend fun signInFromQRCode(qrCode: String): Result<Destination> {
         return submitQRUseCase.invoke(
             qrCode = qrCode,
-            destination = { Destination.PinCode(qrCode) }
+            destination = { Destination.PinCode(qrCode) },
         ).flatMap { token ->
             fetchSiteUseCase.invoke(VisitorPayload.SiteFetch(token.token!!)) // non null, already handled in submitQR
                 .flatMap {
@@ -227,8 +290,8 @@ class MainViewModel : ViewModel() {
                         Destination.VisitorWizard(
                             site = it,
                             token = token.token,
-                            evidence = null // this is sign in flow, so this be null
-                        )
+                            evidence = null, // this is sign in flow, so this be null
+                        ),
                     )
                 }
         }.flatMapError {
@@ -244,11 +307,11 @@ class MainViewModel : ViewModel() {
     // 2. Not tested yet region
 
     // invokeSignOutFlowFromNotification
-    suspend fun signout(requestEvidenceId: String, index: Int) {
-        _apiCallStatus.emit(index to signOut(requestEvidenceId))
+    suspend fun visitorSignout(requestEvidenceId: String, index: Int) {
+        _apiCallStatus.emit(index to visitorSignout(requestEvidenceId))
     }
 
-    private suspend fun signOut(requestEvidenceId: String): Result.Success<Destination> {
+    private suspend fun visitorSignout(requestEvidenceId: String): Result.Success<Destination> {
         var destination: Destination? = null
         fetchEvidenceUseCase.invoke(requestEvidenceId)
             .doOnSucceed { nEvidence ->
@@ -256,14 +319,14 @@ class MainViewModel : ViewModel() {
                 destination = if (nEvidence.leave != null) {
                     Destination.Toast(
                         scError = SCError.Failure(
-                            message = nEvidence.site.tier.VISIT_TERMS.leave.toLowerCase(Locale.ROOT)
-                        )
+                            message = nEvidence.site.tier.VISIT_TERMS.leave.toLowerCase(Locale.ROOT),
+                        ),
                     )
                 } else {
                     Destination.VisitorWizard(
                         site = nEvidence.site,
                         evidence = nEvidence,
-                        token = null
+                        token = null,
                     )
                 }
             }.doOnFailure {
@@ -278,7 +341,7 @@ class MainViewModel : ViewModel() {
     suspend fun fetchLeaveForm(
         token: String?,
         site: VisitorSite?,
-        role: VisitorRole?
+        role: VisitorRole?,
     ): Result<VisitorSite> {
         token ?: return errorOf("Invalid Token")
         role ?: return errorOf("No selected role.")
@@ -286,16 +349,16 @@ class MainViewModel : ViewModel() {
         return updateSiteByFormFetchUseCase.invoke(
             payload = VisitorPayload.FormFetch(
                 token,
-                leaveFormId
+                leaveFormId,
             ),
-            site = site
+            site = site,
         )
     }
 
     suspend fun fetchArriveForm(
         token: String?,
         role: VisitorRole?,
-        site: VisitorSite?
+        site: VisitorSite?,
     ): Result<VisitorSite> {
         token ?: return errorOf("Invalid Token")
         role ?: return errorOf("No selected role.")
@@ -304,9 +367,9 @@ class MainViewModel : ViewModel() {
         return updateSiteByFormFetchUseCase.invoke(
             payload = VisitorPayload.FormFetch(
                 token,
-                arriveFormId
+                arriveFormId,
             ),
-            site = site
+            site = site,
         )
     }
 
@@ -316,7 +379,7 @@ class MainViewModel : ViewModel() {
         token: String?,
         form: VisitorForm,
         profile: VisitorProfile,
-        site: VisitorSite
+        site: VisitorSite,
     ): Result<VisitorEvidence> {
         form.selectedRole ?: return errorOf("Arrive Form has no selected Role. Please assign it before submitting the form")
         token ?: errorOf("No sufficient data available to perform submitForm")
@@ -324,10 +387,10 @@ class MainViewModel : ViewModel() {
             payload = VisitorPayload.Arrive(
                 token!!,
                 arrive = form.toPayload(),
-                visitor = profile.toPayload(role = form.selectedRole!!)
+                visitor = profile.toPayload(role = form.selectedRole!!),
             ),
             site = site,
-            profile = profile
+            profile = profile,
         )
     }
 

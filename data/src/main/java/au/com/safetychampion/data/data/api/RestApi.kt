@@ -25,6 +25,6 @@ interface RestApi {
 
 sealed class NetworkAPI(val path: String) {
     sealed class Get(path: String) : NetworkAPI(path)
-    sealed class Post(path: String, val body: BasePL?) : NetworkAPI(path)
-    sealed class PostMultiParts(path: String, val body: BasePL) : NetworkAPI(path)
+    sealed class Post(path: String, open val body: BasePL?) : NetworkAPI(path)
+    sealed class PostMultiParts(path: String, open val body: BasePL) : NetworkAPI(path)
 }
