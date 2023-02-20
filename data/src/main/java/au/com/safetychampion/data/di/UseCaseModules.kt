@@ -14,6 +14,8 @@ import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemical
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -92,4 +94,10 @@ internal val useCasesModule = module {
     factoryOf(::SignoffActionUseCase)
 
     factoryOf(::SignoffCriskUseCase)
+
+    // MobileAdmin
+
+    factoryOf(::GetAnnouncementUseCase)
+
+    factoryOf(::GetVersionUseCase)
 }

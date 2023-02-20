@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
+import au.com.safetychampion.data.BuildConfig;
+
 public final class Constants {
     // TODO: 09/12/2022 BuildConfig?
     public static final String AUTHORITY = "au.com.safetychampion.scmobile.fileprovider";
@@ -13,7 +15,7 @@ public final class Constants {
 //    public static String API_ROOT_URL = BuildConfig.ROOT_API;
     public static String DEFAULT_API_ROOT_URL = "https://api.safetychampion.online";
 //    public static final String FRONTEND_URL = BuildConfig.ROOT_FRONTEND;
-//    public static String VERSION_DEBUG = BuildConfig.VERSION_DEBUG;
+    public static String VERSION_DEBUG = "3.25.0";
 //    public static String[] FETCH_MODULES = BuildConfig.FETCH_MODULES;
     public static final String APPLICATION_JSON = "application/json";
     public static String TOKEN = null;

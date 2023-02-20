@@ -28,7 +28,7 @@ import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzY3ODc1NjcsImV4cCI6MTY3Njg3Mzk2N30.6LErv3xJ4-_4SSNoRkKNIl3CWmTucKUSwrVHZ1HcxHs"
+private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzY4NzE2NTksImV4cCI6MTY3Njk1ODA1OX0.e-apsiUd1FsWhXVSldJjZZz2uROZQWm2NxjHdedvhh8"
 var testAll = true
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModel<MainViewModel>()
@@ -94,7 +94,9 @@ class MainActivity : AppCompatActivity() {
         },
         "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", 23) },
         "Fetch List Document" to suspend { viewModel.fetchListDoc("63ec866dde4d671748fe6a91", 24) },
-        "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", 25) }
+        "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", 25) },
+        "Get Announcement" to suspend { viewModel.getAnnouncement(sampleData.getAnnouncementPL(), 26) },
+        "Get Version (mobileappadmin/versions/fetch)" to suspend { viewModel.getVersion(sampleData.getVersionPL(), 27) }
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
     )
 

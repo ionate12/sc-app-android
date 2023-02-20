@@ -11,6 +11,8 @@ import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
+import au.com.safetychampion.data.domain.models.mobileadmin.AnnouncementPL
+import au.com.safetychampion.data.domain.models.mobileadmin.VersionPL
 import au.com.safetychampion.data.domain.models.trainning.task.Task
 import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
@@ -24,6 +26,8 @@ import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wi
 import au.com.safetychampion.data.domain.usecase.document.FetchCopySourceUseCase
 import au.com.safetychampion.data.domain.usecase.document.FetchDocumentUseCase
 import au.com.safetychampion.data.domain.usecase.document.SignoffDocumentUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
@@ -354,5 +358,15 @@ class MainViewModel : ViewModel() {
     private val signoffDocUseCase: SignoffDocumentUseCase by koinInject()
     suspend fun signoffDoc(payload: DocumentSignoff, index: Int) {
         _apiCallStatus.emit(index to signoffDocUseCase.invoke(payload))
+    }
+
+    private val getAnnouncementUseCase: GetAnnouncementUseCase by koinInject()
+    suspend fun getAnnouncement(payload: AnnouncementPL, index: Int) {
+        _apiCallStatus.emit(index to getAnnouncementUseCase.invoke(payload))
+    }
+
+    private val getVersionUseCase: GetVersionUseCase by koinInject()
+    suspend fun getVersion(payload: VersionPL, index: Int) {
+        _apiCallStatus.emit(index to getVersionUseCase.invoke(payload))
     }
 }

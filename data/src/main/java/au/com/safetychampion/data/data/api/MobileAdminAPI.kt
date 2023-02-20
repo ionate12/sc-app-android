@@ -1,17 +1,18 @@
 package au.com.safetychampion.data.data.api
 
-import au.com.safetychampion.data.domain.base.BasePL
+import au.com.safetychampion.data.domain.models.mobileadmin.AnnouncementPL
+import au.com.safetychampion.data.domain.models.mobileadmin.VersionPL
 
 interface MobileAdminAPI {
     class GetVersion(
-        body: BasePL = BasePL.empty()
+        body: VersionPL
     ) : NetworkAPI.Post(
         path = "/mobileappadmin/versions/fetch",
         body = body
     )
 
     class GetAnnouncement(
-        body: BasePL = BasePL.empty()
+        body: AnnouncementPL
     ) : NetworkAPI.Post(
         path = "/mobileappadmin/announcements/list/active",
         body = body
