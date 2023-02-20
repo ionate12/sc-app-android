@@ -8,7 +8,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 
 abstract class SuspendableInit {
-    private var initJob: Job? = null
+    protected var initJob: Job? = null
+        private set
     private val dispatchers: IDispatchers by koinInject()
     protected open val initTimeOut = 2000L
     init {
