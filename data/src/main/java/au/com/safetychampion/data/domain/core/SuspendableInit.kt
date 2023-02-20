@@ -4,8 +4,6 @@ import au.com.safetychampion.data.domain.manager.IDispatchers
 import au.com.safetychampion.data.util.extension.koinInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 
