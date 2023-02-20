@@ -24,8 +24,11 @@ import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.databinding.ActivityMainBinding
 import au.com.safetychampion.util.AssetsManager
-import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private fun getToken() = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsidHlwZSI6ImNvcmUudXNlciIsIl9pZCI6IjYyNGQyNzVmMDJiZmNhNWJhODkzYWUzNyJ9LCJpYXQiOjE2NzY1NDQwMTMsImV4cCI6MTY3NjYzMDQxM30.kTIh1o0PQF2zDRDq4_Kzua3lC6rFgtufCrUJ0tMeIG4"
@@ -100,9 +103,13 @@ class MainActivity : AppCompatActivity() {
         "Fetch Incident" to suspend { viewModel.fetchIncident(moduleId = "630d5de6ca562f742c1a2988", 27) },
         "List Incident" to suspend { viewModel.fetchListIncident(28) },
 //        "Lookup incident" to suspend { viewModel.lookupIncident(29) }, // TODO("crash hrLookUp, have not consistent in response, maybe need custom adapter")
-        "Prepare Incident" to suspend { viewModel.prepareIncident(moduleId = "630d5de6ca562f742c1a2988", taskId = "630d5de6ca562f742c1a2988", 29) }
-
+        "Prepare Incident" to suspend { viewModel.prepareIncident(moduleId = "630d5de6ca562f742c1a2988", taskId = "630d5de6ca562f742c1a2988", 29) },
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
+        "fetchBlock" to suspend { viewModel.fetchBlock("62ecff3130e68b29607353f9", 30) },
+        "fetchBoards" to suspend { viewModel.fetchBoards(31) },
+        "fetchVdocNoticeboard" to suspend { viewModel.fetchVdocNoticeboard("62ecff3130e68b29607353f9", 32) },
+        "fetchNoticeboardForms" to suspend { viewModel.fetchNoticeboardForms(listOf(), 33) } // TODO("Need add more form in u3_2@minh1.co")
+//      "Submit form" to suspend { viewModel.submitNoticeboardForms() } //
     )
 
     val items = {

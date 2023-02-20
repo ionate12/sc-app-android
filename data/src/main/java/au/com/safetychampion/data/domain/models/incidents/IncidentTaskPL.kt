@@ -4,12 +4,13 @@ import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.ExternalBodyPojo
+import au.com.safetychampion.data.domain.models.IPendingActionPL
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 
 data class IncidentTaskPL(
-    override var attachments: MutableList<Attachment>?,
+    override var attachments: MutableList<Attachment>,
     override var categoryCusvals: MutableList<CustomValue>,
     val changeNotes: String,
     val changeImplemented: String,
@@ -25,7 +26,7 @@ data class IncidentTaskPL(
     val hazardCategory: String,
     val hazardCategoryOther: String,
     val lostTimeInjury: String,
-    val links: ActionLink,
+    val links: List<ActionLink>,
     override var pendingActions: MutableList<PendingActionPL>,
     override var propOrEnvDamageCusvals: MutableList<CustomValue>,
     val taskId: String,
@@ -33,12 +34,16 @@ data class IncidentTaskPL(
     val tzDateSignedoff: String,
     val severity: String,
     val sessionId: String,
-    override var signatures: MutableList<Signature>?
+    override var signatures: MutableList<Signature>
 
-) : BasePL(), IIncidentComponent {
+) : BasePL(), IIncidentComponent, IPendingActionPL {
     companion object {
         fun from(task: IncidentTask): IncidentTaskPL {
             TODO()
         }
+    }
+
+    override fun onPendingActionsCreated(links: List<ActionLink>): BasePL {
+        return this.copy(links = this.links + links)
     }
 }

@@ -1,6 +1,7 @@
 package au.com.safetychampion.data.domain.models.incidents
 
 import au.com.safetychampion.data.data.api.IncidentAPI
+import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
@@ -42,7 +43,7 @@ data class Incident(
     override var propOrEnvDamageCusvals: MutableList<CustomValue> = mutableListOf(),
     override var propOrEnvDamageDescription: String? = null,
     var reference: String? = null,
-    var signatures: List<SignaturePayloadIncident>? = null,
+    override var signatures: MutableList<Signature> = mutableListOf(),
     var tier: Tier? = null,
     override var timeOccurred: TimeField? = null,
     var type: String? = null,

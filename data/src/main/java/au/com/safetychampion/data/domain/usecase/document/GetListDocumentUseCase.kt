@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.core.flatMap
 import au.com.safetychampion.data.domain.models.TierType
 import au.com.safetychampion.data.domain.models.document.Document
 
-class FetchListDocumentUseCase(
+class GetListDocumentUseCase(
     private val repository: IDocumentRepository
 ) {
     /**

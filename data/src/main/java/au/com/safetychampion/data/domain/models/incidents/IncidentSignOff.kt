@@ -7,7 +7,7 @@ data class IncidentSignOff(
     var body: Incident = Incident(),
     override var task: IncidentTask = IncidentTask()
 ) : BaseSignOff<IncidentTask> {
-    override fun syncableKey() = "incidents/${task._id}/task/signoff"
+    override fun syncableKey() = BaseSignOff.incidentSignoffSyncableKey(body._id!!)
 
-    override fun type(): ModuleType = ModuleType.DOCUMENT
+    override fun type(): ModuleType = ModuleType.INCIDENT
 }

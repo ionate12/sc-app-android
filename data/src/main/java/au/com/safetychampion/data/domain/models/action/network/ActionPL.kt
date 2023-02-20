@@ -2,11 +2,7 @@ package au.com.safetychampion.data.domain.models.action.network
 
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.models.CreatedBy
-import au.com.safetychampion.data.domain.models.IAttachment
-import au.com.safetychampion.data.domain.models.ICategoryCusval
-import au.com.safetychampion.data.domain.models.ICusval
-import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 
 data class ActionPL(
@@ -36,7 +32,7 @@ data class ActionPL(
 
     override var categoryCusvals: MutableList<CustomValue>,
     override var cusvals: MutableList<CustomValue>,
-    override var attachments: MutableList<Attachment>?
+    override var attachments: MutableList<Attachment>
 ) : BasePL(), ICusval, ICategoryCusval, IAttachment
 
 data class ActionPL2(
@@ -54,6 +50,6 @@ data class ActionPL2(
     val tz: String,
     override var cusvals: MutableList<CustomValue>,
     override var categoryCusvals: MutableList<CustomValue>,
-    override var attachments: MutableList<Attachment>? = mutableListOf(),
+    override var attachments: MutableList<Attachment> = mutableListOf(),
     val comment: String? = null // For Edit only
 ) : BasePL(), ICusval, ICategoryCusval, IAttachment

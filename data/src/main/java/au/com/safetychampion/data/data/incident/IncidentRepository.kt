@@ -11,7 +11,7 @@ import au.com.safetychampion.scmobile.modules.incident.model.ConfiguredLocations
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class IncidentRepositoryImpl : BaseRepository(), IIncidentRepository {
+class IncidentRepository : BaseRepository(), IIncidentRepository {
     override suspend fun list(): Result<List<Incident>> {
         return IncidentAPI.List().call()
     }
@@ -20,12 +20,12 @@ class IncidentRepositoryImpl : BaseRepository(), IIncidentRepository {
         return IncidentAPI.New(body).call()
     }
 
-    override suspend fun fetchIncident(taskID: String): Result<Incident> {
-        return IncidentAPI.Fetch(taskID).call()
+    override suspend fun fetchIncident(incidentId: String): Result<Incident> {
+        return IncidentAPI.Fetch(incidentId).call()
     }
 
-    override suspend fun fetchTask(taskID: String): Result<IncidentTask> {
-        return IncidentAPI.Task(taskID).call()
+    override suspend fun fetchTask(taskId: String): Result<IncidentTask> {
+        return IncidentAPI.Task(taskId).call()
     }
 
     override suspend fun fetchConfigLocation(): Result<ConfiguredLocations> {

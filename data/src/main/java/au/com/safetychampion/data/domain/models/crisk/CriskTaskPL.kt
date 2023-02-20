@@ -3,15 +3,7 @@ package au.com.safetychampion.data.domain.models.crisk
 import au.com.safetychampion.data.domain.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Signature
-import au.com.safetychampion.data.domain.models.CreatedBy
-import au.com.safetychampion.data.domain.models.ForTask
-import au.com.safetychampion.data.domain.models.IAttachment
-import au.com.safetychampion.data.domain.models.ICusval
-import au.com.safetychampion.data.domain.models.IForceNullValues
-import au.com.safetychampion.data.domain.models.IPendingActionPL
-import au.com.safetychampion.data.domain.models.ISignature
-import au.com.safetychampion.data.domain.models.ISubcategoryCusval
-import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
@@ -68,8 +60,8 @@ data class CriskTaskPL(
     val dateCompleted: String? = null,
     val recurrent: Boolean? = null,
     val tzDateSignedoff: String? = null,
-    override var attachments: MutableList<Attachment>?,
-    override var signatures: MutableList<Signature>?,
+    override var attachments: MutableList<Attachment>,
+    override var signatures: MutableList<Signature>,
     override var cusvals: MutableList<CustomValue>,
     override var subcategoryCusvals: MutableList<CustomValue>,
     override var pendingActions: MutableList<PendingActionPL>

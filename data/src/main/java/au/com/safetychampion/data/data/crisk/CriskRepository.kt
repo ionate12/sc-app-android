@@ -20,7 +20,7 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class CriskRepositoryImpl : BaseRepository(), ICriskRepository {
+class CriskRepository : BaseRepository(), ICriskRepository {
     override suspend fun list(): Result<List<Crisk>> {
         return CriskAPI.List().call()
     }

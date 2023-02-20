@@ -9,7 +9,7 @@ import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
 
-class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
+class ChemicalRepository : BaseRepository(), IChemicalRepository {
 
     override suspend fun list(): Result<List<Chemical>> {
         return ChemicalAPI.List().call()
