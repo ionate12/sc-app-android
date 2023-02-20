@@ -31,7 +31,6 @@ abstract class SuspendableInit {
 
     private fun initialize(): Job = CoroutineScope(dispatchers.io).launch {
         withTimeout(initTimeOut) {
-            delay(4000)
             suspendInit()
         }
     }
