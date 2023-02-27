@@ -13,6 +13,8 @@ import au.com.safetychampion.data.data.crisk.CriskRepositoryImpl
 import au.com.safetychampion.data.data.crisk.ICriskRepository
 import au.com.safetychampion.data.data.document.DocumentRepositoryImpl
 import au.com.safetychampion.data.data.document.IDocumentRepository
+import au.com.safetychampion.data.data.inspection.IInspectionRepository
+import au.com.safetychampion.data.data.inspection.InspectionRepository
 import au.com.safetychampion.data.data.local.SyncableRepository
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.domain.models.auth.AuthRepository
@@ -35,6 +37,7 @@ internal val repositoryModule = module {
     singleOf<IDocumentRepository>(::DocumentRepositoryImpl)
     singleOf<IAuthRepository>(::AuthRepository)
     singleOf(::SyncableRepository)
+    singleOf<IInspectionRepository>(::InspectionRepository)
 
     single<RestApi> { get<INetworkManager>().retrofit.create(RestApi::class.java) }
 }

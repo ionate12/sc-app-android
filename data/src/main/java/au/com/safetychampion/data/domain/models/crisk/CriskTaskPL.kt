@@ -15,6 +15,7 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.inspections.InspectionTemplateMeta
 import au.com.safetychampion.data.domain.models.task.Task
 import com.google.gson.annotations.SerializedName
 
@@ -68,7 +69,7 @@ data class CriskTaskPL(
     val dateCompleted: String? = null,
     val recurrent: Boolean? = null,
     val tzDateSignedoff: String? = null,
-    override var attachments: MutableList<Attachment>?,
+    override var attachments: MutableList<Attachment>,
     override var signatures: MutableList<Signature>,
     override var cusvals: MutableList<CustomValue>,
     override var subcategoryCusvals: MutableList<CustomValue>,

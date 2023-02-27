@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var counter = -1
     private val listUseCase = listOf(
-        "Login as u3_2@minh1.co" to suspend { viewModel.login(++counter) },
+        "Login as u3_3@minh1.co" to suspend { viewModel.login(++counter) },
         "Login Multi w demomanager@safetychampion.online " to suspend { viewModel.multiLogin(++counter) },
         "Morph (required login as demomanager) " to suspend { viewModel.morph(++counter) },
         "UnMorph (required  morph) " to suspend { viewModel.unmorph(++counter) },
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.editAction(
                 actionPL = sampleData.getEditAction(),
                 id = sampleData.getEditAction()._id!!,
-                index = ++counter,
+                index = ++counter
             )
         },
         "Get List Banner" to suspend { viewModel.getListBanner(++counter) },
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.editAction(
                 actionPL = sampleData.getEditAction(),
                 id = sampleData.getEditAction()._id!!,
-                index = 11,
+                index = 11
             )
         },
         "Refresh GHS code" to suspend { viewModel.refreshGHS(++counter) },
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.getChemicalSignoff(
                 moduleId = "61ad7aedb3ea32726aac3523",
                 id = "0123456",
-                index = ++counter,
+                index = ++counter
             )
         },
 
@@ -106,6 +106,9 @@ class MainActivity : AppCompatActivity() {
         "Fetch List Document" to suspend { viewModel.fetchListDoc("63ec866dde4d671748fe6a91", ++counter) },
         "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", ++counter) },
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
+        "Available Inspection" to suspend { viewModel.availableInspections(++counter) },
+        "Get Inspection (\"63f51afcf662ba4785de073a\")" to suspend { viewModel.getInspection(++counter) },
+        "New Child Inspection" to suspend { viewModel.newChildInspection(++counter) }
     )
 
     val items = {
@@ -114,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 path = it.first,
                 status = "Loading",
                 loading = true,
-                result = "",
+                result = ""
             )
         }
     }
@@ -157,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         val spinnerArrayAdapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
             this,
             R.layout.simple_spinner_dropdown_item,
-            listUseCase.map { it.first },
+            listUseCase.map { it.first }
         )
 
         val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -181,7 +184,7 @@ class MainActivity : AppCompatActivity() {
             binding.test.isEnabled = false
             mAdpater.list.clear()
             mAdpater.list.addAll(
-                items(),
+                items()
             )
             mAdpater.notifyDataSetChanged()
 

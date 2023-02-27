@@ -20,9 +20,10 @@ abstract class BaseConfig(protected val configMap: ConfigItemMap) {
         fun create(configList: List<Configuration>): Map<ModuleType, BaseConfig> = buildMap {
             configList.forEach { config ->
                 val data = when (config.type) {
+                    ModuleType.TASK,
                     ModuleType.NOT_SUPPORTED,
-                    ModuleType.USER,
-                    -> null
+                    ModuleType.USER -> null
+
                     ModuleType.ACTION -> ActionConfig(config)
                     ModuleType.CHEMICAL -> ChemicalConfig(config)
                     ModuleType.CRISK -> CriskConfig(config)

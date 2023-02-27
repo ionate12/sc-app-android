@@ -54,6 +54,11 @@ sealed class SCError(val code: String, val errDescription: String) {
         errDescription = "Due to offline network, this task has been stored as a Offline Task, and it will be synced with Safety Champion System when going back online."
     )
 
+    object NoTaskIdFound : SCError(
+        code = "no_task_id_found",
+        errDescription = "Couldn't find task id."
+    )
+
     /**
      *  Represents an invalid QR code request.
      *  @param [des] the [Destination] would like to go, this is an optional*/

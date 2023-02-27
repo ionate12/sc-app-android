@@ -9,7 +9,7 @@ class UpdateLogListItem(by: UpdateBy, comment: String, date: String) : UpdateLog
             val _by = UpdateBy(
                 task.signedoffBy?.email ?: "",
                 task.signedoffBy?.name ?: "",
-                task.signedoffBy?.type?.value ?: "",
+                task.signedoffBy?.type?.title ?: "",
                 task.signedoffBy?._id ?: ""
             )
             return UpdateLogListItem(_by, task.dateSignedoff ?: "", "")
@@ -18,7 +18,7 @@ class UpdateLogListItem(by: UpdateBy, comment: String, date: String) : UpdateLog
             val _by = UpdateBy(
                 task.signedoffBy?.email ?: "",
                 task.signedoffBy?.name ?: "",
-                task.signedoffBy?.type?.value ?: "",
+                task.signedoffBy?.type?.title ?: "",
                 task.signedoffBy?._id ?: ""
             )
             return UpdateLogListItem(_by, task.dateSignedoff ?: "", "")

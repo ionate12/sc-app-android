@@ -21,6 +21,12 @@ import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemical
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.inspection.GetAvailableListInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.GetInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.NewChildAndStartInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -69,6 +75,15 @@ internal val useCasesModule = module {
     factoryOf(::GetListChemicalUseCase)
 
     factoryOf(::GetGhsCodeUseCase)
+
+    // Inspection
+
+    factoryOf(::GetAvailableListInspectionUseCase)
+    factoryOf(::NewChildAndStartInspectionUseCase)
+    factoryOf(::PrepareSignoffInspectionUseCase)
+    factoryOf(::SignoffInspectionUseCase)
+    factoryOf(::StartTaskInspectionUseCase)
+    factoryOf(::GetInspectionUseCase)
 
     // Banner
 

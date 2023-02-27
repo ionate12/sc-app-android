@@ -1,7 +1,6 @@
 package au.com.safetychampion.data.domain.models.crisk
 
 import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.InspectionTemplateMeta
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.IAttachment
@@ -11,6 +10,7 @@ import au.com.safetychampion.data.domain.models.SCHolderLink
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.inspections.InspectionTemplateMeta
 
 data class Crisk(
     val allocationActive: Boolean? = null,
@@ -40,5 +40,5 @@ data class Crisk(
     val tzDateCreated: String? = null,
     override var cusvals: MutableList<CustomValue>,
     override var subcategoryCusvals: MutableList<CustomValue>,
-    override var attachments: MutableList<Attachment>?
+    override var attachments: MutableList<Attachment>
 ) : BaseModule, ICusval, ISubcategoryCusval, IAttachment

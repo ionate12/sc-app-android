@@ -41,6 +41,6 @@ data class CriskTask(
     override var cusvals: MutableList<CustomValue>,
     override var subcategoryCusvals: MutableList<CustomValue>,
     override var signatures: MutableList<Signature>,
-    override var attachments: MutableList<Attachment>?,
+    override var attachments: MutableList<Attachment>,
     override var pendingActions: MutableList<PendingActionPL>
 ) : BaseTask, ICusval, ICriskTaskComponents

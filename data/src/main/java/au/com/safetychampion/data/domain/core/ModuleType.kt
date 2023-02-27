@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.domain.core
 
-enum class ModuleType(val code: String, val value: String) {
+enum class ModuleType(val value: String, val title: String) {
     USER("core.user", "User"),
     ACTION("core.module.action", "Action"),
     ADMIN("core.module.admin2", "Admin"),
@@ -16,10 +16,11 @@ enum class ModuleType(val code: String, val value: String) {
     THEME("core.module.theme", "Theme"),
     TRAINING("core.module.training", "Training"),
     DOCUMENT("core.module.vdoc", "Document"),
+    TASK("core.module.task", "Task"),
     NOT_SUPPORTED("core.module.unknown", "Unknown");
 
     companion object {
         fun fromString(value: String): ModuleType =
-            values().find { it.code == value } ?: NOT_SUPPORTED
+            values().find { it.value == value } ?: NOT_SUPPORTED
     }
 }
