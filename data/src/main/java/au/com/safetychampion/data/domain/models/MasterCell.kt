@@ -3,7 +3,7 @@ package au.com.safetychampion.data.domain.models
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import au.com.safetychampion.data.domain.models.login.LoginUser
+import au.com.safetychampion.data.domain.models.auth.LoginUser
 import com.google.gson.JsonObject
 
 @Entity(

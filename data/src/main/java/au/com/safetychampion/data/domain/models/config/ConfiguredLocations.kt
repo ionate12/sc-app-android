@@ -5,5 +5,5 @@ class ConfiguredLocations(var byTier: MutableList<ConfLocationTier> = mutableLis
 data class ConfLocationTier(
     val type: String,
     val _id: String,
-    val configuredLocations: List<String>
+    val configuredLocations: List<String>,
 )

@@ -6,6 +6,7 @@ import au.com.safetychampion.data.data.common.FakeDAO
 import au.com.safetychampion.data.data.common.FakeMasterDAO
 import au.com.safetychampion.data.data.common.MasterDAO
 import au.com.safetychampion.data.data.common.TaskDAO
+import au.com.safetychampion.data.data.local.BaseAppDataStore
 import au.com.safetychampion.data.data.local.room.AppDatabase
 import au.com.safetychampion.data.domain.manager.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.local.AppDataStore

@@ -35,7 +35,7 @@ inline fun <reified T> APIResponse.toItem(
                     else -> null
                 }
                 Result.Success(
-                    if (mObjName == null) {
+                    if (mObjName.isNullOrEmpty()) {
                         result!!.parseObject()
                     } else {
                         result!![mObjName].parseObject()

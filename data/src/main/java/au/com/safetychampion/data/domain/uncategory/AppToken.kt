@@ -2,7 +2,6 @@ package au.com.safetychampion.data.domain.uncategory
 
 sealed class AppToken(open val value: String, val priority: Int) : Comparable<AppToken> {
     // For Login process
-    data class MFA(override val value: String, val oob: String?) : AppToken(value, 0)
     data class MultiUser(override val value: String) : AppToken(value, 1)
 
     // For Logged user usage

@@ -19,6 +19,8 @@ import au.com.safetychampion.data.data.local.SyncableRepository
 import au.com.safetychampion.data.data.noticeboard.INoticeboardRepository
 import au.com.safetychampion.data.data.noticeboard.NoticeboardRepository
 import au.com.safetychampion.data.domain.manager.INetworkManager
+import au.com.safetychampion.data.domain.models.auth.AuthRepository
+import au.com.safetychampion.data.domain.models.auth.IAuthRepository
 import au.com.safetychampion.data.visitor.data.local.IVisitorLocalRepository
 import au.com.safetychampion.data.visitor.data.local.VisitorLocalRepository
 import au.com.safetychampion.data.visitor.data.remote.IVisitorRemoteRepository
@@ -27,6 +29,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 internal val repositoryModule = module {
+    singleOf<IAuthRepository>(::AuthRepository)
+
     singleOf<IActionRepository>(::ActionRepository)
 
     singleOf<IBannerRepository>(::BannerRepository)
@@ -48,6 +52,8 @@ internal val repositoryModule = module {
     singleOf<IVisitorLocalRepository>(::VisitorLocalRepository)
 
     singleOf(::SyncableRepository)
+
+    singleOf<IAuthRepository>(::AuthRepository)
 
     single<RestApi> { get<INetworkManager>().retrofit.create(RestApi::class.java) }
 }
