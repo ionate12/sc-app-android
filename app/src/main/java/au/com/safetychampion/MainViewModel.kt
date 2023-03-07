@@ -3,7 +3,7 @@ package au.com.safetychampion
 import PrepareSignoffActionUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.core.*
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.TierType
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
@@ -24,24 +24,18 @@ import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseC
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
-import au.com.safetychampion.data.domain.usecase.auth.GetWhoAmIUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserLoginUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserLogoutUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserMorphUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserMultiLoginUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserUnMorphUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserVerifyMfaUseCase
+import au.com.safetychampion.data.domain.usecase.auth.*
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.document.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.incident.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.noticeboard.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.crisk.*
+import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.incident.*
+import au.com.safetychampion.data.domain.usecase.noticeboard.*
 import au.com.safetychampion.data.util.extension.koinInject
-import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.qr.SubmitQRCodeUseCase
@@ -164,7 +158,7 @@ class MainViewModel : ViewModel() {
             toUserId = assignTask._id,
             moduleName = "Action",
             notes = assignTask.optionalMessage,
-            dateDue = ownerTask.dateDue,
+            dateDue = ownerTask.dateDue
         )
         _apiCallStatus.emit(index to result)
     }
@@ -175,7 +169,7 @@ class MainViewModel : ViewModel() {
             toUserId = assignTask._id,
             moduleName = "Action",
             notes = assignTask.optionalMessage,
-            dateDue = ownerTask.dateDue,
+            dateDue = ownerTask.dateDue
         )
         _apiCallStatus.emit(index to result)
     }
@@ -183,8 +177,8 @@ class MainViewModel : ViewModel() {
     suspend fun createNewAction(payload: ActionPL, index: Int) {
         _apiCallStatus.emit(
             index to newActionUseCase.invoke(
-                payload = payload,
-            ),
+                payload = payload
+            )
         )
     }
 
@@ -194,7 +188,7 @@ class MainViewModel : ViewModel() {
 
     suspend fun getActionSignOff(actionId: String, id: String, index: Int) {
         _apiCallStatus.emit(
-            index to prepareSignoffActionUseCase.invoke(id, actionId),
+            index to prepareSignoffActionUseCase.invoke(id, actionId)
         )
 //
     }
@@ -205,12 +199,12 @@ class MainViewModel : ViewModel() {
 
     suspend fun signOffAction(
         actionSignOff: ActionSignOff,
-        index: Int,
+        index: Int
     ) {
         _apiCallStatus.emit(
             index to signOffActionUseCase.invoke(
-                actionSignOff,
-            ),
+                actionSignOff
+            )
         )
     }
 
@@ -236,33 +230,33 @@ class MainViewModel : ViewModel() {
 
     suspend fun signoffChemical(
         signoff: ChemicalSignoffPL,
-        index: Int,
+        index: Int
     ) {
         _apiCallStatus.emit(
-            index to signoffChemicalUseCase.invoke(signoff),
+            index to signoffChemicalUseCase.invoke(signoff)
         )
     }
 
     suspend fun getListCrisk(index: Int) {
         _apiCallStatus.emit(
-            index to getListCriskUseCase.invoke(),
+            index to getListCriskUseCase.invoke()
         )
     }
 
     suspend fun getListHrLookup(index: Int) {
         _apiCallStatus.emit(
-            index to getListHrLookupUseCase.invoke(),
+            index to getListHrLookupUseCase.invoke()
         )
     }
     suspend fun getListContractorLookup(index: Int) {
         _apiCallStatus.emit(
-            index to getListContractorLookupUseCase.invoke(),
+            index to getListContractorLookupUseCase.invoke()
         )
     }
 
     suspend fun getCriskSignoff(taskId: String, criskId: String, index: Int) {
         _apiCallStatus.emit(
-            index to getCriskSignoff.invoke(taskId, criskId),
+            index to getCriskSignoff.invoke(taskId, criskId)
         )
     }
 
@@ -290,7 +284,7 @@ class MainViewModel : ViewModel() {
     private suspend fun signInFromQRCode(qrCode: String): Result<Destination> {
         return submitQRUseCase.invoke(
             qrCode = qrCode,
-            destination = { Destination.PinCode(qrCode) },
+            destination = { Destination.PinCode(qrCode) }
         ).flatMap { token ->
             fetchSiteUseCase.invoke(VisitorPayload.SiteFetch(token.token!!)) // non null, already handled in submitQR
                 .flatMap {
@@ -298,8 +292,8 @@ class MainViewModel : ViewModel() {
                         Destination.VisitorWizard(
                             site = it,
                             token = token.token,
-                            evidence = null, // this is sign in flow, so this be null
-                        ),
+                            evidence = null // this is sign in flow, so this be null
+                        )
                     )
                 }
         }.flatMapError {
@@ -327,14 +321,14 @@ class MainViewModel : ViewModel() {
                 destination = if (nEvidence.leave != null) {
                     Destination.Toast(
                         scError = SCError.Failure(
-                            message = nEvidence.site.tier.VISIT_TERMS.leave.toLowerCase(Locale.ROOT),
-                        ),
+                            message = nEvidence.site.tier.VISIT_TERMS.leave.toLowerCase(Locale.ROOT)
+                        )
                     ) // TODO ("message")
                 } else {
                     Destination.VisitorWizard(
                         site = nEvidence.site,
                         evidence = nEvidence,
-                        token = null,
+                        token = null
                     )
                 }
             }.doOnFailure {
@@ -349,7 +343,7 @@ class MainViewModel : ViewModel() {
     suspend fun fetchLeaveForm(
         token: String?,
         site: VisitorSite?,
-        role: VisitorRole?,
+        role: VisitorRole?
     ): Result<VisitorSite> {
         token ?: return errorOf("Invalid Token")
         role ?: return errorOf("No selected role.")
@@ -357,16 +351,16 @@ class MainViewModel : ViewModel() {
         return updateSiteByFormFetchUseCase.invoke(
             payload = VisitorPayload.FormFetch(
                 token,
-                leaveFormId,
+                leaveFormId
             ),
-            site = site,
+            site = site
         )
     }
 
     suspend fun fetchArriveForm(
         token: String?,
         role: VisitorRole?,
-        site: VisitorSite?,
+        site: VisitorSite?
     ): Result<VisitorSite> {
         token ?: return errorOf("Invalid Token")
         role ?: return errorOf("No selected role.")
@@ -375,9 +369,9 @@ class MainViewModel : ViewModel() {
         return updateSiteByFormFetchUseCase.invoke(
             payload = VisitorPayload.FormFetch(
                 token,
-                arriveFormId,
+                arriveFormId
             ),
-            site = site,
+            site = site
         )
     }
 
@@ -387,7 +381,7 @@ class MainViewModel : ViewModel() {
         token: String?,
         form: VisitorForm,
         profile: VisitorProfile,
-        site: VisitorSite,
+        site: VisitorSite
     ): Result<VisitorEvidence> {
         form.selectedRole ?: return errorOf("Arrive Form has no selected Role. Please assign it before submitting the form")
         token ?: errorOf("No sufficient data available to perform submitForm")
@@ -395,10 +389,10 @@ class MainViewModel : ViewModel() {
             payload = VisitorPayload.Arrive(
                 token!!,
                 arrive = form.toPayload(),
-                visitor = profile.toPayload(role = form.selectedRole!!),
+                visitor = profile.toPayload(role = form.selectedRole!!)
             ),
             site = site,
-            profile = profile,
+            profile = profile
         )
     }
 

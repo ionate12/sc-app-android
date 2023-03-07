@@ -8,9 +8,7 @@ import au.com.safetychampion.data.domain.models.UpdateLog
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.auth.LoginUser
-import au.com.safetychampion.data.domain.models.customvalues.CusvalPojo
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
-import au.com.safetychampion.data.domain.models.login.LoginUser
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class IncidentTask(

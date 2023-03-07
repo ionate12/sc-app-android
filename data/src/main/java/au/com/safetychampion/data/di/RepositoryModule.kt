@@ -53,7 +53,5 @@ internal val repositoryModule = module {
 
     singleOf(::SyncableRepository)
 
-    singleOf<IAuthRepository>(::AuthRepository)
-
     single<RestApi> { get<INetworkManager>().retrofit.create(RestApi::class.java) }
 }

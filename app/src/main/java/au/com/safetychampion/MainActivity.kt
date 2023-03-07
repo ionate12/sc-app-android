@@ -26,7 +26,7 @@ import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.databinding.ActivityMainBinding
 import au.com.safetychampion.util.AssetsManager
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.editAction(
                 actionPL = sampleData.getEditAction(),
                 id = sampleData.getEditAction()._id!!,
-                index = ++counter,
+                index = ++counter
             )
         },
         "Get List Banner" to suspend { viewModel.getListBanner(++counter) },
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.editAction(
                 actionPL = sampleData.getEditAction(),
                 id = sampleData.getEditAction()._id!!,
-                index = 11,
+                index = ++counter
             )
         },
         "Refresh GHS code" to suspend { viewModel.refreshGHS(++counter) },
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.getChemicalSignoff(
                 moduleId = "61ad7aedb3ea32726aac3523",
                 id = "0123456",
-                index = ++counter,
+                index = ++counter
             )
         },
 
@@ -111,14 +111,14 @@ class MainActivity : AppCompatActivity() {
         "Create incident" to suspend { viewModel.createIncident(payload = sampleData.getNewIncident(), ++counter) },
         "Fetch Incident" to suspend { viewModel.fetchIncident(moduleId = "630d5de6ca562f742c1a2988", ++counter) },
         "List Incident" to suspend { viewModel.fetchListIncident(++counter) },
-//        "Lookup incident" to suspend { viewModel.lookupIncident(29) }, // TODO("crash hrLookUp, have not consistent in response, maybe need custom adapter")
+        "Lookup incident" to suspend { viewModel.lookupIncident(29) }, // TODO("crash hrLookUp, have not consistent in response, maybe need custom adapter")
         "Prepare Incident" to suspend { viewModel.prepareIncident(moduleId = "630d5de6ca562f742c1a2988", taskId = "630d5de6ca562f742c1a2988", ++counter) },
 //
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
-        "fetchBlock" to suspend { viewModel.fetchBlock("62ecff3130e68b29607353f9", 30) },
-        "fetchBoards" to suspend { viewModel.fetchBoards(31) },
-        "fetchVdocNoticeboard" to suspend { viewModel.fetchVdocNoticeboard("62ecff3130e68b29607353f9", 32) },
-        "fetchNoticeboardForms" to suspend { viewModel.fetchNoticeboardForms(listOf(), 33) } // TODO("Need add more form in u3_2@minh1.co")
+        "fetchBlock" to suspend { viewModel.fetchBlock("62ecff3130e68b29607353f9", ++counter) },
+        "fetchBoards" to suspend { viewModel.fetchBoards(++counter) },
+        "fetchVdocNoticeboard" to suspend { viewModel.fetchVdocNoticeboard("62ecff3130e68b29607353f9", ++counter) },
+        "fetchNoticeboardForms" to suspend { viewModel.fetchNoticeboardForms(listOf(), ++counter) } // TODO("Need add more form in u3_2@minh1.co")
 //      "Submit form" to suspend { viewModel.submitNoticeboardForms() } //
     )
 
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                 path = it.first,
                 status = "Loading",
                 loading = true,
-                result = "",
+                result = ""
             )
         }
     }
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
         val spinnerArrayAdapter: ArrayAdapter<*> = ArrayAdapter<Any?>(
             this,
             R.layout.simple_spinner_dropdown_item,
-            listUseCase.map { it.first },
+            listUseCase.map { it.first }
         )
 
         val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
             binding.test.isEnabled = false
             mAdpater.list.clear()
             mAdpater.list.addAll(
-                items(),
+                items()
             )
             mAdpater.notifyDataSetChanged()
 
