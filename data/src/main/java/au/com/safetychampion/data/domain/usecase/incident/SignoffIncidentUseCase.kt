@@ -11,6 +11,6 @@ import au.com.safetychampion.data.util.extension.koinInject
 class SignoffIncidentUseCase : BaseSignoffUseCase<IncidentTask, IncidentSignOff>() {
     private val repository: IIncidentRepository by koinInject()
     override suspend fun signoffOnline(payload: IncidentSignOff): Result<IncidentTask> {
-        return repository.signOff(IncidentTaskPL.from(payload.task))
+        return repository.signOff(IncidentTaskPL.fromModel(payload.task))
     }
 }
