@@ -37,7 +37,7 @@ class IncidentRepository : BaseRepository(), IIncidentRepository {
     ): Result<IncidentTask> {
         return IncidentAPI.Signoff(
             payload = payload,
-            incidentID = payload.taskId
+            incidentID = payload._id
         ).call()
     }
 

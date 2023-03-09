@@ -5,12 +5,14 @@ import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.*
 import au.com.safetychampion.data.domain.models.action.ActionLink
-import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.auth.LoginUser
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
+import com.google.gson.annotations.SerializedName
 
 data class IncidentTask(
+    @SerializedName("taskId")
     override val _id: String? = null,
     var attachments: MutableList<DocAttachment> = mutableListOf(),
     override var complete: Boolean? = null,
@@ -29,10 +31,10 @@ data class IncidentTask(
     var externalBodiesNotified: List<ExternalBodyPojo> = listOf(),
     var links: MutableList<ActionLink> = mutableListOf(),
     val lostTimeInjury: String? = null,
-    val hasExternalBody: Boolean,
+    val hasExternalBody: Boolean? = null,
     val hazardCategory: String? = null,
     val hazardCategoryOther: String? = null,
-    var newActions: MutableList<ActionPL> = mutableListOf(),
+    var newActions: MutableList<ActionNewPL> = mutableListOf(),
     val sessionId: String? = null,
     val severity: String? = null,
     val signedoffBy: LoginUser? = null,

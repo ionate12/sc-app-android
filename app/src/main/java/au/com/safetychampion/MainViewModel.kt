@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.core.*
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.TierType
-import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import au.com.safetychampion.data.domain.models.auth.LoginPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
@@ -174,7 +174,7 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to result)
     }
 
-    suspend fun createNewAction(payload: ActionPL, index: Int) {
+    suspend fun createNewAction(payload: ActionNewPL, index: Int) {
         _apiCallStatus.emit(
             index to newActionUseCase.invoke(
                 payload = payload
@@ -193,7 +193,7 @@ class MainViewModel : ViewModel() {
 //
     }
 
-    suspend fun editAction(actionPL: ActionPL, id: String, index: Int) {
+    suspend fun editAction(actionPL: ActionNewPL, id: String, index: Int) {
         _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL))
     }
 

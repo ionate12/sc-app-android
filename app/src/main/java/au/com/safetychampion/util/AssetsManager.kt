@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.ActionTask
-import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
@@ -37,21 +37,21 @@ class AssetsManager(private val context: Context) {
             .parseObject<TaskAssignStatusItem>()!!
     }
 
-    suspend fun getNewAction(): ActionPL {
+    suspend fun getNewAction(): ActionNewPL {
         return context
             .assets
             .readAssetsFile("new_action")
-            .parseObject<ActionPL>()!!
+            .parseObject<ActionNewPL>()!!
     }
 
     suspend fun getActionId(): String = "63b5622b97f7ee1e8d3d639a"
 
-    suspend fun getEditAction(): ActionPL {
-        return context
-            .assets
-            .readAssetsFile("edit_action_")
-            .parseObject<ActionPL>()!!
-    }
+//    suspend fun getEditAction(): ActionPL {
+//        return context
+//            .assets
+//            .readAssetsFile("edit_action_")
+//            .parseObject<ActionPL>()!!
+//    }
 
     suspend fun getActionTask(): ActionTask {
         return context
