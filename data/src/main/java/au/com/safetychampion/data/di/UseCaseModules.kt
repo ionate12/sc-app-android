@@ -1,30 +1,23 @@
 package au.com.safetychampion.data.di
 
 import PrepareSignoffActionUseCase
-import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.action.*
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
-import au.com.safetychampion.data.domain.usecase.auth.GetWhoAmIUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserLoginUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserLogoutUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserMorphUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserMultiLoginUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserUnMorphUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserVerifyMfaUseCase
+import au.com.safetychampion.data.domain.usecase.auth.*
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.document.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.incident.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.noticeboard.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.incident.*
+import au.com.safetychampion.data.domain.usecase.noticeboard.*
+import au.com.safetychampion.data.domain.usecase.reviewplan.*
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -128,6 +121,17 @@ internal val useCasesModule = module {
     factoryOf(::FetchNoticeboardFormsUseCase)
 
     factoryOf(::SubmitNoticeboardFormUseCase)
+
+    // Review_Plan
+    factoryOf(::FetchActionsWithReviewPlanIdUseCase)
+
+    factoryOf(::FetchListReviewPlanUseCase)
+
+    factoryOf(::FetchReviewPlanEvidencesUseCase)
+
+    factoryOf(::PrepareReviewPlanSignoffUseCase)
+
+    factoryOf(::SignoffReviewPlanUseCase)
 
     // Signoff @_@
 

@@ -18,6 +18,8 @@ import au.com.safetychampion.data.data.incident.IncidentRepository
 import au.com.safetychampion.data.data.local.SyncableRepository
 import au.com.safetychampion.data.data.noticeboard.INoticeboardRepository
 import au.com.safetychampion.data.data.noticeboard.NoticeboardRepository
+import au.com.safetychampion.data.data.reviewplan.IReviewPlanRepository
+import au.com.safetychampion.data.data.reviewplan.ReviewPlanRepository
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.domain.models.auth.AuthRepository
 import au.com.safetychampion.data.domain.models.auth.IAuthRepository
@@ -44,6 +46,8 @@ internal val repositoryModule = module {
     singleOf<IIncidentRepository>(::IncidentRepository)
 
     singleOf<INoticeboardRepository>(::NoticeboardRepository)
+
+    singleOf<IReviewPlanRepository>(::ReviewPlanRepository)
 
     singleOf<ITaskRepository> (::TaskRepository)
 

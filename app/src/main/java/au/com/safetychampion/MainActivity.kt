@@ -118,8 +118,13 @@ class MainActivity : AppCompatActivity() {
         "fetchBlock" to suspend { viewModel.fetchBlock("62ecff3130e68b29607353f9", ++counter) },
         "fetchBoards" to suspend { viewModel.fetchBoards(++counter) },
         "fetchVdocNoticeboard" to suspend { viewModel.fetchVdocNoticeboard("62ecff3130e68b29607353f9", ++counter) },
-        "fetchNoticeboardForms" to suspend { viewModel.fetchNoticeboardForms(listOf(), ++counter) } // TODO("Need add more form in u3_2@minh1.co")
-//      "Submit form" to suspend { viewModel.submitNoticeboardForms() } //
+        "fetchNoticeboardForms" to suspend { viewModel.fetchNoticeboardForms(listOf(), ++counter) }, // TODO("Need add more form in u3_2@minh1.co")
+//      "Submit form" to suspend { viewModel.submitNoticeboardForms() } //,
+        // required login as demomanager@safetychampion.online or change data
+        "actionsWithReviewPlanIdUseCase" to suspend { viewModel.actionsWithReviewPlanIdUseCase(reviewPlanId = "6101f80b86c7cc29f6c0e2a1", index = ++counter) },
+        "getListRVPlan" to suspend { viewModel.getListRVPlan(index = ++counter) },
+        "prepareRVPlan" to suspend { viewModel.prepareRVPlan(moduleId = "6101f80b86c7cc29f6c0e2a1", taskId = "620485e98c1cf5052a828ffb", ++counter) },
+        "fetchRVPlanEvidences" to suspend { viewModel.fetchRVPlanEvidences(reviewPlanId = "6101f80b86c7cc29f6c0e2a1", ++counter) }
     )
 
     val items = {

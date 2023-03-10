@@ -34,6 +34,10 @@ import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
 import au.com.safetychampion.data.domain.usecase.incident.*
 import au.com.safetychampion.data.domain.usecase.noticeboard.*
+import au.com.safetychampion.data.domain.usecase.reviewplan.FetchActionsWithReviewPlanIdUseCase
+import au.com.safetychampion.data.domain.usecase.reviewplan.FetchListReviewPlanUseCase
+import au.com.safetychampion.data.domain.usecase.reviewplan.FetchReviewPlanEvidencesUseCase
+import au.com.safetychampion.data.domain.usecase.reviewplan.PrepareReviewPlanSignoffUseCase
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
@@ -89,7 +93,7 @@ class MainViewModel : ViewModel() {
     val uiMessage = _uiMessage.asSharedFlow()
 
     suspend fun login(index: Int) {
-        loginUseCase(LoginPL(email = "u3_2@minh1.co", password = "123"))
+        loginUseCase(LoginPL(email = "demomanager@safetychampion.online", password = "12345678a"))
             .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let { _apiCallStatus.emit(index to it) }
     }
@@ -460,4 +464,16 @@ class MainViewModel : ViewModel() {
 
     private val submitNoticeboardForms: SubmitNoticeboardFormUseCase by koinInject()
     suspend fun submitNoticeboardForms(payload: NoticeboardFormPL, index: Int) = _apiCallStatus.emit(index to submitNoticeboardForms.invoke(payload))
+
+    private val actionsWithReviewPlanIdUseCase: FetchActionsWithReviewPlanIdUseCase by koinInject()
+    suspend fun actionsWithReviewPlanIdUseCase(reviewPlanId: String, index: Int) = _apiCallStatus.emit(index to actionsWithReviewPlanIdUseCase.invoke(reviewPlanId))
+
+    private val listReviewPlan: FetchListReviewPlanUseCase by koinInject()
+    suspend fun getListRVPlan(index: Int) = _apiCallStatus.emit(index to listReviewPlan.invoke())
+
+    private val prepareReviewPlanSignoff: PrepareReviewPlanSignoffUseCase by koinInject()
+    suspend fun prepareRVPlan(moduleId: String, taskId: String, index: Int) = _apiCallStatus.emit(index to prepareReviewPlanSignoff.invoke(moduleId, taskId))
+
+    private val reviewPlanEvidences: FetchReviewPlanEvidencesUseCase by koinInject()
+    suspend fun fetchRVPlanEvidences(reviewPlanId: String, index: Int) = _apiCallStatus.emit(index to reviewPlanEvidences.invoke(reviewPlanId))
 }
