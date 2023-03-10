@@ -12,7 +12,16 @@ class AttachmentTypeAdapter : JsonDeserializer<Attachment> {
         json: JsonElement?,
         typeOfT: Type?,
         context: JsonDeserializationContext?
-    ): Attachment {
-        return context!!.deserialize(json, object : TypeToken<Attachment.Review>() {}.type)
+    ): Attachment? {
+        if (json == null || !json.isJsonObject) {
+            return null
+        }
+        val typeToken: TypeToken<out Attachment> = with(json.asJsonObject) {
+            when {
+                has("uri") -> object : TypeToken<Attachment.New>() {}
+                else -> object : TypeToken<Attachment.Review>() {}
+            }
+        }
+        return context!!.deserialize(json, typeToken.type)
     }
 }
