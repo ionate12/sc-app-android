@@ -6,8 +6,8 @@ import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.models.ICategoryCusval
 import au.com.safetychampion.data.domain.models.ICusval
 import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.auth.LoginUser
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
-import au.com.safetychampion.data.domain.models.login.LoginUser
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class ActionTask(

@@ -14,7 +14,7 @@ data class ChemicalTaskPL(
     val purpose: String,
     val dateSdsIssued: String?,
     val dateToReview: String?,
-    override var attachments: MutableList<Attachment>
+    override var attachments: MutableList<Attachment>?
 ) : BasePL(), IAttachment {
     companion object {
         fun fromModel(model: ChemicalTask): ChemicalTaskPL {

@@ -22,13 +22,17 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
-internal class MultipartPLConverter {
+internal open class MultipartPLConverter {
     private val gsonManager by koinInject<IGsonManager>()
     private val fileManager: IFileManager by koinInject()
 
+    open fun toJsonObject(basePL: BasePL): JsonObject {
+        return gsonManager.gson.toJsonTree(basePL).asJsonObject
+    }
+
     suspend operator fun invoke(basePL: BasePL): List<MultipartBody.Part> {
         val parts = mutableListOf<MultipartBody.Part>()
-        val jsonObject = gsonManager.gson.toJsonTree(basePL).asJsonObject
+        val jsonObject = toJsonObject(basePL)
         val attachmentPLs: MutableList<AttachmentPL> = mutableListOf()
         // 1. CustomValues
         jsonObject.addCustomValues(basePL)

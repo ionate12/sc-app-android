@@ -9,6 +9,7 @@ import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
+import au.com.safetychampion.data.domain.models.document.DocumentSignoff
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.util.extension.parseObject
 
@@ -79,4 +80,11 @@ class AssetsManager(private val context: Context) {
     }
 
     fun getLinkedTaskPayload(): ContractorLinkedTaskPL = ContractorLinkedTaskPL(ContractorLinkedTaskPL.Id("5efbedcac6bac31619e1221e"))
+
+    fun getSignoffChemical(): DocumentSignoff {
+        return context
+            .assets
+            .readAssetsFile("document_signoff")
+            .parseObject<DocumentSignoff>()!!
+    }
 }

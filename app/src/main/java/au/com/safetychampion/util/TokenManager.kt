@@ -1,5 +1,8 @@
 package au.com.safetychampion.util
 
+import au.com.safetychampion.data.data.local.BaseAppDataStore
+import au.com.safetychampion.data.data.local.StoreKey
+import au.com.safetychampion.data.domain.core.SuspendableInit
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.domain.uncategory.AppToken
 import au.com.safetychampion.data.util.extension.koinInject
@@ -7,35 +10,46 @@ import au.com.safetychampion.dispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.reflect.KClass
 
-class TokenManager : ITokenManager {
-    private lateinit var tokens: SortedSet<AppToken>
+class TokenManager : SuspendableInit(), ITokenManager {
+    private var tokens: SortedSet<AppToken> = sortedSetOf()
     private val dataStore: BaseAppDataStore by koinInject()
-    override suspend fun getToken(): AppToken? {
-        initTokensIfNeeded()
-        return tokens.firstOrNull()
+
+    override suspend fun suspendInit() {
+        tokens = getStoredTokens()
+    }
+    override suspend fun getToken(): AppToken? = didInit(onTimedOut = { null }) {
+        tokens.firstOrNull()
     }
 
-    override suspend fun updateToken(token: AppToken) {
-        initTokensIfNeeded()
+    override suspend fun updateToken(token: AppToken) = didInit {
         tokens.removeIf { it.priority == token.priority }
         tokens.add(token)
         storeTokenIfNeeded(token)
     }
 
-    private suspend fun initTokensIfNeeded() {
-        // lazy init
-        if (!this::tokens.isInitialized) {
-            tokens = getStoredTokens()
+    override suspend fun clearTokens() = didInit {
+        tokens.clear()
+    }
+
+    override suspend fun deleteToken(type: KClass<AppToken>) = didInit {
+        tokens.removeIf { it::class == type }
+        when (type) {
+            AppToken.Morphed::class -> {
+                dataStore.store(StoreKey.TokenMorphed, null)
+            }
+            AppToken.Authed::class -> dataStore.store(StoreKey.TokenAuthed, null)
+            else -> Unit
         }
     }
 
     private suspend fun getStoredTokens(): SortedSet<AppToken> {
         val set: SortedSet<AppToken> = sortedSetOf()
-        dataStore.get(StoreKey.AsString.TokenAuthed)?.let {
+        dataStore.get(StoreKey.TokenAuthed)?.let {
             set.add(AppToken.Authed(it))
         }
-        dataStore.get(StoreKey.AsString.TokenMorphed)?.let {
+        dataStore.get(StoreKey.TokenMorphed)?.let {
             set.add(AppToken.Morphed(it))
         }
         return set
@@ -44,8 +58,8 @@ class TokenManager : ITokenManager {
     private fun storeTokenIfNeeded(token: AppToken) {
         CoroutineScope(dispatchers().io).launch {
             when (token) {
-                is AppToken.Morphed -> dataStore.store(StoreKey.AsString.TokenMorphed, token.value)
-                is AppToken.Authed -> dataStore.store(StoreKey.AsString.TokenAuthed, token.value)
+                is AppToken.Morphed -> dataStore.store(StoreKey.TokenMorphed, token.value)
+                is AppToken.Authed -> dataStore.store(StoreKey.TokenAuthed, token.value)
                 else -> Unit
             }
         }

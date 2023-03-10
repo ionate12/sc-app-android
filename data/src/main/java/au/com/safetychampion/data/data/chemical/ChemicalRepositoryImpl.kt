@@ -5,7 +5,7 @@ import au.com.safetychampion.data.data.api.ChemicalAPI
 import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.GHSCode
 import au.com.safetychampion.data.domain.models.chemical.Chemical
-import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoff
+import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
 import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
 
@@ -23,8 +23,8 @@ class ChemicalRepositoryImpl : BaseRepository(), IChemicalRepository {
         return ChemicalAPI.Fetch(moduleId).call()
     }
 
-    override suspend fun combineFetchAndTask(moduleId: String, taskId: String): Result<ChemicalSignoff> {
-        return fetch(moduleId).map { ChemicalSignoff(body = it, task = ChemicalTask(_id = taskId)) }
+    override suspend fun combineFetchAndTask(moduleId: String, taskId: String): Result<ChemicalSignoffPL> {
+        return fetch(moduleId).map { ChemicalSignoffPL(body = it, task = ChemicalTask(_id = taskId)) }
     }
 
     override suspend fun signoff(
