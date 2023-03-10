@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.domain.models.reviewplan
 
 import au.com.safetychampion.data.domain.models.Tier
-import au.com.safetychampion.data.domain.models.login.LoginUser
+import au.com.safetychampion.data.domain.models.auth.LoginUser
 import com.google.gson.annotations.SerializedName
 
 data class ReviewPlanEvidenceTask(

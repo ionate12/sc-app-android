@@ -50,3 +50,13 @@ fun jsonObjectOf(src: Any, customGson: Gson? = null): JsonObject? {
 fun JsonObject?.isNullOrEmpty(): Boolean {
     return this == null || this.toString() == "{}"
 }
+
+fun JsonElement.asStringOrNull(): String? = try {
+    this.asString
+} catch (e: Exception) { null }
+fun JsonElement.asIntOrNull(): Int? = try {
+    this.asInt
+} catch (e: Exception) { null }
+fun JsonElement?.asBooleanOrDefault(default: Boolean = false): Boolean = try {
+    this?.asBoolean ?: default
+} catch (e: Exception) { default }

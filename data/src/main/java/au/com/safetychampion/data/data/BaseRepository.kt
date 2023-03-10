@@ -29,7 +29,7 @@ abstract class BaseRepository {
 
     private val roomDts: RoomDataSource by koinInject()
 
-    internal suspend inline fun <reified T> NetworkAPI.call(objName: String? = null): Result<T> {
+    internal suspend inline fun <reified T : Any> NetworkAPI.call(objName: String? = null): Result<T> {
         return internalCall().flatMap {
             it.toItem(objName)
         }
@@ -77,7 +77,7 @@ abstract class BaseRepository {
                             when (it) {
                                 is Result.Error -> return@withContext Result.Error(it.err)
                                 is Result.Success -> {
-                                    nBody = this@handleOnline.body.onPendingActionsCreated(it.data!!)
+                                    nBody = this.onPendingActionsCreated(it.data!!)
                                 }
                                 else -> TODO("To be removed")
                             }
@@ -120,10 +120,17 @@ abstract class BaseRepository {
                     Result.Success(it.toAPIResponse(), offline = true)
                 } ?: Result.Error(SCError.NoNetwork)
             }
-            this is ISyncable && this is NetworkAPI.PostMultiParts -> {
-                val key = customKey() ?: path
-                roomDts.insertSyncable(key, data = body)
-                Result.Error(SCError.SyncableStored(key))
+            this is ISyncable -> {
+                val body = when {
+                    this is NetworkAPI.Post -> this.body
+                    this is NetworkAPI.PostMultiParts -> this.body
+                    else -> null
+                }
+                body?.let {
+                    val key = customKey() ?: path
+                    roomDts.insertSyncable(key, data = body)
+                    Result.Error(SCError.SyncableStored(key))
+                } ?: Result.Error(SCError.NoNetwork)
             }
             else -> Result.Error(SCError.NoNetwork)
         }

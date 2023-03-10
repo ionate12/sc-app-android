@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.domain.models.crisk
 
-import au.com.safetychampion.data.domain.*
+import au.com.safetychampion.data.domain.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.CreatedBy
@@ -68,7 +68,7 @@ data class CriskTaskPL(
     val dateCompleted: String? = null,
     val recurrent: Boolean? = null,
     val tzDateSignedoff: String? = null,
-    override var attachments: MutableList<Attachment>,
+    override var attachments: MutableList<Attachment>?,
     override var signatures: MutableList<Signature>,
     override var cusvals: MutableList<CustomValue>,
     override var subcategoryCusvals: MutableList<CustomValue>,

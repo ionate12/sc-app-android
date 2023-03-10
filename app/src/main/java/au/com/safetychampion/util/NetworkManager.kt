@@ -1,9 +1,11 @@
 package au.com.safetychampion.util
 
+import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.util.extension.koinInject
+import au.com.safetychampion.data.util.gsonadapters.BasePLTypeAdapter
 import au.com.safetychampion.dispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,16 +42,23 @@ class NetworkManager : INetworkManager {
                 }
                 val request = builder.build()
                 chain.proceed(request)
-            }
+            },
         )
         .addInterceptor(
             interceptor = HttpLoggingInterceptor()
-                .apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
+                .apply { setLevel(HttpLoggingInterceptor.Level.BODY) },
         )
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(2, TimeUnit.MINUTES)
         .writeTimeout(2, TimeUnit.MINUTES)
         .build()
+
+    private val gsonConverter by lazy {
+        val customGson = gsonManager.gsonBuilder
+            .registerTypeHierarchyAdapter(BasePL::class.java, BasePLTypeAdapter())
+            .create()
+        GsonConverterFactory.create(customGson)
+    }
 
     override val baseUrl: String = "https://api.dev.safetychampion.tech"
 
@@ -58,7 +67,7 @@ class NetworkManager : INetworkManager {
             .Builder()
             .baseUrl(baseUrl)
             .client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create(gsonManager.gson))
+            .addConverterFactory(gsonConverter)
             .build()
     }
 
@@ -98,7 +107,7 @@ class NetworkManager : INetworkManager {
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(
                 interceptor = HttpLoggingInterceptor()
-                    .apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
+                    .apply { setLevel(HttpLoggingInterceptor.Level.BODY) },
             )
             .build()
 

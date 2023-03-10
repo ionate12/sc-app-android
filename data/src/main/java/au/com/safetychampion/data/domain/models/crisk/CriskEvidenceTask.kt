@@ -2,7 +2,7 @@ package au.com.safetychampion.data.domain.models.crisk
 
 import au.com.safetychampion.data.domain.SignaturePayload
 import au.com.safetychampion.data.domain.models.Tier
-import au.com.safetychampion.data.domain.models.login.LoginUser
+import au.com.safetychampion.data.domain.models.auth.LoginUser
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import com.google.gson.annotations.SerializedName
 
