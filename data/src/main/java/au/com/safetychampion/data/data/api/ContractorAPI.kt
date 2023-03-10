@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskP
 
 interface ContractorAPI {
     class List(
-        body: BasePL?
+        body: BasePL = BasePL.empty()
     ) : NetworkAPI.Post(
         path = "contractors/list",
         body
