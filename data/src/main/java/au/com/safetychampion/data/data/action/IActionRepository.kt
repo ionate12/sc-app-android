@@ -5,12 +5,12 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.models.action.Action
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.ActionTaskPL
-import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 
 interface IActionRepository {
     suspend fun createAction(
-        payload: ActionPL
+        payload: ActionNewPL
     ): Result<Action>
 
     suspend fun fetchAction(
@@ -25,7 +25,7 @@ interface IActionRepository {
 
     suspend fun editAction(
         actionId: String,
-        payload: ActionPL
+        payload: ActionNewPL
     ): Result<Action>
 
     suspend fun list(body: BasePL?): Result<List<Action>>

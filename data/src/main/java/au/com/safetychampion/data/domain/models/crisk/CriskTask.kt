@@ -1,10 +1,9 @@
 package au.com.safetychampion.data.domain.models.crisk
 
-import androidx.lifecycle.MutableLiveData
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.core.Signature
-import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.models.*
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
@@ -42,7 +41,7 @@ class CriskTask(
     var residualRisk: String? = null,
     var residualRiskOther: String? = null,
     var reviewNotes: String? = null,
-    var riskOwner: MutableLiveData<String> = MutableLiveData(),
+    var riskOwner: String? = null,
     var riskOwnerLinks: MutableList<SCHolderLink> = mutableListOf(),
     var riskOwnerOther: String? = null,
     var save: Boolean = false,

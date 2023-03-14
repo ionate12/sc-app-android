@@ -1,14 +1,14 @@
 package au.com.safetychampion.data.domain.models.chemical
 
+import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.uncategory.Constants
-import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class ChemicalTask(
-    val attachments: MutableList<DocAttachment> = mutableListOf(),
+    val attachments: MutableList<Attachment> = mutableListOf(),
     var completionNotes: String? = null,
     var dateCompleted: String? = null,
     var dateSdsIssued: String? = null,

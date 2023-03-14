@@ -3,18 +3,21 @@ package au.com.safetychampion.data.data.action
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.ActionApi
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.core.SCError
+import au.com.safetychampion.data.domain.core.dataOrNull
+import au.com.safetychampion.data.domain.core.errorOrNull
 import au.com.safetychampion.data.domain.models.action.Action
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.ActionTaskPL
-import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class ActionRepository : BaseRepository(), IActionRepository {
     override suspend fun createAction(
-        payload: ActionPL
+        payload: ActionNewPL
     ): Result<Action> {
         return ActionApi.New(payload).call()
     }
@@ -25,7 +28,7 @@ class ActionRepository : BaseRepository(), IActionRepository {
 
     override suspend fun editAction(
         actionId: String,
-        payload: ActionPL
+        payload: ActionNewPL
     ): Result<Action> {
         return ActionApi.Edit(actionId, payload).call()
     }

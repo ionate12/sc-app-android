@@ -1,5 +1,6 @@
 package au.com.safetychampion.data.domain.models.action
 
+import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.SignaturePayload
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.base.BaseTask
@@ -8,10 +9,9 @@ import au.com.safetychampion.data.domain.models.ICusval
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.auth.LoginUser
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
-import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class ActionTask(
-    val attachment: MutableList<DocAttachment>?,
+    val attachment: MutableList<Attachment>?,
     val controlLevel: String?,
     val controlLevelOther: String?,
     val completionNotes: String?,

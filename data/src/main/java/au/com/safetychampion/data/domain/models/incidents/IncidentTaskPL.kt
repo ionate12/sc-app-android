@@ -12,34 +12,59 @@ import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 data class IncidentTaskPL(
     override var attachments: MutableList<Attachment>,
     override var categoryCusvals: MutableList<CustomValue>,
-    val changeNotes: String,
-    val changeImplemented: String,
+    val changeNotes: String?,
+    val changeImplemented: String?,
     val complete: Boolean,
-    val controlLevel: String,
-    val controlReviewed: String,
-    val controlReviewedOther: String,
-    val controlLevelOther: String,
-    val dateCompleted: String,
+    val controlLevel: String?,
+    val controlReviewed: String?,
+    val controlReviewedOther: String?,
+    val controlLevelOther: String?,
+    val dateCompleted: String?,
     override var cusvals: MutableList<CustomValue>,
     val externalBodiesNotified: List<ExternalBodyPojo>,
-    val hasExternalBody: Boolean,
-    val hazardCategory: String,
-    val hazardCategoryOther: String,
-    val lostTimeInjury: String,
+    val externalBodiesNotifiedYesNo: Boolean? = null,
+    val hazardCategory: String?,
+    val hazardCategoryOther: String?,
+    val lostTimeInjury: String?,
     val links: List<ActionLink>,
     override var pendingActions: MutableList<PendingActionPL>,
     override var propOrEnvDamageCusvals: MutableList<CustomValue>,
-    val taskId: String,
-    val title: String,
-    val tzDateSignedoff: String,
-    val severity: String,
-    val sessionId: String,
+    val _id: String,
+    val title: String?,
+    val tzDateSignedoff: String?,
+    val severity: String?,
+    val sessionId: String?,
     override var signatures: MutableList<Signature>
-
 ) : BasePL(), IIncidentComponent, IPendingActionPL {
     companion object {
-        fun from(task: IncidentTask): IncidentTaskPL {
-            TODO()
+        fun fromModel(model: IncidentTask): IncidentTaskPL {
+            return IncidentTaskPL(
+                attachments = mutableListOf(),
+                categoryCusvals = mutableListOf(),
+                changeNotes = model.changeNote,
+                changeImplemented = model.changeImplemented,
+                complete = model.complete ?: false,
+                controlLevel = model.controlLevel,
+                controlReviewed = model.controlReviewed,
+                controlReviewedOther = model.controlReviewedOther,
+                controlLevelOther = model.controlLevelOther,
+                dateCompleted = model.dateCompleted,
+                cusvals = model.cusvals,
+                externalBodiesNotified = model.externalBodiesNotified,
+                externalBodiesNotifiedYesNo = model.hasExternalBody,
+                hazardCategory = model.hazardCategory,
+                hazardCategoryOther = model.hazardCategoryOther,
+                lostTimeInjury = model.lostTimeInjury,
+                links = model.links,
+                pendingActions = mutableListOf(),
+                propOrEnvDamageCusvals = mutableListOf(),
+                _id = model._id ?: "",
+                title = model.title,
+                tzDateSignedoff = model.tzDateSignedoff,
+                severity = model.severity,
+                sessionId = model.sessionId,
+                signatures = model.signatures
+            )
         }
     }
 

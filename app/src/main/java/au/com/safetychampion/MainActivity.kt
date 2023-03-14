@@ -59,16 +59,16 @@ class MainActivity : AppCompatActivity() {
         "Get Action SignOff" to suspend { viewModel.getActionSignOff(actionId = sampleData.getActionId(), id = sampleData.getSampleTask()._id, index = ++counter) },
         "Edit Action" to suspend {
             viewModel.editAction(
-                actionPL = sampleData.getEditAction(),
-                id = sampleData.getEditAction()._id!!,
+                actionPL = sampleData.getNewAction().copy(comment = "I like edit"),
+                id = "sampleData.getEditAction()._id!!", // TODO("Update new id")
                 index = ++counter
             )
         },
         "Get List Banner" to suspend { viewModel.getListBanner(++counter) },
         "Edit Action" to suspend {
             viewModel.editAction(
-                actionPL = sampleData.getEditAction(),
-                id = sampleData.getEditAction()._id!!,
+                actionPL = sampleData.getNewAction().copy(comment = "I like edit"),
+                id = "sampleData.getEditAction()._id!!", // TODO("Update new id")
                 index = ++counter
             )
         },

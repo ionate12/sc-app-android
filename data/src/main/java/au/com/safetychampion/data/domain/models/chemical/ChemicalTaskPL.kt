@@ -18,7 +18,18 @@ data class ChemicalTaskPL(
 ) : BasePL(), IAttachment {
     companion object {
         fun fromModel(model: ChemicalTask): ChemicalTaskPL {
-            TODO("implement Chemical Task PL")
+            return ChemicalTaskPL(
+                complete = model.complete ?: false,
+                tzDateSignedoff = model.tzDateSignedoff ?: "",
+                completionNotes = model.completionNotes ?: "",
+                dateCompleted = model.dateCompleted ?: "",
+                recurrent = model.recurrent,
+                name = model.name ?: "",
+                purpose = model.purpose ?: "",
+                dateSdsIssued = model.dateSdsIssued,
+                dateToReview = model.dateToReview ?: "",
+                attachments = model.attachments
+            )
         }
     }
 }
