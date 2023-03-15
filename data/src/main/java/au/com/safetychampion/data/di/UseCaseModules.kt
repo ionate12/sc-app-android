@@ -13,18 +13,24 @@ import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
 import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
+import au.com.safetychampion.data.domain.usecase.pushnotification.*
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 internal val useCasesModule = module {
 
     // Auth
-
     factoryOf(::UserLoginUseCase)
 
     factoryOf(::UserMultiLoginUseCase)
@@ -108,6 +114,34 @@ internal val useCasesModule = module {
     factoryOf(::PrepareDocumentSignoffUseCase)
 
     factoryOf(::FetchListDocumentUseCase)
+
+
+    // contractor
+    factoryOf(::FetchContractorUseCase)
+
+    factoryOf(::GetListContractorUseCase)
+
+    factoryOf(::GetLinkedTaskUseCase)
+
+    // Mobile Admin
+
+    factoryOf(::GetAnnouncementUseCase)
+
+    factoryOf(::GetVersionUseCase)
+
+    // Push notification
+
+    factoryOf(::DeleteDeviceTokenUseCase)
+
+    factoryOf(::GetFirebaseTokenUseCase)
+
+    factoryOf(::GetListPushNotificationUseCase)
+
+    factoryOf(::RegisterOrFetchFirebaseTokenUseCase)
+
+    factoryOf(::SetupPushNotificationUseCase)
+
+    factoryOf(::UpdatePushNotificationReadStatusUseCase)
 
     factoryOf(::GetListLinkedIncidentsUseCase)
 
