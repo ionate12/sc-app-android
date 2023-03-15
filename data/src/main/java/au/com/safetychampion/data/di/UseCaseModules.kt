@@ -19,6 +19,9 @@ import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUse
 import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
 import au.com.safetychampion.data.domain.usecase.pushnotification.*
@@ -96,6 +99,12 @@ internal val useCasesModule = module {
 
     factoryOf(::ArchiveCriskUseCase)
 
+    // Hr
+
+    factoryOf(::FetchHrDetailUseCase)
+
+    factoryOf(::GetListHrUseCase)
+
     // Document
 
     factoryOf(::FetchCopySourceUseCase)
@@ -103,8 +112,6 @@ internal val useCasesModule = module {
     factoryOf(::FetchDocumentUseCase)
 
     factoryOf(::PrepareDocumentSignoffUseCase)
-
-    factoryOf(::SignoffDocumentUseCase)
 
     factoryOf(::FetchListDocumentUseCase)
 
@@ -136,6 +143,8 @@ internal val useCasesModule = module {
 
     factoryOf(::UpdatePushNotificationReadStatusUseCase)
 
+    factoryOf(::GetListLinkedIncidentsUseCase)
+
     // Signoff
 
     factoryOf(::SignoffChemicalUseCase)
@@ -143,4 +152,6 @@ internal val useCasesModule = module {
     factoryOf(::SignoffActionUseCase)
 
     factoryOf(::SignoffCriskUseCase)
+
+    factoryOf(::SignoffDocumentUseCase)
 }

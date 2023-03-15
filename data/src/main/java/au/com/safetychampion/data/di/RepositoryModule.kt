@@ -11,6 +11,8 @@ import au.com.safetychampion.data.data.chemical.ChemicalRepositoryImpl
 import au.com.safetychampion.data.data.chemical.IChemicalRepository
 import au.com.safetychampion.data.data.common.ITaskRepository
 import au.com.safetychampion.data.data.common.TaskRepositoryImpl
+import au.com.safetychampion.data.data.hr.HrRepositoryImpl
+import au.com.safetychampion.data.data.hr.IHrRepository
 import au.com.safetychampion.data.data.crisk.CriskRepositoryImpl
 import au.com.safetychampion.data.data.crisk.ICriskRepository
 import au.com.safetychampion.data.data.document.DocumentRepositoryImpl
@@ -46,6 +48,7 @@ internal val repositoryModule = module {
     singleOf<IDocumentRepository>(::DocumentRepositoryImpl)
     singleOf<IAuthRepository>(::AuthRepository)
     singleOf(::SyncableRepository)
+    singleOf<IHrRepository>(::HrRepositoryImpl)
 
     singleOf<IContractorRepository>(::ContractorRepositoryImpl)
     single<RestApi> { get<INetworkManager>().retrofit.create(RestApi::class.java) }
