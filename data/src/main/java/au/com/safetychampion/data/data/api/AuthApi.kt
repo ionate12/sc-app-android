@@ -6,7 +6,10 @@ import au.com.safetychampion.data.domain.models.auth.LoginPL
 import au.com.safetychampion.data.domain.models.auth.MfaVerifyPL
 import au.com.safetychampion.data.domain.models.auth.MorphPL
 import au.com.safetychampion.data.domain.models.auth.MultiLoginPL
-import java.util.UUID
+import au.com.safetychampion.data.domain.models.auth.mfa.ChallengePL
+import au.com.safetychampion.data.domain.models.auth.mfa.ConfirmEnrollPL
+import au.com.safetychampion.data.domain.models.auth.mfa.EnrollPL
+import java.util.*
 
 interface AuthApi {
     class Login(body: LoginPL) : NetworkAPI.Post("users/authenticate", body)
@@ -23,4 +26,7 @@ interface AuthApi {
         }
     }
     class GetWhoAmI() : NetworkAPI.Get("users/whoami")
+    class Challenge(body: ChallengePL) : NetworkAPI.Post("users/mfa/challenge", body)
+    class Enroll(body: EnrollPL) : NetworkAPI.Post("/users/mfa/enroll", body)
+    class ConfirmEnroll(body: ConfirmEnrollPL) : NetworkAPI.Post("/users/mfa/enroll/confirm", body)
 }
