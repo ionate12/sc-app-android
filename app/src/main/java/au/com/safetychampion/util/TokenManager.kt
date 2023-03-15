@@ -15,7 +15,6 @@ import kotlin.reflect.KClass
 class TokenManager : SuspendableInit(), ITokenManager {
     private var tokens: SortedSet<AppToken> = sortedSetOf()
     private val dataStore: BaseAppDataStore by koinInject()
-
     override suspend fun suspendInit() {
         tokens = getStoredTokens()
     }

@@ -84,6 +84,37 @@ class MainActivity : AppCompatActivity() {
 
 //        "Signoff Action" to suspend {
 //            viewModel.signOffAction(
+//                actionId = sampleData.getActionId(),
+//                attachments = emptyList(),
+//                payload = sampleData.getActionTask(),
+//                pendingAction = sampleData.getPendingActionPL(),
+//                index = 15
+//            )
+//        },
+//        "Signoff Chemical" to suspend {
+//            viewModel.signoffChemical(
+//                taskId = "61ad7aedb3ea32726aac3522",
+//                moduleId = "61ad7aedb3ea32726aac3523",
+//                task = sampleData.getChemicalTask(),
+//                attachments = emptyList(),
+//                index = 16
+//
+//            )
+//        },
+        "Fetch Contractor" to suspend {
+            viewModel.fetchContractor(
+                index = ++counter,
+                moduleId = "5efbedcac6bac31619e1221e"
+            )
+        },
+        "Get List Contractor" to suspend {
+            viewModel.getListContractor(++counter)
+        },
+        "Get Linked Contractor" to suspend {
+            viewModel.getLinkedTask(++counter, payload = sampleData.getLinkedTaskPayload())
+        },
+//        "Signoff Action" to suspend {
+//            viewModel.signOffAction(
 //                actionSignOff = TODO("Add sample actionSignoff"),
 //                index = 15
 //            )
@@ -105,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         "QR CODE Visitor" to suspend {
             viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = ++counter)
         },
-        "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", ++counter) },
+        "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", ++counter)},
         "Fetch List Document" to suspend { viewModel.fetchListDoc("63ec866dde4d671748fe6a91", ++counter) },
         "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", ++counter) },
         "Get Announcement" to suspend { viewModel.getAnnouncement(++counter) },

@@ -13,6 +13,10 @@ import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
@@ -24,13 +28,18 @@ import org.koin.dsl.module
 internal val useCasesModule = module {
 
     // Auth
-
     factoryOf(::UserLoginUseCase)
+
     factoryOf(::UserMultiLoginUseCase)
+
     factoryOf(::UserVerifyMfaUseCase)
+
     factoryOf(::UserMorphUseCase)
+
     factoryOf(::UserUnMorphUseCase)
+
     factoryOf(::GetWhoAmIUseCase)
+
     factoryOf(::UserLogoutUseCase)
 
     // Active tasks
@@ -98,6 +107,14 @@ internal val useCasesModule = module {
     factoryOf(::SignoffDocumentUseCase)
 
     factoryOf(::FetchListDocumentUseCase)
+
+
+    // contractor
+    factoryOf(::FetchContractorUseCase)
+
+    factoryOf(::GetListContractorUseCase)
+
+    factoryOf(::GetLinkedTaskUseCase)
 
     // Mobile Admin
 
