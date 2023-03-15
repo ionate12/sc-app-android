@@ -16,6 +16,12 @@ import au.com.safetychampion.data.data.crisk.ICriskRepository
 import au.com.safetychampion.data.data.document.DocumentRepositoryImpl
 import au.com.safetychampion.data.data.document.IDocumentRepository
 import au.com.safetychampion.data.data.local.SyncableRepository
+import au.com.safetychampion.data.data.mobileadmin.IMobileAdminRepository
+import au.com.safetychampion.data.data.mobileadmin.MobileAdminRepository
+import au.com.safetychampion.data.data.pushnotification.IPushNotificationLocalRepository
+import au.com.safetychampion.data.data.pushnotification.IPushNotificationRemoteRepository
+import au.com.safetychampion.data.data.pushnotification.PushNotificationLocalRepository
+import au.com.safetychampion.data.data.pushnotification.PushNotificationRemoteRepository
 import au.com.safetychampion.data.domain.manager.INetworkManager
 import au.com.safetychampion.data.visitor.data.local.IVisitorLocalRepository
 import au.com.safetychampion.data.visitor.data.local.VisitorLocalRepositoryImpl
@@ -30,6 +36,9 @@ internal val repositoryModule = module {
     singleOf<IBannerRepository>(::BannerRepositoryImpl)
     singleOf<IChemicalRepository>(::ChemicalRepositoryImpl)
     singleOf<ICriskRepository>(::CriskRepositoryImpl)
+    singleOf<IMobileAdminRepository>(::MobileAdminRepository)
+    singleOf<IPushNotificationRemoteRepository>(::PushNotificationRemoteRepository)
+    singleOf<IPushNotificationLocalRepository>(::PushNotificationLocalRepository)
     singleOf<IVisitorRemoteRepository>(::VisitorRemoteRepositoryImpl)
     singleOf<IVisitorLocalRepository>(::VisitorLocalRepositoryImpl)
     singleOf<IDocumentRepository>(::DocumentRepositoryImpl)
