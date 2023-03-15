@@ -1,19 +1,13 @@
 package au.com.safetychampion.data.di
 
 import PrepareSignoffActionUseCase
-import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.action.*
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
-import au.com.safetychampion.data.domain.usecase.auth.GetWhoAmIUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserLoginUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserLogoutUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserMorphUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserMultiLoginUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserUnMorphUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserVerifyMfaUseCase
+import au.com.safetychampion.data.domain.usecase.auth.*
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
@@ -25,6 +19,9 @@ import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUse
 import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
+import au.com.safetychampion.data.domain.usecase.pushnotification.*
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -118,6 +115,26 @@ internal val useCasesModule = module {
     factoryOf(::GetListContractorUseCase)
 
     factoryOf(::GetLinkedTaskUseCase)
+
+    // Mobile Admin
+
+    factoryOf(::GetAnnouncementUseCase)
+
+    factoryOf(::GetVersionUseCase)
+
+    // Push notification
+
+    factoryOf(::DeleteDeviceTokenUseCase)
+
+    factoryOf(::GetFirebaseTokenUseCase)
+
+    factoryOf(::GetListPushNotificationUseCase)
+
+    factoryOf(::RegisterOrFetchFirebaseTokenUseCase)
+
+    factoryOf(::SetupPushNotificationUseCase)
+
+    factoryOf(::UpdatePushNotificationReadStatusUseCase)
 
     // Signoff
 

@@ -1,7 +1,6 @@
 package au.com.safetychampion.data.domain.models.auth
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 
 data class LoginEnv(
     val user: LoginUser,
@@ -18,11 +17,11 @@ data class MultiLoginEnv(
     val token: String
 )
 
-@Parcelize
+@kotlinx.parcelize.Parcelize
 data class MfaEnv(
     val mfa: Data
 ) : Parcelable {
-    @Parcelize
+    @kotlinx.parcelize.Parcelize
     data class Data(
         val mfaToken: String,
         val oob: String?,

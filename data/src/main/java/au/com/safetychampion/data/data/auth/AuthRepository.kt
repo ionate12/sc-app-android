@@ -1,4 +1,4 @@
-package au.com.safetychampion.data.domain.models.auth
+package au.com.safetychampion.data.data.auth
 
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.AuthApi
@@ -11,14 +11,12 @@ import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.manager.ITokenManager
 import au.com.safetychampion.data.domain.manager.IUserInfoManager
 import au.com.safetychampion.data.domain.models.WhoAmI
+import au.com.safetychampion.data.domain.models.auth.*
+import au.com.safetychampion.data.domain.models.auth.mfa.*
 import au.com.safetychampion.data.domain.uncategory.AppToken
 import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.koinInject
-import com.google.gson.Gson
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
+import com.google.gson.*
 import java.lang.reflect.Type
 
 interface IAuthRepository {
@@ -29,6 +27,9 @@ interface IAuthRepository {
     suspend fun unmorph(): Result<LoginResponse.Single>
     suspend fun logout(): Result<Unit>
     suspend fun whoami(): Result<WhoAmI>
+    suspend fun challenge(challengePL: ChallengePL): Result<Challenge>
+    suspend fun enroll(enrollPL: EnrollPL): Result<Enroll>
+    suspend fun confirm(confirmEnrollPL: ConfirmEnrollPL): Result<ConfirmEnroll>
 }
 
 class AuthRepository : BaseRepository(), IAuthRepository {
@@ -59,7 +60,7 @@ class AuthRepository : BaseRepository(), IAuthRepository {
 
     override suspend fun multiLogin(
         multiLoginPL: MultiLoginPL,
-        loginPL: LoginPL,
+        loginPL: LoginPL
     ): Result<LoginResponse.Single> {
         return AuthApi.MultiUserAuth(multiLoginPL).call<LoginEnvFromMulti>(objName = "")
             .map { LoginResponse.Single(LoginEnv(it.item, it.token)) }
@@ -109,8 +110,21 @@ class AuthRepository : BaseRepository(), IAuthRepository {
         appDataStore.store(StoreKey.UserCredential, null)
         return Result.Success(Unit)
     }
+
     override suspend fun whoami(): Result<WhoAmI> {
         return AuthApi.GetWhoAmI().call(objName = "")
+    }
+
+    override suspend fun challenge(challengePL: ChallengePL): Result<Challenge> {
+        return AuthApi.Challenge(challengePL).call(objName = "")
+    }
+
+    override suspend fun enroll(enrollPL: EnrollPL): Result<Enroll> {
+        return AuthApi.Enroll(enrollPL).call(objName = "")
+    }
+
+    override suspend fun confirm(confirmEnrollPL: ConfirmEnrollPL): Result<ConfirmEnroll> {
+        return AuthApi.ConfirmEnroll(confirmEnrollPL).call(objName = "")
     }
 
     private suspend fun updateToken(response: LoginResponse) {
@@ -140,7 +154,7 @@ private class LoginResponseDeserializer : JsonDeserializer<LoginResponse> {
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
-        context: JsonDeserializationContext?,
+        context: JsonDeserializationContext?
     ): LoginResponse {
         val jsonObject = json!!.asJsonObject
         return when {
