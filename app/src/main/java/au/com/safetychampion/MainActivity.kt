@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", ++counter) },
         "Get Announcement" to suspend { viewModel.getAnnouncement(++counter) },
         "Get Version Mobile Admin" to suspend { viewModel.getVersionMobileAdmin("3.25.3", index = ++counter) },
-        "Setup notification (will crash)" to suspend { viewModel.setUpNotification(++counter) }
+        "Setup notification (will crash)" to suspend { viewModel.setUpNotification(++counter) },
         "Fetch Hr Detail (hr/{hrId}/fetch)" to suspend {
             viewModel.fetchHrDetail(
                 moduleId = "628b4ce2539b0c6b9760b38a",

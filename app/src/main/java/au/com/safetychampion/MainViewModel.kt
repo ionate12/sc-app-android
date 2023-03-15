@@ -212,16 +212,16 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL))
     }
 
-    suspend fun signOffAction(
-        actionSignOff: ActionSignOff,
-        index: Int
-    ) {
-        _apiCallStatus.emit(
-            index to signOffActionUseCase.invoke(
-                actionSignOff
-            )
-        )
-    }
+//    suspend fun signOffAction(
+//        actionSignOff: ActionSignOff,
+//        index: Int
+//    ) {
+//        _apiCallStatus.emit(
+//            index to signOffActionUseCase.invoke(
+//                actionSignOff
+//            )
+//        )
+//    }
 
     suspend fun getListBanner(index: Int) {
         _apiCallStatus.emit(index to getListBannerUseCase.invoke())
@@ -243,14 +243,14 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    suspend fun signoffChemical(
-        signoff: ChemicalSignoffPL,
-        index: Int
-    ) {
-        _apiCallStatus.emit(
-            index to signoffChemicalUseCase.invoke(signoff)
-        )
-    }
+//    suspend fun signoffChemical(
+//        signoff: ChemicalSignoffPL,
+//        index: Int
+//    ) {
+//        _apiCallStatus.emit(
+//            index to signoffChemicalUseCase.invoke(signoff)
+//        )
+//    }
 
     suspend fun getListCrisk(index: Int) {
         _apiCallStatus.emit(
