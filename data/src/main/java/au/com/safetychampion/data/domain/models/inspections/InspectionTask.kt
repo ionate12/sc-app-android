@@ -1,49 +1,50 @@
 package au.com.safetychampion.data.domain.models.inspections
 
-import android.graphics.Bitmap
-import au.com.safetychampion.data.domain.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.data.common.OfflineRequest
+import au.com.safetychampion.data.domain.Attachment
+import au.com.safetychampion.data.domain.base.BaseModuleImpl
+import au.com.safetychampion.data.domain.base.BaseTask
+import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.GeoLatLng
+import au.com.safetychampion.data.domain.models.IAttachment
+import au.com.safetychampion.data.domain.models.IExtraRequest
+import au.com.safetychampion.data.domain.models.IPendingAction
+import au.com.safetychampion.data.domain.models.ISignature
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.TimeField
-import au.com.safetychampion.data.domain.models.action.network.ActionPL
-import au.com.safetychampion.data.domain.uncategory.DocAttachment
+import au.com.safetychampion.data.domain.models.action.ActionLink
+import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import com.google.gson.annotations.SerializedName
 
-data class InspectionFormPojo(
-    var type: String? = null,
-    var _id: String? = null,
+data class InspectionTask(
+    override var type: String? = null,
+    override var _id: String? = null,
     @SerializedName("for")
-    var _for: Tier? = null,
-    var tier: Tier? = null,
-    var dateDue: String? = null,
-    var complete: Boolean = false,
+    override var _for: BaseModuleImpl? = null,
+    override var tier: Tier? = null,
+    override var dateDue: String? = null,
+    override var complete: Boolean = false,
     var signoffNotes: String? = null,
     var executionMeta: ExecutionMeta? = null,
     var templateExecution: TemplateExecution? = null,
-    var emailList: List<String>? = null,
-    var attachments: MutableList<DocAttachment> = mutableListOf(),
-    var signatures: List<Signature> = listOf(),
-    var inExecution: Boolean? = null,
+    var emailList: List<String> = listOf(),
+    override var attachments: MutableList<Attachment> = mutableListOf(),
+    override var inExecution: Boolean? = null,
     var dateStarted: String? = null,
     var startedBy: CreatedBy? = null,
     var tzDateStarted: String? = null,
     var dateCommenced: String? = null,
     var snapshot: Snapshot? = null,
-    var title: String? = null,
-    var description: String? = null,
+    override var title: String? = null,
+    override var description: String? = null,
     var dateCompleted: String? = null,
     var dateDueFrom: String? = null,
     var tz: String? = null,
-    var offlineRequest: InspectionOfflineSubTask? = null,
-    var newActions: MutableList<ActionPL> = mutableListOf()
-) {
-    data class Signature(
-        val _id: String,
-        val name: String,
-        val file: Bitmap?
-
-    )
+    override var signatures: MutableList<Signature> = mutableListOf(),
+    override var pendingActions: MutableList<PendingActionPL> = mutableListOf(),
+    override var offlineRequest: OfflineRequest? = null
+) : BaseTask, ISignature, IPendingAction, IAttachment, IExtraRequest {
     data class ExecutionMeta(
         var lead: String? = null,
         var team: String? = null,
@@ -79,19 +80,11 @@ data class InspectionFormPojo(
         var answer: Answer? = null
     )
     data class Answer(
-        var links: List<Link>? = null,
+        var links: List<ActionLink>? = null,
         var date: String? = null,
         var time: TimeField? = null,
-        var scoreIndex: Long? = null,
+        var scoreIndex: Int? = null,
         var comment: String?
-    )
-    data class Link(
-        var type: String? = null,
-        var _id: String? = null,
-        var reference: String? = null,
-        var overview: String? = null,
-        @Transient
-        var questionId: String? = null
     )
     data class Template(
         var sections: List<TemplateSection>? = null

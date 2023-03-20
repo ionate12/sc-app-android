@@ -13,8 +13,24 @@ import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.inspection.GetAvailableListInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.GetInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.NewChildAndStartInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
+import au.com.safetychampion.data.domain.usecase.pushnotification.*
 import au.com.safetychampion.data.domain.usecase.incident.*
 import au.com.safetychampion.data.domain.usecase.noticeboard.*
 import au.com.safetychampion.data.domain.usecase.reviewplan.*
@@ -24,13 +40,18 @@ import org.koin.dsl.module
 internal val useCasesModule = module {
 
     // Auth
-
     factoryOf(::UserLoginUseCase)
+
     factoryOf(::UserMultiLoginUseCase)
+
     factoryOf(::UserVerifyMfaUseCase)
+
     factoryOf(::UserMorphUseCase)
+
     factoryOf(::UserUnMorphUseCase)
+
     factoryOf(::GetWhoAmIUseCase)
+
     factoryOf(::UserLogoutUseCase)
 
     // Active tasks
@@ -67,6 +88,15 @@ internal val useCasesModule = module {
 
     factoryOf(::GetGhsCodeUseCase)
 
+    // Inspection
+
+    factoryOf(::GetAvailableListInspectionUseCase)
+    factoryOf(::NewChildAndStartInspectionUseCase)
+    factoryOf(::PrepareSignoffInspectionUseCase)
+    factoryOf(::SignoffInspectionUseCase)
+    factoryOf(::StartTaskInspectionUseCase)
+    factoryOf(::GetInspectionUseCase)
+
     // Banner
 
     factoryOf(::GetListBannerUseCase)
@@ -86,6 +116,12 @@ internal val useCasesModule = module {
     factoryOf(::GetCriskTaskEvidenceUseCase)
 
     factoryOf(::ArchiveCriskUseCase)
+
+    // Hr
+
+    factoryOf(::FetchHrDetailUseCase)
+
+    factoryOf(::GetListHrUseCase)
 
     // Document
 
@@ -114,7 +150,40 @@ internal val useCasesModule = module {
     // Noticeboard -[ ^^ ] -
     factoryOf(::FetchListNoticeboardBlockUseCase)
 
+    factoryOf(::FetchListDocumentUseCase)
+
     factoryOf(::FetchListNoticeboardUseCase)
+
+    // contractor
+    factoryOf(::FetchContractorUseCase)
+
+    factoryOf(::GetListContractorUseCase)
+
+    factoryOf(::GetLinkedTaskUseCase)
+
+    // Mobile Admin
+
+    factoryOf(::GetAnnouncementUseCase)
+
+    factoryOf(::GetVersionUseCase)
+
+    // Push notification
+
+    factoryOf(::DeleteDeviceTokenUseCase)
+
+    factoryOf(::GetFirebaseTokenUseCase)
+
+    factoryOf(::GetListPushNotificationUseCase)
+
+    factoryOf(::RegisterOrFetchFirebaseTokenUseCase)
+
+    factoryOf(::SetupPushNotificationUseCase)
+
+    factoryOf(::UpdatePushNotificationReadStatusUseCase)
+
+    factoryOf(::GetListLinkedIncidentsUseCase)
+
+    // Signoff
 
     factoryOf(::FetchListVdocUseCase)
 
@@ -143,5 +212,9 @@ internal val useCasesModule = module {
 
     factoryOf(::SignoffCriskUseCase)
 
+    factoryOf(::SignoffDocumentUseCase)
+
     factoryOf(::SignoffIncidentUseCase)
+
+    factoryOf(::SignoffDocumentUseCase)
 }

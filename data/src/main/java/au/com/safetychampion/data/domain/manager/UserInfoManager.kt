@@ -57,19 +57,19 @@ class UserInfoManager : SuspendableInit(), IUserInfoManager {
 
     override suspend fun hasPermission(
         type: ModuleType,
-        permissionType: PermissionType,
+        permissionType: PermissionType
     ): Boolean {
         return getConfig<BaseConfig>(type)?.permissions?.contains(permissionType) == true
     }
 
     override suspend fun hasMorphPermission(
         type: ModuleType,
-        permissionType: PermissionType,
+        permissionType: PermissionType
     ): Boolean {
         return getConfig<BaseConfig>(type)?.morphPermissions?.contains(permissionType) == true
     }
 
     override suspend fun moduleTitle(type: ModuleType): String {
-        return getConfig<BaseConfig>(type)?.title ?: type.value
+        return getConfig<BaseConfig>(type)?.title ?: type.title
     }
 }

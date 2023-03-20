@@ -1,5 +1,6 @@
 package au.com.safetychampion.data.domain.models
 
+import au.com.safetychampion.data.data.common.OfflineRequest
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Signature
@@ -53,4 +54,8 @@ interface IPendingActionPL : IPendingAction {
 
 interface IPendingAction {
     var pendingActions: MutableList<PendingActionPL>
+}
+
+interface IExtraRequest {
+    var offlineRequest: OfflineRequest?
 }

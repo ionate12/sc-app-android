@@ -55,7 +55,7 @@ abstract class BaseRepository {
     private suspend fun NetworkAPI.handleOnline(): Result<APIResponse> = withContext(dispatchers.io) {
         val onSuccess: (res: APIResponse) -> Result.Success<APIResponse> = { res ->
             // Store data if instance of IStorable
-            if (res.success && res.result != null && this is IStorable) {
+            if (res.success && res.result != null && this@handleOnline is IStorable) {
                 roomDts.insertStorable(customKey() ?: path, res.result)
             }
             Result.Success(res)
@@ -91,6 +91,7 @@ abstract class BaseRepository {
                         )
                     )
                 }
+                else -> throw IllegalStateException()
             }
         } catch (e: Exception) {
             handleRetrofitException(e)
@@ -114,13 +115,13 @@ abstract class BaseRepository {
     }
 
     private suspend fun NetworkAPI.handleOffline(): Result<APIResponse> = withContext(dispatchers.default) {
-        return@withContext when {
-            this is IStorable -> {
+        when (this@handleOffline) {
+            is IStorable -> {
                 roomDts.getStorable(customKey() ?: path)?.let {
                     Result.Success(it.toAPIResponse(), offline = true)
                 } ?: Result.Error(SCError.NoNetwork)
             }
-            this is ISyncable -> {
+            is ISyncable -> {
                 val body = when {
                     this is NetworkAPI.Post -> this.body
                     this is NetworkAPI.PostMultiParts -> this.body

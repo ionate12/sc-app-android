@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.domain.manager
 
-import au.com.safetychampion.data.domain.usecase.action.OfflineTask
+import au.com.safetychampion.data.domain.models.OfflineTask
 import au.com.safetychampion.data.domain.usecase.action.SignoffParams
 
 interface IOfflineConverter {

@@ -10,6 +10,7 @@ import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import au.com.safetychampion.data.domain.models.auth.LoginPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
+import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
 import au.com.safetychampion.data.domain.models.incidents.IncidentNewPL
@@ -26,6 +27,32 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTask
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.auth.*
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
+import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
+import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.crisk.*
+import au.com.safetychampion.data.domain.usecase.document.FetchCopySourceUseCase
+import au.com.safetychampion.data.domain.usecase.document.FetchDocumentUseCase
+import au.com.safetychampion.data.domain.usecase.document.SignoffDocumentUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.GetAvailableListInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.GetInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.NewChildAndStartInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
+import au.com.safetychampion.data.util.extension.SCDateFormat
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
+import au.com.safetychampion.data.domain.usecase.pushnotification.SetupPushNotificationUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
@@ -39,6 +66,9 @@ import au.com.safetychampion.data.domain.usecase.reviewplan.FetchListReviewPlanU
 import au.com.safetychampion.data.domain.usecase.reviewplan.FetchReviewPlanEvidencesUseCase
 import au.com.safetychampion.data.domain.usecase.reviewplan.PrepareReviewPlanSignoffUseCase
 import au.com.safetychampion.data.util.extension.koinInject
+import au.com.safetychampion.data.util.extension.toReadableString
+import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceUseCase
@@ -62,13 +92,15 @@ class MainViewModel : ViewModel() {
     private val allAction: GetListActionUseCase by koinInject()
     private val prepareSignoffActionUseCase: PrepareSignoffActionUseCase by koinInject()
     private val editActionUseCase: EditActionUseCase by koinInject()
-    private val signOffActionUseCase: SignoffActionUseCase by koinInject()
 
     private val getListBannerUseCase: GetListBannerUseCase by koinInject()
     private val getChemicalSignoffDetailsUseCase: PerpareSignoffChemicalUseCase by koinInject()
     private val getGhsCodeUseCase: GetGhsCodeUseCase by koinInject()
     private val refreshChemicalUseCase: GetListChemicalUseCase by koinInject()
-    private val signoffChemicalUseCase: SignoffChemicalUseCase by koinInject()
+
+    private val fetchHrDetailUseCase:FetchHrDetailUseCase by koinInject()
+    private val getListHrUseCase:GetListHrUseCase by koinInject()
+    private val getListLinkedIncidentsUseCase:GetListLinkedIncidentsUseCase by koinInject()
 
     private val getListCriskUseCase: GetListCriskUseCase by koinInject()
     private val getListHrLookupUseCase: GetListHrLookupItemUseCase by koinInject()
@@ -86,6 +118,17 @@ class MainViewModel : ViewModel() {
     private val whoAmIUseCase: GetWhoAmIUseCase by koinInject()
     private val logoutUseCase: UserLogoutUseCase by koinInject()
 
+    private val fetchContractorUseCase: FetchContractorUseCase by koinInject()
+    private val getLinkedTaskUseCase: GetLinkedTaskUseCase by koinInject()
+    private val getListContractorUseCase: GetListContractorUseCase by koinInject()
+
+    private val availableListInspectionUseCase: GetAvailableListInspectionUseCase by koinInject()
+    private val getInspectionUseCase: GetInspectionUseCase by koinInject()
+    private val newChildInspection: NewChildAndStartInspectionUseCase by koinInject()
+    private val startInspection: StartTaskInspectionUseCase by koinInject()
+    private val prepSignoffInspection: PrepareSignoffInspectionUseCase by koinInject()
+    private val signoffInspection: SignoffInspectionUseCase by koinInject()
+
     val _apiCallStatus = MutableSharedFlow<Pair<Int, Result<*>>>()
     val apiCallStatus = _apiCallStatus.asSharedFlow()
 
@@ -93,7 +136,7 @@ class MainViewModel : ViewModel() {
     val uiMessage = _uiMessage.asSharedFlow()
 
     suspend fun login(index: Int) {
-        loginUseCase(LoginPL(email = "demomanager@safetychampion.online", password = "12345678a"))
+        loginUseCase(LoginPL(email = "u3_3@minh1.co", password = "123"))
             .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let { _apiCallStatus.emit(index to it) }
     }
@@ -201,16 +244,16 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL))
     }
 
-    suspend fun signOffAction(
-        actionSignOff: ActionSignOff,
-        index: Int
-    ) {
-        _apiCallStatus.emit(
-            index to signOffActionUseCase.invoke(
-                actionSignOff
-            )
-        )
-    }
+//    suspend fun signOffAction(
+//        actionSignOff: ActionSignOff,
+//        index: Int
+//    ) {
+//        _apiCallStatus.emit(
+//            index to signOffActionUseCase.invoke(
+//                actionSignOff
+//            )
+//        )
+//    }
 
     suspend fun getListBanner(index: Int) {
         _apiCallStatus.emit(index to getListBannerUseCase.invoke())
@@ -232,14 +275,14 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    suspend fun signoffChemical(
-        signoff: ChemicalSignoffPL,
-        index: Int
-    ) {
-        _apiCallStatus.emit(
-            index to signoffChemicalUseCase.invoke(signoff)
-        )
-    }
+//    suspend fun signoffChemical(
+//        signoff: ChemicalSignoffPL,
+//        index: Int
+//    ) {
+//        _apiCallStatus.emit(
+//            index to signoffChemicalUseCase.invoke(signoff)
+//        )
+//    }
 
     suspend fun getListCrisk(index: Int) {
         _apiCallStatus.emit(
@@ -400,6 +443,26 @@ class MainViewModel : ViewModel() {
         )
     }
 
+    suspend fun fetchHrDetail(
+        moduleId:String,
+        index:Int
+    ){
+        _apiCallStatus.emit(index to fetchHrDetailUseCase.invoke(moduleId))
+    }
+
+    suspend fun getListHr(
+        index:Int
+    ){
+        _apiCallStatus.emit(index to getListHrUseCase.invoke())
+    }
+
+    suspend fun getListLinkedIncidents(
+        moduleId:String,
+        index:Int
+    ){
+        _apiCallStatus.emit(index to getListLinkedIncidentsUseCase.invoke(moduleId))
+    }
+
     private val fetchCopySourceUseCase: FetchCopySourceUseCase by koinInject()
     suspend fun copySource(moduleId: String, index: Int) {
         _apiCallStatus.emit(index to fetchCopySourceUseCase.invoke(moduleId))
@@ -476,4 +539,42 @@ class MainViewModel : ViewModel() {
 
     private val reviewPlanEvidences: FetchReviewPlanEvidencesUseCase by koinInject()
     suspend fun fetchRVPlanEvidences(reviewPlanId: String, index: Int) = _apiCallStatus.emit(index to reviewPlanEvidences.invoke(reviewPlanId))
+
+    suspend fun fetchContractor(index: Int, moduleId: String) {
+        _apiCallStatus.emit(index to fetchContractorUseCase.invoke(moduleId))
+    }
+
+    suspend fun getListContractor(index: Int) {
+        _apiCallStatus.emit(index to getListContractorUseCase.invoke())
+    }
+
+    suspend fun getLinkedTask(index: Int, payload: ContractorLinkedTaskPL) {
+        _apiCallStatus.emit(index to getLinkedTaskUseCase(payload))
+    }
+
+    private val getAnnouncementUseCase: GetAnnouncementUseCase by koinInject()
+    suspend fun getAnnouncement(index: Int) = _apiCallStatus.emit(index to getAnnouncementUseCase.invoke())
+
+    private val getVersionUseCase: GetVersionUseCase by koinInject()
+    suspend fun getVersionMobileAdmin(versionName: String?, index: Int) = _apiCallStatus.emit(index to getVersionUseCase.invoke(versionName))
+
+    private val setUpNotification: SetupPushNotificationUseCase by koinInject()
+    suspend fun setUpNotification(index: Int) = _apiCallStatus.emit(index to setUpNotification.invoke())
+
+    suspend fun availableInspections(index: Int) {
+        _apiCallStatus.emit(index to availableListInspectionUseCase())
+    }
+    suspend fun newChildInspection(index: Int) {
+        val id = "63f51afcf662ba4785de073a"
+        val rs = newChildInspection.invoke(
+            id,
+            Date().toReadableString(SCDateFormat.YYYY_MM_DD),
+            "AAA"
+        )
+        _apiCallStatus.emit(index to rs)
+    }
+
+    suspend fun getInspection(index: Int) {
+        _apiCallStatus.emit(index to getInspectionUseCase("63f51afcf662ba4785de073a"))
+    }
 }

@@ -50,7 +50,7 @@ abstract class SignoffParams {
     /** Pending action, will be submit before sign off. Can be null */
     open val pendingAction: List<PendingActionPL> = listOf()
 
-    val offlineTitle: String get() = if (payload.complete == true) "[SIGN-OFF]" else "[SAVE] ${moduleType.value}: $title"
+    val offlineTitle: String get() = if (payload.complete == true) "[SIGN-OFF]" else "[SAVE] ${moduleType.title}: $title"
 }
 
 class OfflineTask(

@@ -1,9 +1,10 @@
 package au.com.safetychampion.data.domain.models.action
 
 import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.SignaturePayload
+import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.base.BaseTask
+import au.com.safetychampion.data.domain.models.IAttachment
 import au.com.safetychampion.data.domain.models.ICategoryCusval
 import au.com.safetychampion.data.domain.models.ICusval
 import au.com.safetychampion.data.domain.models.Tier
@@ -24,7 +25,6 @@ data class ActionTask(
     val tzDateSignedoff: String?,
     val severity: String?,
     val signedoffBy: LoginUser?,
-    val signaturePayload: MutableList<SignaturePayload> = mutableListOf(),
     override val complete: Boolean?,
     override val dateDue: String?,
     override val description: String?,
@@ -35,5 +35,6 @@ data class ActionTask(
     override val _id: String,
     override val type: String,
     override var cusvals: MutableList<CustomValue>,
-    override var categoryCusvals: MutableList<CustomValue>
-) : BaseTask, ICusval, ICategoryCusval
+    override var categoryCusvals: MutableList<CustomValue>,
+    override var attachments: MutableList<Attachment>
+) : BaseTask, ICusval, ICategoryCusval, IAttachment

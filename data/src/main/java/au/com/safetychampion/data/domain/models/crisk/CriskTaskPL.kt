@@ -7,6 +7,7 @@ import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.inspections.InspectionTemplateMeta
 import au.com.safetychampion.data.domain.models.task.Task
 import com.google.gson.annotations.SerializedName
 
