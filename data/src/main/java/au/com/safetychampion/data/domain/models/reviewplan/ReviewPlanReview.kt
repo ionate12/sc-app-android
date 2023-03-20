@@ -1,7 +1,6 @@
 package au.com.safetychampion.data.domain.models.reviewplan
 
 import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.InspectionTemplateMeta
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.models.AllocationOf
 import au.com.safetychampion.data.domain.models.CreatedBy
@@ -10,6 +9,7 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.customvalues.CusvalPojo
+import au.com.safetychampion.data.domain.models.inspections.InspectionTemplateMeta
 
 data class ReviewPlanReview(
     val actionLinks: List<ActionLink> = listOf(),

@@ -1,11 +1,7 @@
 package au.com.safetychampion.data.domain.usecase.inspection
 
 import au.com.safetychampion.data.data.common.OfflineRequest
-import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.SCError
-import au.com.safetychampion.data.domain.core.flatMap
-import au.com.safetychampion.data.domain.core.flatMapError
-import au.com.safetychampion.data.domain.core.map
+import au.com.safetychampion.data.domain.core.*
 import au.com.safetychampion.data.domain.models.inspections.InspectionSignoff
 import au.com.safetychampion.data.domain.models.inspections.InspectionTask
 import au.com.safetychampion.data.domain.models.inspections.payload.InspectionNewChildPL
@@ -35,8 +31,7 @@ class NewChildAndStartInspectionUseCase : BaseStartTaskInspectionUseCase() {
                         date,
                         notes
                     )
-                }
-                else -> null
+                } else -> Result.Error(err)
             }
         }
     }

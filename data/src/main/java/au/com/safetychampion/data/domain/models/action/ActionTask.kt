@@ -1,7 +1,6 @@
 package au.com.safetychampion.data.domain.models.action
 
 import au.com.safetychampion.data.domain.Attachment
-import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.models.IAttachment

@@ -13,7 +13,7 @@ class SetupPushNotificationUseCase {
 
     suspend fun invoke(): Result<String> {
         return getFirebaseTokenUseCase.invoke()
-            .flatMap(registerOrFetchDeviceToken::invoke)
+            .flatMap { registerOrFetchDeviceToken.invoke(it) }
             .doOnSucceed { token ->
                 // TODO("save token to sharedpref")
                 Timber.tag("FCMToken").d("SetupPushNotification success")

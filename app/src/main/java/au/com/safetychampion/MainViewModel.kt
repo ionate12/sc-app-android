@@ -7,9 +7,7 @@ import au.com.safetychampion.data.domain.core.*
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.TierType
 import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
-import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import au.com.safetychampion.data.domain.models.auth.LoginPL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
@@ -19,7 +17,6 @@ import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.CreateActionUseCase
 import au.com.safetychampion.data.domain.usecase.action.EditActionUseCase
 import au.com.safetychampion.data.domain.usecase.action.GetListActionUseCase
-import au.com.safetychampion.data.domain.usecase.action.SignoffActionUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
@@ -27,48 +24,30 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTask
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.auth.*
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
 import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
 import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
+import au.com.safetychampion.data.domain.usecase.crisk.*
+import au.com.safetychampion.data.domain.usecase.document.*
 import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.*
-import au.com.safetychampion.data.domain.usecase.document.FetchCopySourceUseCase
-import au.com.safetychampion.data.domain.usecase.document.FetchDocumentUseCase
-import au.com.safetychampion.data.domain.usecase.document.SignoffDocumentUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.GetAvailableListInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.GetInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.NewChildAndStartInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
-import au.com.safetychampion.data.util.extension.SCDateFormat
+import au.com.safetychampion.data.domain.usecase.incident.*
+import au.com.safetychampion.data.domain.usecase.inspection.*
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
-import au.com.safetychampion.data.domain.usecase.pushnotification.SetupPushNotificationUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.*
-import au.com.safetychampion.data.domain.usecase.document.*
-import au.com.safetychampion.data.domain.usecase.incident.*
 import au.com.safetychampion.data.domain.usecase.noticeboard.*
+import au.com.safetychampion.data.domain.usecase.pushnotification.SetupPushNotificationUseCase
 import au.com.safetychampion.data.domain.usecase.reviewplan.FetchActionsWithReviewPlanIdUseCase
 import au.com.safetychampion.data.domain.usecase.reviewplan.FetchListReviewPlanUseCase
 import au.com.safetychampion.data.domain.usecase.reviewplan.FetchReviewPlanEvidencesUseCase
 import au.com.safetychampion.data.domain.usecase.reviewplan.PrepareReviewPlanSignoffUseCase
+import au.com.safetychampion.data.util.extension.SCDateFormat
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.util.extension.toReadableString
-import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceUseCase
@@ -98,9 +77,9 @@ class MainViewModel : ViewModel() {
     private val getGhsCodeUseCase: GetGhsCodeUseCase by koinInject()
     private val refreshChemicalUseCase: GetListChemicalUseCase by koinInject()
 
-    private val fetchHrDetailUseCase:FetchHrDetailUseCase by koinInject()
-    private val getListHrUseCase:GetListHrUseCase by koinInject()
-    private val getListLinkedIncidentsUseCase:GetListLinkedIncidentsUseCase by koinInject()
+    private val fetchHrDetailUseCase: FetchHrDetailUseCase by koinInject()
+    private val getListHrUseCase: GetListHrUseCase by koinInject()
+    private val getListLinkedIncidentsUseCase: GetListLinkedIncidentsUseCase by koinInject()
 
     private val getListCriskUseCase: GetListCriskUseCase by koinInject()
     private val getListHrLookupUseCase: GetListHrLookupItemUseCase by koinInject()
@@ -444,22 +423,22 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun fetchHrDetail(
-        moduleId:String,
-        index:Int
-    ){
+        moduleId: String,
+        index: Int
+    ) {
         _apiCallStatus.emit(index to fetchHrDetailUseCase.invoke(moduleId))
     }
 
     suspend fun getListHr(
-        index:Int
-    ){
+        index: Int
+    ) {
         _apiCallStatus.emit(index to getListHrUseCase.invoke())
     }
 
     suspend fun getListLinkedIncidents(
-        moduleId:String,
-        index:Int
-    ){
+        moduleId: String,
+        index: Int
+    ) {
         _apiCallStatus.emit(index to getListLinkedIncidentsUseCase.invoke(moduleId))
     }
 

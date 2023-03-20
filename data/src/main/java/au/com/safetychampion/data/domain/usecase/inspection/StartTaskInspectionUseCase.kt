@@ -22,7 +22,7 @@ class StartTaskInspectionUseCase : BaseStartTaskInspectionUseCase() {
     }.flatMapError {
         if (it is SCError.NoNetwork) {
             simulateForStartTask(inspectionId, taskId, date)
-        } else { null }
+        } else { Result.Error(it) }
     }
 
     private suspend fun simulateForStartTask(
