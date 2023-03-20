@@ -116,16 +116,16 @@ class MainViewModel : ViewModel() {
 
     suspend fun login(index: Int) {
         loginUseCase(LoginPL(email = "u3_3@minh1.co", password = "123"))
-            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let { _apiCallStatus.emit(index to it) }
     }
 
     suspend fun multiLogin(index: Int) {
         val pl = LoginPL(email = "demomanager@safetychampion.online", password = "12345678a")
         val userId = "5efbeba4c6bac31619e11be4"
-        loginUseCase(pl).doOnSucceed {
+        loginUseCase(pl).doOnSuccess {
             multiLoginUseCase(userId, pl)
-                .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+                .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
                 .let { _apiCallStatus.emit(index to it) }
         }
     }
@@ -137,7 +137,7 @@ class MainViewModel : ViewModel() {
     // require login as demomanager tier3
     suspend fun morph(index: Int) {
         morphUseCase("5efbeba1c6bac31619e11bd8")
-            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let {
                 _apiCallStatus.emit(index to it)
             }
@@ -146,13 +146,13 @@ class MainViewModel : ViewModel() {
     // require morphed
     suspend fun unmorph(index: Int) {
         unmorphUseCase()
-            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let { _apiCallStatus.emit(index to it) }
     }
 
     suspend fun logout(index: Int) {
         logoutUseCase()
-            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let {
                 _apiCallStatus.emit(index to it)
             }
@@ -342,7 +342,7 @@ class MainViewModel : ViewModel() {
     private suspend fun visitorSignout(requestEvidenceId: String): Result.Success<Destination> {
         var destination: Destination? = null
         fetchEvidenceUseCase.invoke(requestEvidenceId)
-            .doOnSucceed { nEvidence ->
+            .doOnSuccess { nEvidence ->
                 // TODO("removeGeofence")
                 destination = if (nEvidence.leave != null) {
                     Destination.Toast(

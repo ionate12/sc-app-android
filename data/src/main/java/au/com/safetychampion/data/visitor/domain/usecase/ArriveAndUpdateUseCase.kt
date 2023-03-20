@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.visitor.domain.usecase
 
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.doOnSucceed
+import au.com.safetychampion.data.domain.core.doOnSuccess
 import au.com.safetychampion.data.util.extension.jsonObjectOf
 import au.com.safetychampion.data.visitor.data.VisitorActivityEntity
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
@@ -23,7 +23,7 @@ class ArriveAndUpdateUseCase : BaseVisitorUseCase() {
         profile: VisitorProfile
     ): Result<VisitorEvidence> {
         return remoteRepository.arrive(payload)
-            .doOnSucceed { evidence ->
+            .doOnSuccess { evidence ->
                 evidence.token = payload.token
                 evidence.site = site
                 val activityEntity = VisitorActivityEntity(

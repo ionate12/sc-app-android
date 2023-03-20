@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.visitor.domain.usecase
 
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.doOnSucceed
+import au.com.safetychampion.data.domain.core.doOnSuccess
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.VisitorEvidence
@@ -19,8 +19,8 @@ class LeaveAndUpdateUseCase : BaseVisitorUseCase() {
         payload: VisitorPayload.Leave
     ): Result<VisitorEvidence> {
         return remoteRepository.leave(payload)
-            .doOnSucceed { nEvidence ->
-                val act = localRepository.getActivityEntity(evidenceId) ?: return@doOnSucceed
+            .doOnSuccess { nEvidence ->
+                val act = localRepository.getActivityEntity(evidenceId) ?: return@doOnSuccess
                 act.apply {
                     data = gson.gson.toJsonTree(nEvidence).asJsonObject
                     isActive = false

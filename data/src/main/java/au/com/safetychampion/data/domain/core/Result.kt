@@ -45,7 +45,7 @@ inline fun <T, R> Result<T>.map(block: (T) -> R): Result<R> {
  * @return self
  */
 
-inline fun <T> Result<T>.doOnSucceed(action: (T) -> Unit): Result<T> {
+inline fun <T> Result<T>.doOnSuccess(action: (T) -> Unit): Result<T> {
     dataOrNull()?.let {
         action.invoke(it)
     }
