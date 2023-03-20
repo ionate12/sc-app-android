@@ -26,8 +26,11 @@ import au.com.safetychampion.data.util.extension.koinGet
 import au.com.safetychampion.data.util.extension.toJsonString
 import au.com.safetychampion.databinding.ActivityMainBinding
 import au.com.safetychampion.util.AssetsManager
-import kotlinx.coroutines.* // ktlint-disable no-wildcard-imports
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 var testAll = true
@@ -81,6 +84,37 @@ class MainActivity : AppCompatActivity() {
 
 //        "Signoff Action" to suspend {
 //            viewModel.signOffAction(
+//                actionId = sampleData.getActionId(),
+//                attachments = emptyList(),
+//                payload = sampleData.getActionTask(),
+//                pendingAction = sampleData.getPendingActionPL(),
+//                index = 15
+//            )
+//        },
+//        "Signoff Chemical" to suspend {
+//            viewModel.signoffChemical(
+//                taskId = "61ad7aedb3ea32726aac3522",
+//                moduleId = "61ad7aedb3ea32726aac3523",
+//                task = sampleData.getChemicalTask(),
+//                attachments = emptyList(),
+//                index = 16
+//
+//            )
+//        },
+        "Fetch Contractor" to suspend {
+            viewModel.fetchContractor(
+                index = ++counter,
+                moduleId = "5efbedcac6bac31619e1221e"
+            )
+        },
+        "Get List Contractor" to suspend {
+            viewModel.getListContractor(++counter)
+        },
+        "Get Linked Contractor" to suspend {
+            viewModel.getLinkedTask(++counter, payload = sampleData.getLinkedTaskPayload())
+        },
+//        "Signoff Action" to suspend {
+//            viewModel.signOffAction(
 //                actionSignOff = TODO("Add sample actionSignoff"),
 //                index = 15
 //            )
@@ -102,9 +136,27 @@ class MainActivity : AppCompatActivity() {
         "QR CODE Visitor" to suspend {
             viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = ++counter)
         },
-        "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", ++counter) },
+        "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", ++counter)},
         "Fetch List Document" to suspend { viewModel.fetchListDoc("63ec866dde4d671748fe6a91", ++counter) },
         "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", ++counter) },
+        "Get Announcement" to suspend { viewModel.getAnnouncement(++counter) },
+        "Get Version Mobile Admin" to suspend { viewModel.getVersionMobileAdmin("3.25.3", index = ++counter) },
+        "Setup notification (will crash)" to suspend { viewModel.setUpNotification(++counter) },
+        "Fetch Hr Detail (hr/{hrId}/fetch)" to suspend {
+            viewModel.fetchHrDetail(
+                moduleId = "628b4ce2539b0c6b9760b38a",
+                index = ++counter
+            )
+        },
+        "Get List Hr (hr/list)" to suspend {
+            viewModel.getListHr(index = 24)
+        },
+        "Get List Linked Incidents (hr/{hrId}/listLinkedIncidents)" to suspend {
+            viewModel.getListLinkedIncidents(
+                moduleId = "getListLinkedIncidents",
+                index = ++counter
+            )
+        }
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
         "Available Inspection" to suspend { viewModel.availableInspections(++counter) },
         "Get Inspection (\"63f51afcf662ba4785de073a\")" to suspend { viewModel.getInspection(++counter) },

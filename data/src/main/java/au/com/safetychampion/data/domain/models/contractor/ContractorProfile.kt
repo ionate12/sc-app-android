@@ -1,30 +1,29 @@
 package au.com.safetychampion.data.domain.models.contractor
 
-import androidx.databinding.ObservableField
 import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class ContractorProfile(
     var _id: String? = null,
     var archived: Boolean = false,
-    var type: ObservableField<String> = ObservableField(),
+    var type: String? = null,
     var tier: Tier? = null,
     var allocationActive: Boolean = false,
     var allocationOf: AllocationOf? = null,
     var links: List<ContractorLink>? = listOf(),
-    var businessName: ObservableField<String> = ObservableField(),
-    var category: ObservableField<String> = ObservableField(),
+    var businessName: String? = null,
+    var category: String? = null,
     var categoryOther: String? = null,
-    var subcategory: ObservableField<String> = ObservableField(),
-    var subcategoryOther: ObservableField<String> = ObservableField(),
-    var status: ObservableField<String> = ObservableField(),
-    var referenceIdType: ObservableField<String> = ObservableField(),
-    var referenceId: ObservableField<String> = ObservableField(),
+    var subcategory: String? = null,
+    var subcategoryOther: String? = null,
+    var status: String? = null,
+    var referenceIdType: String? = null,
+    var referenceId: String? = null,
     var attachments: MutableList<DocAttachment> = mutableListOf(),
     var createdBy: CreatedBy? = null,
-    var tzDateCreated: ObservableField<String> = ObservableField(),
-    var dateCreated: ObservableField<String> = ObservableField(),
-    var businessNotes: ObservableField<String> = ObservableField(),
+    var tzDateCreated: String? = null,
+    var dateCreated: String? = null,
+    var businessNotes: String? = null,
     var statusOther: String? = null,
     var address: Address? = null,
     var locations: MutableList<Location>? = null,

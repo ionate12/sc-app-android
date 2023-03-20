@@ -3,32 +3,40 @@ package au.com.safetychampion
 import PrepareSignoffActionUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.core.*
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.ActionPL
 import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
 import au.com.safetychampion.data.domain.models.auth.LoginPL
 import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
+import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
 import au.com.safetychampion.data.domain.models.task.Task
-import au.com.safetychampion.data.domain.usecase.action.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.action.CreateActionUseCase
+import au.com.safetychampion.data.domain.usecase.action.EditActionUseCase
+import au.com.safetychampion.data.domain.usecase.action.GetListActionUseCase
+import au.com.safetychampion.data.domain.usecase.action.SignoffActionUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTasksStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
-import au.com.safetychampion.data.domain.usecase.auth.GetWhoAmIUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserLoginUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserLogoutUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserMorphUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserMultiLoginUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserUnMorphUseCase
-import au.com.safetychampion.data.domain.usecase.auth.UserVerifyMfaUseCase
+import au.com.safetychampion.data.domain.usecase.auth.*
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
+import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.FetchCopySourceUseCase
 import au.com.safetychampion.data.domain.usecase.document.FetchDocumentUseCase
 import au.com.safetychampion.data.domain.usecase.document.SignoffDocumentUseCase
@@ -39,9 +47,13 @@ import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspec
 import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
 import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
 import au.com.safetychampion.data.util.extension.SCDateFormat
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
+import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
+import au.com.safetychampion.data.domain.usecase.pushnotification.SetupPushNotificationUseCase
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.util.extension.toReadableString
 import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.qr.SubmitQRCodeUseCase
@@ -64,13 +76,15 @@ class MainViewModel : ViewModel() {
     private val allAction: GetListActionUseCase by koinInject()
     private val prepareSignoffActionUseCase: PrepareSignoffActionUseCase by koinInject()
     private val editActionUseCase: EditActionUseCase by koinInject()
-    private val signOffActionUseCase: SignoffActionUseCase by koinInject()
 
     private val getListBannerUseCase: GetListBannerUseCase by koinInject()
     private val getChemicalSignoffDetailsUseCase: PerpareSignoffChemicalUseCase by koinInject()
     private val getGhsCodeUseCase: GetGhsCodeUseCase by koinInject()
     private val refreshChemicalUseCase: GetListChemicalUseCase by koinInject()
-    private val signoffChemicalUseCase: SignoffChemicalUseCase by koinInject()
+
+    private val fetchHrDetailUseCase:FetchHrDetailUseCase by koinInject()
+    private val getListHrUseCase:GetListHrUseCase by koinInject()
+    private val getListLinkedIncidentsUseCase:GetListLinkedIncidentsUseCase by koinInject()
 
     private val getListCriskUseCase: GetListCriskUseCase by koinInject()
     private val getListHrLookupUseCase: GetListHrLookupItemUseCase by koinInject()
@@ -87,6 +101,10 @@ class MainViewModel : ViewModel() {
     private val unmorphUseCase: UserUnMorphUseCase by koinInject()
     private val whoAmIUseCase: GetWhoAmIUseCase by koinInject()
     private val logoutUseCase: UserLogoutUseCase by koinInject()
+
+    private val fetchContractorUseCase: FetchContractorUseCase by koinInject()
+    private val getLinkedTaskUseCase: GetLinkedTaskUseCase by koinInject()
+    private val getListContractorUseCase: GetListContractorUseCase by koinInject()
 
     private val availableListInspectionUseCase: GetAvailableListInspectionUseCase by koinInject()
     private val getInspectionUseCase: GetInspectionUseCase by koinInject()
@@ -210,16 +228,16 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL))
     }
 
-    suspend fun signOffAction(
-        actionSignOff: ActionSignOff,
-        index: Int
-    ) {
-        _apiCallStatus.emit(
-            index to signOffActionUseCase.invoke(
-                actionSignOff
-            )
-        )
-    }
+//    suspend fun signOffAction(
+//        actionSignOff: ActionSignOff,
+//        index: Int
+//    ) {
+//        _apiCallStatus.emit(
+//            index to signOffActionUseCase.invoke(
+//                actionSignOff
+//            )
+//        )
+//    }
 
     suspend fun getListBanner(index: Int) {
         _apiCallStatus.emit(index to getListBannerUseCase.invoke())
@@ -241,14 +259,14 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    suspend fun signoffChemical(
-        signoff: ChemicalSignoffPL,
-        index: Int
-    ) {
-        _apiCallStatus.emit(
-            index to signoffChemicalUseCase.invoke(signoff)
-        )
-    }
+//    suspend fun signoffChemical(
+//        signoff: ChemicalSignoffPL,
+//        index: Int
+//    ) {
+//        _apiCallStatus.emit(
+//            index to signoffChemicalUseCase.invoke(signoff)
+//        )
+//    }
 
     suspend fun getListCrisk(index: Int) {
         _apiCallStatus.emit(
@@ -409,6 +427,26 @@ class MainViewModel : ViewModel() {
         )
     }
 
+    suspend fun fetchHrDetail(
+        moduleId:String,
+        index:Int
+    ){
+        _apiCallStatus.emit(index to fetchHrDetailUseCase.invoke(moduleId))
+    }
+
+    suspend fun getListHr(
+        index:Int
+    ){
+        _apiCallStatus.emit(index to getListHrUseCase.invoke())
+    }
+
+    suspend fun getListLinkedIncidents(
+        moduleId:String,
+        index:Int
+    ){
+        _apiCallStatus.emit(index to getListLinkedIncidentsUseCase.invoke(moduleId))
+    }
+
     private val fetchCopySourceUseCase: FetchCopySourceUseCase by koinInject()
     suspend fun copySource(moduleId: String, index: Int) {
         _apiCallStatus.emit(index to fetchCopySourceUseCase.invoke(moduleId))
@@ -433,6 +471,27 @@ class MainViewModel : ViewModel() {
     suspend fun signoffDoc(payload: DocumentSignoff, index: Int) {
         _apiCallStatus.emit(index to signoffDocUseCase.invoke(payload))
     }
+
+    suspend fun fetchContractor(index: Int, moduleId: String) {
+        _apiCallStatus.emit(index to fetchContractorUseCase.invoke(moduleId))
+    }
+
+    suspend fun getListContractor(index: Int) {
+        _apiCallStatus.emit(index to getListContractorUseCase.invoke())
+    }
+
+    suspend fun getLinkedTask(index: Int, payload: ContractorLinkedTaskPL) {
+        _apiCallStatus.emit(index to getLinkedTaskUseCase(payload))
+    }
+
+    private val getAnnouncementUseCase: GetAnnouncementUseCase by koinInject()
+    suspend fun getAnnouncement(index: Int) = _apiCallStatus.emit(index to getAnnouncementUseCase.invoke())
+
+    private val getVersionUseCase: GetVersionUseCase by koinInject()
+    suspend fun getVersionMobileAdmin(versionName: String?, index: Int) = _apiCallStatus.emit(index to getVersionUseCase.invoke(versionName))
+
+    private val setUpNotification: SetupPushNotificationUseCase by koinInject()
+    suspend fun setUpNotification(index: Int) = _apiCallStatus.emit(index to setUpNotification.invoke())
 
     suspend fun availableInspections(index: Int) {
         _apiCallStatus.emit(index to availableListInspectionUseCase())
