@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var counter = -1
     private val listUseCase = listOf(
-        "Login as u3_2@minh1.co" to suspend { viewModel.login(++counter) },
+        "Login as u3_3@minh1.co" to suspend { viewModel.login(++counter) },
         "Login Multi w demomanager@safetychampion.online " to suspend { viewModel.multiLogin(++counter) },
         "Morph (required login as demomanager) " to suspend { viewModel.morph(++counter) },
         "UnMorph (required  morph) " to suspend { viewModel.unmorph(++counter) },
@@ -158,6 +158,9 @@ class MainActivity : AppCompatActivity() {
             )
         }
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
+        "Available Inspection" to suspend { viewModel.availableInspections(++counter) },
+        "Get Inspection (\"63f51afcf662ba4785de073a\")" to suspend { viewModel.getInspection(++counter) },
+        "New Child Inspection" to suspend { viewModel.newChildInspection(++counter) }
     )
 
     val items = {

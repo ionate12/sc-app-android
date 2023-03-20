@@ -23,6 +23,6 @@ class ModuleTypeConverter : JsonSerializer<ModuleType>, JsonDeserializer<ModuleT
         typeOfSrc: Type,
         context: JsonSerializationContext
     ): JsonElement {
-        return context.serialize(src.value)
+        return context.serialize(src.title)
     }
 }

@@ -4,5 +4,6 @@ data class ActionLink(
     var type: String? = null,
     var _id: String? = null,
     var reference: String? = null,
+    var overview: String? = null,
     var refId: String? = null
 )

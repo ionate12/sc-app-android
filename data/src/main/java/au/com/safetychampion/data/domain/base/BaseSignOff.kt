@@ -23,5 +23,10 @@ interface BaseSignOff<T : BaseTask> {
             moduleId: String,
             taskId: String
         ) = "vdocs/$moduleId/tasks/$taskId/signoff"
+
+        fun inspectionSignoffSyncableKey(
+            moduleId: String,
+            taskId: String
+        ) = "inspections/$moduleId/tasks/$taskId/signoff"
     }
 }

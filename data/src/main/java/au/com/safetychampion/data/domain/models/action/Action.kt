@@ -1,5 +1,6 @@
 package au.com.safetychampion.data.domain.models.action
 
+import au.com.safetychampion.data.domain.core.ModuleType
 import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.ICategoryCusval
 import au.com.safetychampion.data.domain.models.ICusval
@@ -10,7 +11,7 @@ import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class Action(
     val _id: String,
-    val type: String,
+    val type: ModuleType = ModuleType.ACTION,
     val tier: Tier,
     val overview: String,
     val description: String,
@@ -34,5 +35,5 @@ data class Action(
     override var cusvals: MutableList<CustomValue>
 ) : ICusval, ICategoryCusval {
 
-    fun toActionLink(): ActionLink = ActionLink(type, _id, reference)
+    fun toActionLink(): ActionLink = ActionLink(type.value, _id, reference)
 }

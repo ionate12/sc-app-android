@@ -19,6 +19,12 @@ import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUse
 import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.inspection.GetAvailableListInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.GetInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.NewChildAndStartInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
 import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
@@ -78,6 +84,15 @@ internal val useCasesModule = module {
     factoryOf(::GetListChemicalUseCase)
 
     factoryOf(::GetGhsCodeUseCase)
+
+    // Inspection
+
+    factoryOf(::GetAvailableListInspectionUseCase)
+    factoryOf(::NewChildAndStartInspectionUseCase)
+    factoryOf(::PrepareSignoffInspectionUseCase)
+    factoryOf(::SignoffInspectionUseCase)
+    factoryOf(::StartTaskInspectionUseCase)
+    factoryOf(::GetInspectionUseCase)
 
     // Banner
 

@@ -40,10 +40,19 @@ import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.FetchCopySourceUseCase
 import au.com.safetychampion.data.domain.usecase.document.FetchDocumentUseCase
 import au.com.safetychampion.data.domain.usecase.document.SignoffDocumentUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.GetAvailableListInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.GetInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.NewChildAndStartInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
+import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
+import au.com.safetychampion.data.util.extension.SCDateFormat
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
 import au.com.safetychampion.data.domain.usecase.pushnotification.SetupPushNotificationUseCase
 import au.com.safetychampion.data.util.extension.koinInject
+import au.com.safetychampion.data.util.extension.toReadableString
+import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceUseCase
@@ -97,6 +106,13 @@ class MainViewModel : ViewModel() {
     private val getLinkedTaskUseCase: GetLinkedTaskUseCase by koinInject()
     private val getListContractorUseCase: GetListContractorUseCase by koinInject()
 
+    private val availableListInspectionUseCase: GetAvailableListInspectionUseCase by koinInject()
+    private val getInspectionUseCase: GetInspectionUseCase by koinInject()
+    private val newChildInspection: NewChildAndStartInspectionUseCase by koinInject()
+    private val startInspection: StartTaskInspectionUseCase by koinInject()
+    private val prepSignoffInspection: PrepareSignoffInspectionUseCase by koinInject()
+    private val signoffInspection: SignoffInspectionUseCase by koinInject()
+
     val _apiCallStatus = MutableSharedFlow<Pair<Int, Result<*>>>()
     val apiCallStatus = _apiCallStatus.asSharedFlow()
 
@@ -104,7 +120,7 @@ class MainViewModel : ViewModel() {
     val uiMessage = _uiMessage.asSharedFlow()
 
     suspend fun login(index: Int) {
-        loginUseCase(LoginPL(email = "u3_2@minh1.co", password = "123"))
+        loginUseCase(LoginPL(email = "u3_3@minh1.co", password = "123"))
             .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let { _apiCallStatus.emit(index to it) }
     }
@@ -476,4 +492,21 @@ class MainViewModel : ViewModel() {
 
     private val setUpNotification: SetupPushNotificationUseCase by koinInject()
     suspend fun setUpNotification(index: Int) = _apiCallStatus.emit(index to setUpNotification.invoke())
+
+    suspend fun availableInspections(index: Int) {
+        _apiCallStatus.emit(index to availableListInspectionUseCase())
+    }
+    suspend fun newChildInspection(index: Int) {
+        val id = "63f51afcf662ba4785de073a"
+        val rs = newChildInspection.invoke(
+            id,
+            Date().toReadableString(SCDateFormat.YYYY_MM_DD),
+            "AAA"
+        )
+        _apiCallStatus.emit(index to rs)
+    }
+
+    suspend fun getInspection(index: Int) {
+        _apiCallStatus.emit(index to getInspectionUseCase("63f51afcf662ba4785de073a"))
+    }
 }
