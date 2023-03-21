@@ -3,7 +3,6 @@ package au.com.safetychampion.data.domain.models.incidents
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Signature
-import au.com.safetychampion.data.domain.models.ExternalBodyPojo
 import au.com.safetychampion.data.domain.models.IPendingActionPL
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL

@@ -4,6 +4,9 @@ import au.com.safetychampion.data.data.api.IncidentAPI
 import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.location.GeoLatLng
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
+import au.com.safetychampion.data.domain.models.workplace.UpdateLog
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 /** Represents a fully Incident, or the return model for [IncidentAPI.New], [IncidentAPI.List] and [IncidentAPI.Fetch]*/

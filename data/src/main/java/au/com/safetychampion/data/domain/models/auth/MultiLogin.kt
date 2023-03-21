@@ -1,6 +1,6 @@
 package au.com.safetychampion.data.domain.models.auth
 
-import au.com.safetychampion.data.domain.models.CreatedBy
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 
 data class MultiLogin(
     val name: String,

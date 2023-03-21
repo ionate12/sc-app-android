@@ -5,7 +5,7 @@ import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.errorOf
 import au.com.safetychampion.data.domain.core.flatMap
-import au.com.safetychampion.data.domain.models.MobileAdmin
+import au.com.safetychampion.data.domain.models.mobileadmin.MobileAdmin
 import timber.log.Timber
 
 class AnnouncementPL(

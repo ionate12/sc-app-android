@@ -2,9 +2,9 @@ package au.com.safetychampion.data.data.noticeboard
 
 import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.models.Tier
-import au.com.safetychampion.data.domain.models.UpdateBy
 import au.com.safetychampion.data.domain.models.contractor.Contact
 import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardBlock
+import au.com.safetychampion.data.domain.models.workplace.UpdateBy
 
 data class NoticeboardBlockList(
     val attachments: MutableList<Attachment>? = null,

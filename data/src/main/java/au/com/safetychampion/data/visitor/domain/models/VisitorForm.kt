@@ -1,9 +1,9 @@
 package au.com.safetychampion.data.visitor.domain.models
 
-import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.ICusval
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 
 data class VisitorForm(
     val _id: String,

@@ -8,7 +8,9 @@ import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 import au.com.safetychampion.data.domain.models.inspections.InspectionTemplateMeta
+import au.com.safetychampion.data.domain.models.task.ForTask
 import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 import com.google.gson.annotations.SerializedName
 
 interface ICriskTaskPLComponents :

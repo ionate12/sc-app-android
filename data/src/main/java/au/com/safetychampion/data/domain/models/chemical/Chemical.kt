@@ -2,8 +2,8 @@ package au.com.safetychampion.data.domain.models.chemical
 
 import au.com.safetychampion.data.domain.base.BaseModule
 import au.com.safetychampion.data.domain.base.BaseModuleImpl
-import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class Chemical(

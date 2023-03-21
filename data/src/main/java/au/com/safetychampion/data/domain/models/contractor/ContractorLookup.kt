@@ -1,6 +1,5 @@
 package au.com.safetychampion.data.domain.models.contractor
 
-import au.com.safetychampion.data.domain.models.SCHolderLink
 import au.com.safetychampion.data.domain.uncategory.TaskType
 import java.util.*
 

@@ -1,7 +1,6 @@
 package au.com.safetychampion.data.data.crisk
 
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.UpdateLogListItem
 import au.com.safetychampion.data.domain.models.contractor.ContractorLookup
 import au.com.safetychampion.data.domain.models.crisk.Crisk
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
@@ -9,6 +8,7 @@ import au.com.safetychampion.data.domain.models.crisk.CriskSignoff
 import au.com.safetychampion.data.domain.models.crisk.CriskTask
 import au.com.safetychampion.data.domain.models.crisk.CriskTaskPL
 import au.com.safetychampion.data.domain.models.hr.HrLookupItem
+import au.com.safetychampion.data.domain.models.task.UpdateLogListItem
 import com.google.gson.JsonObject
 
 interface ICriskRepository {

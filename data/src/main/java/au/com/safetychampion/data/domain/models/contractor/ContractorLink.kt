@@ -1,8 +1,8 @@
 package au.com.safetychampion.data.domain.models.contractor
 
-import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.Tier
-import au.com.safetychampion.data.domain.models.customvalues.CusvalPojo // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.models.customvalues.CusvalPojo
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 open class ContractorLink(

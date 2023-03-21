@@ -1,10 +1,11 @@
 package au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter
 
+import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.models.customvalues.CustomValueOption
-import au.com.safetychampion.data.domain.uncategory.GsonHelper
-import au.com.safetychampion.data.domain.uncategory.JsonConverter
-import au.com.safetychampion.data.domain.uncategory.JsonUtils
-import com.google.gson.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.util.extension.asStringOrNull
+import au.com.safetychampion.data.util.extension.jsonObjectOf
+import au.com.safetychampion.data.util.extension.koinGet
+import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
@@ -30,9 +31,9 @@ class CustomValueOptionTypeAdapter : JsonDeserializer<CustomValueOption>, JsonSe
                     val options: List<CustomValueOption> = context!!.deserialize(json.asJsonObject["options"], object : TypeToken<List<CustomValueOption>>() {}.type)
                     rs.options = options
                 }
-                rs.icon = JsonUtils.getStringProperty(obj, "icon")
-                rs.name = JsonUtils.getStringProperty(obj, "name")
-                rs.static = JsonUtils.getStringProperty(obj, "static")
+                rs.icon = obj["icon"].asStringOrNull()
+                rs.name = obj["name"].asStringOrNull()
+                rs.static = obj["static"].asStringOrNull()
                 rs.isSeparator = false
                 return rs
             }
@@ -48,11 +49,13 @@ class CustomValueOptionTypeAdapter : JsonDeserializer<CustomValueOption>, JsonSe
             return JsonPrimitive(src.stringValue)
         }
         // NOTICE: This prevent infinite loop
-        if (!src.options.isNullOrEmpty()) {
-            var jsonSrc = GsonHelper.CLEAN_INSTANCE.toJsonTree(src).asJsonObject
-            jsonSrc.add("options", JsonConverter.toJsonTree(src.options))
-            return jsonSrc
+        val cleanGson = koinGet<IGsonManager>().cleanGson
+        return if (!src.options.isNullOrEmpty()) {
+            jsonObjectOf(src = src, customGson = cleanGson)?.apply {
+                add("options", jsonObjectOf(src.options!!, null))
+            }!!
+        } else {
+            cleanGson.toJsonTree(src)
         }
-        return GsonHelper.CLEAN_INSTANCE.toJsonTree(src)
     }
 }

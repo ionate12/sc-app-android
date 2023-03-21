@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.domain.models.hr
 
-import au.com.safetychampion.data.domain.models.SCHolderLink
 import au.com.safetychampion.data.domain.models.contractor.LookupItem
+import au.com.safetychampion.data.domain.models.contractor.SCHolderLink
 import au.com.safetychampion.data.domain.models.incidents.InjuredPersonLink
 import au.com.safetychampion.data.domain.uncategory.TaskType
 

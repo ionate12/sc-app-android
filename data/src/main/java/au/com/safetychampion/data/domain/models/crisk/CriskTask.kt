@@ -6,6 +6,7 @@ import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.*
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
+import au.com.safetychampion.data.domain.models.contractor.SCHolderLink
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 
 interface ICriskTaskComponents :

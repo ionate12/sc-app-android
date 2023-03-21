@@ -6,8 +6,8 @@ import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.core.doOnSuccess
 import au.com.safetychampion.data.domain.core.flatMapError
-import au.com.safetychampion.data.domain.models.MobileAdmin
-import au.com.safetychampion.data.domain.models.VersionBoard
+import au.com.safetychampion.data.domain.models.mobileadmin.MobileAdmin
+import au.com.safetychampion.data.domain.models.mobileadmin.VersionBoard
 import au.com.safetychampion.data.domain.usecase.mobileadmin.AnnouncementPL
 import au.com.safetychampion.data.domain.usecase.mobileadmin.VersionPL
 
