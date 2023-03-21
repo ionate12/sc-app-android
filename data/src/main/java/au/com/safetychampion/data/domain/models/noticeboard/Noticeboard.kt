@@ -5,6 +5,7 @@ import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.Tier
 
 data class Noticeboard(
+    val allocationOf: AllocationOf? = null,
     val category: String?,
     val categoryOther: String?,
     val control: Any?,
@@ -17,8 +18,7 @@ data class Noticeboard(
     val title: String?,
     val type: String?,
     val tzDateCreated: String?,
-    val _id: String?,
-    val allocationOf: AllocationOf? = null
+    val _id: String?
 ) {
     override fun toString(): String {
         return "$category $categoryOther $$$$$$$$"

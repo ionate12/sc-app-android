@@ -35,18 +35,11 @@ sealed class SCError(val code: String, val errDescription: String) {
         errDescription = "No Internet. Please check your internet connection"
     )
 
-    class SignOffFailed(
-        moduleName: String,
-        title: String,
-        details: String
+    class FailedInCombineFetchAndTask(
+        scError: List<SCError>
     ) : SCError(
-        code = "D",
-        errDescription = details
-    )
-
-    object AlreadySignedOff : SCError(
-        code = "closed_or_signed_off",
-        errDescription = "This task is already closed or signed-off."
+        code = "can_not_combine_fetch_and_task",
+        errDescription = "can_not_combine_fetch_and_task"
     )
 
     class SyncableStored(val syncableId: String) : SCError(

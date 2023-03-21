@@ -4,20 +4,20 @@ import au.com.safetychampion.data.data.local.IStorable
 import au.com.safetychampion.data.data.local.ISyncable
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.models.action.ActionTaskPL
-import au.com.safetychampion.data.domain.models.action.network.ActionPL
+import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 
 internal interface ActionApi {
     // Only use for actionLinks
     class NewOnline(
-        body: ActionPL
+        body: ActionNewPL
     ) : NetworkAPI.PostMultiParts("actions/new", body)
     class New(
-        body: ActionPL
+        body: ActionNewPL
     ) : NetworkAPI.PostMultiParts("actions/new", body), ISyncable
 
     class Edit(
         actionId: String,
-        body: ActionPL
+        body: ActionNewPL
     ) : NetworkAPI.PostMultiParts("actions/$actionId/edit", body), ISyncable
 
     class Fetch(

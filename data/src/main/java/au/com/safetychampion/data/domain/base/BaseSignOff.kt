@@ -28,5 +28,9 @@ interface BaseSignOff<T : BaseTask> {
             moduleId: String,
             taskId: String
         ) = "inspections/$moduleId/tasks/$taskId/signoff"
+
+        fun incidentSignoffSyncableKey(incidentId: String) = "incidents/$incidentId/task/signoff"
+
+        fun reviewPlanSignoffSyncableKey(reviewPlanId: String, taskId: String): String = "reviewPlans/{$reviewPlanId/tasks/$taskId/signoff"
     }
 }

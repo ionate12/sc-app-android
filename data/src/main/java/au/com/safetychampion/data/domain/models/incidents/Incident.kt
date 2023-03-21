@@ -1,76 +1,53 @@
 package au.com.safetychampion.data.domain.models.incidents
 
-import androidx.databinding.BaseObservable
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.databinding.ObservableList
-import androidx.lifecycle.MutableLiveData
-import au.com.safetychampion.data.domain.models.TimeField
+import au.com.safetychampion.data.data.api.IncidentAPI
+import au.com.safetychampion.data.domain.core.Signature
+import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
+/** Represents a fully Incident, or the return model for [IncidentAPI.New], [IncidentAPI.List] and [IncidentAPI.Fetch]*/
 data class Incident(
-    /**
-     * This is a payload package for submission;
-     */
-    @JvmField
-    var sessionId: String? = null,
-    @JvmField
-    val tzDateCreated: ObservableField<String>? = null,
-    @JvmField
-    val dateOccurred: ObservableField<String>? = null,
-    @JvmField
-    val timeOccurred: ObservableField<TimeField>? = null,
-    @JvmField
-    val overview: ObservableField<String>? = null,
-    @JvmField
-    val description: ObservableField<String>? = null,
+    var _id: String? = null,
+    var taskId: String? = null,
 
-    // Category getData from configuration.
-    @JvmField
-    val category: ObservableField<String>? = null,
-    @JvmField
-    val categoryOther: ObservableField<String>? = null,
+    var archived: Boolean = false,
+    var attachments: List<DocAttachment>? = emptyList(),
+    override var category: String? = null,
+    override var categoryCusvals: MutableList<CustomValue> = mutableListOf(),
+    override var categoryOther: String? = null,
+    var closed: Boolean = false,
+    var createdBy: CreatedBy? = null,
+    override var cusvals: MutableList<CustomValue> = mutableListOf(),
+    var dateCreated: String? = null,
+    var dateDue: String? = null,
+    override var dateOccurred: String? = null,
+    override var description: String? = null,
+    override var editComments: List<UpdateLog> = emptyList(),
+    override var geoData: GeoLatLng? = null,
 
-    // Location getData from configuration.
-    @JvmField
-    val location: ObservableField<String>? = null,
-    @JvmField
-    val locationOther: ObservableField<String>? = null,
-    @Transient
-    val displayLocationOther: ObservableBoolean = ObservableBoolean(false),
-    @JvmField
-    val personReporting: ObservableField<String>? = null,
-    @JvmField
-    val witnessPhone: ObservableField<String>? = null,
-    @JvmField
-    val witnessName: ObservableField<String>? = null,
+    override var injuredBodyParts: List<InjuredBodyPart>? = emptyList(),
+    override var injuredPersonLinks: List<InjuredPersonLink>? = emptyList(),
+    override var injuredPersonName: String? = null,
+    override var injuredPersonPhone: String? = null,
+    override var injuredPersonRole: String? = null,
+    override var injuredPersonRoleOther: String? = null,
+    override var injuryDescription: String? = null,
 
-    // Injury
-    @JvmField
-    val injuredPersonName: ObservableField<String>? = null,
-    @JvmField
-    val injuredPersonPhone: ObservableField<String>? = null,
-    @JvmField
-    val injuredPersonRole: ObservableField<String>? = null,
-    @JvmField
-    val injuredPersonRoleOther: ObservableField<String>? = null,
-    @JvmField
-    val injuryDescription: ObservableField<String>? = null,
-    @JvmField
-    val propOrEnvDamage: ObservableBoolean? = null,
+    override var location: String? = null,
+    override var locationOther: String? = null,
 
-    @Transient
-    val propOrEnvDamageString: ObservableField<String>? = null,
-    @JvmField
-    val propOrEnvDamageDescription: ObservableField<String>? = null,
-    @JvmField
-    val injuredBodyParts: ObservableList<InjuredBodyPart>? = null,
-    @JvmField
-    val cusvals: MutableLiveData<List<CustomValue>>? = null,
-    @JvmField
-    val propOrEnvDamageCusvals: MutableLiveData<List<CustomValue>>? = null,
-    @JvmField
-    val categoryCusvals: MutableLiveData<List<CustomValue>>? = null,
-    @JvmField
-    val injuredPersonLinks: MutableLiveData<List<InjuredPersonLink>>? = null
-) : BaseObservable()
+    override var overview: String? = null,
+    override var personReporting: String? = null,
+    override var propOrEnvDamage: Boolean = false,
+    override var propOrEnvDamageCusvals: MutableList<CustomValue> = mutableListOf(),
+    override var propOrEnvDamageDescription: String? = null,
+    var reference: String? = null,
+    override var signatures: MutableList<Signature> = mutableListOf(),
+    var tier: Tier? = null,
+    override var timeOccurred: TimeField? = null,
+    var type: String? = null,
+    override var tzDateCreated: String? = null,
+    override var witnessName: String? = null,
+    override var witnessPhone: String? = null
+) : BaseIncident

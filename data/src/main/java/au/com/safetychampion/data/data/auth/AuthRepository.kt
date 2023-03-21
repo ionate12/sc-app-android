@@ -5,7 +5,7 @@ import au.com.safetychampion.data.data.api.AuthApi
 import au.com.safetychampion.data.data.local.BaseAppDataStore
 import au.com.safetychampion.data.data.local.StoreKey
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.doOnSucceed
+import au.com.safetychampion.data.domain.core.doOnSuccess
 import au.com.safetychampion.data.domain.core.map
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.manager.ITokenManager
@@ -48,7 +48,7 @@ class AuthRepository : BaseRepository(), IAuthRepository {
     override suspend fun login(loginPL: LoginPL): Result<LoginResponse> {
         val jsonResult: Result<JsonObject> = AuthApi.Login(loginPL).call(objName = "")
         return jsonResult.map { customGson.fromJson(it, LoginResponse::class.java) }
-            .doOnSucceed {
+            .doOnSuccess {
                 tokenManager.clearTokens()
                 updateToken(it)
                 if (it is LoginResponse.Single) {
@@ -64,7 +64,7 @@ class AuthRepository : BaseRepository(), IAuthRepository {
     ): Result<LoginResponse.Single> {
         return AuthApi.MultiUserAuth(multiLoginPL).call<LoginEnvFromMulti>(objName = "")
             .map { LoginResponse.Single(LoginEnv(it.item, it.token)) }
-            .doOnSucceed {
+            .doOnSuccess {
                 tokenManager.clearTokens()
                 updateToken(it)
                 storeUserCredential(loginPL)
@@ -75,7 +75,7 @@ class AuthRepository : BaseRepository(), IAuthRepository {
     override suspend fun mfaVerify(mfaVerifyPL: MfaVerifyPL, loginPL: LoginPL): Result<LoginResponse> {
         val jsonResult: Result<JsonObject> = AuthApi.MfaVerify(mfaVerifyPL).call(objName = "")
         return jsonResult.map { customGson.fromJson(it, LoginResponse::class.java) }
-            .doOnSucceed {
+            .doOnSuccess {
                 tokenManager.clearTokens()
                 updateToken(it)
                 if (it is LoginResponse.Single) {
@@ -87,7 +87,7 @@ class AuthRepository : BaseRepository(), IAuthRepository {
 
     override suspend fun morph(morphPL: MorphPL): Result<LoginResponse.Single> {
         return AuthApi.Morph(morphPL).call<LoginEnv>(objName = "").map { LoginResponse.Single(it) }
-            .doOnSucceed {
+            .doOnSuccess {
                 updateToken(it)
                 storeUserInfo(it.data.user)
             }
@@ -95,7 +95,7 @@ class AuthRepository : BaseRepository(), IAuthRepository {
 
     override suspend fun unmorph(): Result<LoginResponse.Single> {
         return AuthApi.UnMorph().call<LoginEnv>(objName = "").map { LoginResponse.Single(it) }
-            .doOnSucceed {
+            .doOnSuccess {
                 updateToken(it)
                 storeUserInfo(it.data.user)
             }

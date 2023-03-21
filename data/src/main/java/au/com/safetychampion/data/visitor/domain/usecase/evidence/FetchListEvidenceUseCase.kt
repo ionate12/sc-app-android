@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.visitor.domain.usecase.evidence
 
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.doOnSucceed
+import au.com.safetychampion.data.domain.core.doOnSuccess
 import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.data.VisitorActivityEntity
@@ -17,7 +17,7 @@ class FetchListEvidenceUseCase : BaseVisitorUseCase() {
      */
     suspend operator fun invoke(payload: VisitorPayload.EvidencesFetch): Result<List<VisitorEvidence>> {
         return remoteRepository.evidencesFetch(payload)
-            .doOnSucceed { evidences ->
+            .doOnSuccess { evidences ->
                 updateActivitiesUseCase.invoke(
                     fetched = evidences,
                     activities = localRepository.getActivitiesEntity(

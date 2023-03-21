@@ -4,7 +4,7 @@ import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.MobileAdminAPI
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
-import au.com.safetychampion.data.domain.core.doOnSucceed
+import au.com.safetychampion.data.domain.core.doOnSuccess
 import au.com.safetychampion.data.domain.core.flatMapError
 import au.com.safetychampion.data.domain.models.MobileAdmin
 import au.com.safetychampion.data.domain.models.VersionBoard
@@ -17,7 +17,7 @@ class MobileAdminRepository : BaseRepository(), IMobileAdminRepository {
             payload
         )
             .call<VersionBoard>()
-            .doOnSucceed {
+            .doOnSuccess {
 //                TODO("save to sharedpref")
             }
             .flatMapError {

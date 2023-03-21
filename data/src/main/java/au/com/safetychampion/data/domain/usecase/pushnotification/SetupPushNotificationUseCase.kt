@@ -2,7 +2,7 @@ package au.com.safetychampion.data.domain.usecase.pushnotification
 
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.doOnFailure
-import au.com.safetychampion.data.domain.core.doOnSucceed
+import au.com.safetychampion.data.domain.core.doOnSuccess
 import au.com.safetychampion.data.domain.core.flatMap
 import au.com.safetychampion.data.util.extension.koinInject
 import timber.log.Timber
@@ -13,8 +13,8 @@ class SetupPushNotificationUseCase {
 
     suspend fun invoke(): Result<String> {
         return getFirebaseTokenUseCase.invoke()
-            .flatMap(registerOrFetchDeviceToken::invoke)
-            .doOnSucceed { token ->
+            .flatMap { registerOrFetchDeviceToken.invoke(it) }
+            .doOnSuccess { token ->
                 // TODO("save token to sharedpref")
                 Timber.tag("FCMToken").d("SetupPushNotification success")
             }.doOnFailure {

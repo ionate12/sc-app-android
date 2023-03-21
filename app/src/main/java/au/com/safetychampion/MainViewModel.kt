@@ -5,18 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.core.*
 import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
-import au.com.safetychampion.data.domain.models.action.network.ActionPL
-import au.com.safetychampion.data.domain.models.action.network.ActionSignOff
+import au.com.safetychampion.data.domain.models.TierType
+import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.auth.LoginPL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
 import au.com.safetychampion.data.domain.models.contractor.ContractorLinkedTaskPL
 import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
 import au.com.safetychampion.data.domain.models.document.DocumentSignoff
+import au.com.safetychampion.data.domain.models.incidents.IncidentNewPL
+import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardFormPL
 import au.com.safetychampion.data.domain.models.task.Task
 import au.com.safetychampion.data.domain.usecase.action.CreateActionUseCase
 import au.com.safetychampion.data.domain.usecase.action.EditActionUseCase
 import au.com.safetychampion.data.domain.usecase.action.GetListActionUseCase
-import au.com.safetychampion.data.domain.usecase.action.SignoffActionUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.AssignTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.GetAllActiveTaskUseCase
 import au.com.safetychampion.data.domain.usecase.activetask.UnAssignTaskUseCase
@@ -24,35 +24,30 @@ import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignManyTask
 import au.com.safetychampion.data.domain.usecase.assigntaskstatus.AssignTaskStatusItemUseCase
 import au.com.safetychampion.data.domain.usecase.auth.*
 import au.com.safetychampion.data.domain.usecase.banner.GetListBannerUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.* // ktlint-disable no-wildcard-imports
-import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
-import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
-import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
-import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
-import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
-import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
-import au.com.safetychampion.data.domain.usecase.document.FetchCopySourceUseCase
-import au.com.safetychampion.data.domain.usecase.document.FetchDocumentUseCase
-import au.com.safetychampion.data.domain.usecase.document.SignoffDocumentUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.GetAvailableListInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.GetInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.NewChildAndStartInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
-import au.com.safetychampion.data.util.extension.SCDateFormat
+import au.com.safetychampion.data.domain.usecase.document.*
+import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
+import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
+import au.com.safetychampion.data.domain.usecase.incident.*
+import au.com.safetychampion.data.domain.usecase.inspection.*
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
+import au.com.safetychampion.data.domain.usecase.noticeboard.*
 import au.com.safetychampion.data.domain.usecase.pushnotification.SetupPushNotificationUseCase
+import au.com.safetychampion.data.domain.usecase.reviewplan.FetchActionsWithReviewPlanIdUseCase
+import au.com.safetychampion.data.domain.usecase.reviewplan.FetchListReviewPlanUseCase
+import au.com.safetychampion.data.domain.usecase.reviewplan.FetchReviewPlanEvidencesUseCase
+import au.com.safetychampion.data.domain.usecase.reviewplan.PrepareReviewPlanSignoffUseCase
+import au.com.safetychampion.data.util.extension.SCDateFormat
 import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.util.extension.toReadableString
-import au.com.safetychampion.data.visitor.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.visitor.domain.models.*
 import au.com.safetychampion.data.visitor.domain.usecase.ArriveAndUpdateUseCase
 import au.com.safetychampion.data.visitor.domain.usecase.evidence.FetchEvidenceUseCase
@@ -82,9 +77,9 @@ class MainViewModel : ViewModel() {
     private val getGhsCodeUseCase: GetGhsCodeUseCase by koinInject()
     private val refreshChemicalUseCase: GetListChemicalUseCase by koinInject()
 
-    private val fetchHrDetailUseCase:FetchHrDetailUseCase by koinInject()
-    private val getListHrUseCase:GetListHrUseCase by koinInject()
-    private val getListLinkedIncidentsUseCase:GetListLinkedIncidentsUseCase by koinInject()
+    private val fetchHrDetailUseCase: FetchHrDetailUseCase by koinInject()
+    private val getListHrUseCase: GetListHrUseCase by koinInject()
+    private val getListLinkedIncidentsUseCase: GetListLinkedIncidentsUseCase by koinInject()
 
     private val getListCriskUseCase: GetListCriskUseCase by koinInject()
     private val getListHrLookupUseCase: GetListHrLookupItemUseCase by koinInject()
@@ -121,16 +116,16 @@ class MainViewModel : ViewModel() {
 
     suspend fun login(index: Int) {
         loginUseCase(LoginPL(email = "u3_3@minh1.co", password = "123"))
-            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let { _apiCallStatus.emit(index to it) }
     }
 
     suspend fun multiLogin(index: Int) {
         val pl = LoginPL(email = "demomanager@safetychampion.online", password = "12345678a")
         val userId = "5efbeba4c6bac31619e11be4"
-        loginUseCase(pl).doOnSucceed {
+        loginUseCase(pl).doOnSuccess {
             multiLoginUseCase(userId, pl)
-                .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+                .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
                 .let { _apiCallStatus.emit(index to it) }
         }
     }
@@ -142,7 +137,7 @@ class MainViewModel : ViewModel() {
     // require login as demomanager tier3
     suspend fun morph(index: Int) {
         morphUseCase("5efbeba1c6bac31619e11bd8")
-            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let {
                 _apiCallStatus.emit(index to it)
             }
@@ -151,13 +146,13 @@ class MainViewModel : ViewModel() {
     // require morphed
     suspend fun unmorph(index: Int) {
         unmorphUseCase()
-            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let { _apiCallStatus.emit(index to it) }
     }
 
     suspend fun logout(index: Int) {
         logoutUseCase()
-            .doOnSucceed { _uiMessage.emit(UiMessage.RefreshUserInfo) }
+            .doOnSuccess { _uiMessage.emit(UiMessage.RefreshUserInfo) }
             .let {
                 _apiCallStatus.emit(index to it)
             }
@@ -205,7 +200,7 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to result)
     }
 
-    suspend fun createNewAction(payload: ActionPL, index: Int) {
+    suspend fun createNewAction(payload: ActionNewPL, index: Int) {
         _apiCallStatus.emit(
             index to newActionUseCase.invoke(
                 payload = payload
@@ -224,7 +219,7 @@ class MainViewModel : ViewModel() {
 //
     }
 
-    suspend fun editAction(actionPL: ActionPL, id: String, index: Int) {
+    suspend fun editAction(actionPL: ActionNewPL, id: String, index: Int) {
         _apiCallStatus.emit(index to editActionUseCase.invoke(id, actionPL))
     }
 
@@ -347,14 +342,14 @@ class MainViewModel : ViewModel() {
     private suspend fun visitorSignout(requestEvidenceId: String): Result.Success<Destination> {
         var destination: Destination? = null
         fetchEvidenceUseCase.invoke(requestEvidenceId)
-            .doOnSucceed { nEvidence ->
+            .doOnSuccess { nEvidence ->
                 // TODO("removeGeofence")
                 destination = if (nEvidence.leave != null) {
                     Destination.Toast(
                         scError = SCError.Failure(
                             message = nEvidence.site.tier.VISIT_TERMS.leave.toLowerCase(Locale.ROOT)
                         )
-                    )
+                    ) // TODO ("message")
                 } else {
                     Destination.VisitorWizard(
                         site = nEvidence.site,
@@ -428,22 +423,22 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun fetchHrDetail(
-        moduleId:String,
-        index:Int
-    ){
+        moduleId: String,
+        index: Int
+    ) {
         _apiCallStatus.emit(index to fetchHrDetailUseCase.invoke(moduleId))
     }
 
     suspend fun getListHr(
-        index:Int
-    ){
+        index: Int
+    ) {
         _apiCallStatus.emit(index to getListHrUseCase.invoke())
     }
 
     suspend fun getListLinkedIncidents(
-        moduleId:String,
-        index:Int
-    ){
+        moduleId: String,
+        index: Int
+    ) {
         _apiCallStatus.emit(index to getListLinkedIncidentsUseCase.invoke(moduleId))
     }
 
@@ -457,12 +452,12 @@ class MainViewModel : ViewModel() {
         _apiCallStatus.emit(index to fetchDocuseCase.invoke(moduleId))
     }
 
-    private val fetchListDocUsecase: FetchDocumentUseCase by koinInject()
+    private val fetchListDocUsecase: GetListDocumentUseCase by koinInject()
     suspend fun fetchListDoc(moduleId: String, index: Int) {
-        _apiCallStatus.emit(index to fetchListDocUsecase.invoke(moduleId))
+        _apiCallStatus.emit(index to fetchListDocUsecase.invoke(moduleId, TierType.T4))
     }
 
-    private val prepareDocUseCase: FetchDocumentUseCase by koinInject()
+    private val prepareDocUseCase: PrepareSignoffDocumentUseCase by koinInject()
     suspend fun prepareDoc(moduleId: String, index: Int) {
         _apiCallStatus.emit(index to prepareDocUseCase.invoke(moduleId))
     }
@@ -471,6 +466,58 @@ class MainViewModel : ViewModel() {
     suspend fun signoffDoc(payload: DocumentSignoff, index: Int) {
         _apiCallStatus.emit(index to signoffDocUseCase.invoke(payload))
     }
+
+    private val createIncident: CreateIncidentUseCase by koinInject()
+    suspend fun createIncident(payload: IncidentNewPL, index: Int) {
+        _apiCallStatus.emit(index to createIncident.invoke(payload, false, false))
+    }
+    private val fetchIncident: FetchIncidentUseCase by koinInject()
+    suspend fun fetchIncident(moduleId: String, index: Int) {
+        _apiCallStatus.emit(index to fetchIncident.invoke(moduleId))
+    }
+    private val fetchListIncident: FetchListIncidentUseCase by koinInject()
+    suspend fun fetchListIncident(index: Int) {
+        _apiCallStatus.emit(index to fetchListIncident.invoke())
+    }
+    private val lookupIncident: LookUpIncidentUseCase by koinInject()
+    suspend fun lookupIncident(index: Int) {
+        _apiCallStatus.emit(index to lookupIncident.invoke())
+    }
+    private val prepareIncidentUseCase: PrepareIncidentSignoffUseCase by koinInject()
+    suspend fun prepareIncident(moduleId: String, taskId: String, index: Int) {
+        _apiCallStatus.emit(index to prepareIncidentUseCase.invoke(moduleId, taskId))
+    }
+    private val signoffIncidentUseCase: SignoffIncidentUseCase by koinInject()
+    suspend fun signoffIncident(payload: DocumentSignoff, index: Int) {
+//        _apiCallStatus.emit(index to signoffIncidentUseCase.invoke(payload))
+    }
+
+    private val fetchBlock: FetchListNoticeboardBlockUseCase by koinInject()
+    suspend fun fetchBlock(noticeboardId: String, index: Int) = _apiCallStatus.emit(index to fetchBlock.invoke(noticeboardId))
+
+    private val fetchBoards: FetchListNoticeboardUseCase by koinInject()
+    suspend fun fetchBoards(index: Int) = _apiCallStatus.emit(index to fetchBoards.invoke(TierType.T3))
+
+    private val fetchVdocNoticeboard: FetchListVdocUseCase by koinInject()
+    suspend fun fetchVdocNoticeboard(noticeboardId: String, index: Int) = _apiCallStatus.emit(index to fetchVdocNoticeboard.invoke(noticeboardId))
+
+    private val fetchNoticeboardForms: FetchNoticeboardFormsUseCase by koinInject()
+    suspend fun fetchNoticeboardForms(idList: List<String>, index: Int) = _apiCallStatus.emit(index to fetchNoticeboardForms.invoke(idList))
+
+    private val submitNoticeboardForms: SubmitNoticeboardFormUseCase by koinInject()
+    suspend fun submitNoticeboardForms(payload: NoticeboardFormPL, index: Int) = _apiCallStatus.emit(index to submitNoticeboardForms.invoke(payload))
+
+    private val actionsWithReviewPlanIdUseCase: FetchActionsWithReviewPlanIdUseCase by koinInject()
+    suspend fun actionsWithReviewPlanIdUseCase(reviewPlanId: String, index: Int) = _apiCallStatus.emit(index to actionsWithReviewPlanIdUseCase.invoke(reviewPlanId))
+
+    private val listReviewPlan: FetchListReviewPlanUseCase by koinInject()
+    suspend fun getListRVPlan(index: Int) = _apiCallStatus.emit(index to listReviewPlan.invoke())
+
+    private val prepareReviewPlanSignoff: PrepareReviewPlanSignoffUseCase by koinInject()
+    suspend fun prepareRVPlan(moduleId: String, taskId: String, index: Int) = _apiCallStatus.emit(index to prepareReviewPlanSignoff.invoke(moduleId, taskId))
+
+    private val reviewPlanEvidences: FetchReviewPlanEvidencesUseCase by koinInject()
+    suspend fun fetchRVPlanEvidences(reviewPlanId: String, index: Int) = _apiCallStatus.emit(index to reviewPlanEvidences.invoke(reviewPlanId))
 
     suspend fun fetchContractor(index: Int, moduleId: String) {
         _apiCallStatus.emit(index to fetchContractorUseCase.invoke(moduleId))

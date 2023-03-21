@@ -3,15 +3,7 @@ package au.com.safetychampion.data.domain.models.crisk
 import au.com.safetychampion.data.domain.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Signature
-import au.com.safetychampion.data.domain.models.CreatedBy
-import au.com.safetychampion.data.domain.models.ForTask
-import au.com.safetychampion.data.domain.models.IAttachment
-import au.com.safetychampion.data.domain.models.ICusval
-import au.com.safetychampion.data.domain.models.IForceNullValues
-import au.com.safetychampion.data.domain.models.IPendingActionPL
-import au.com.safetychampion.data.domain.models.ISignature
-import au.com.safetychampion.data.domain.models.ISubcategoryCusval
-import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
@@ -78,7 +70,54 @@ data class CriskTaskPL(
 
     companion object {
         fun fromModel(model: CriskTask): CriskTaskPL {
-            TODO("create criskTaskPL")
+            return CriskTaskPL(
+                _id = model._id,
+                type = model.type,
+                tier = model.tier,
+                allocationActive = null,
+                archivalDetails = null,
+                referenceID = model.referenceId,
+                category = null,
+                subcategory = null,
+                subcategoryOther = null,
+                title = model.title ?: "",
+                inherentRiskRating = model.inherentRiskRating ?: "",
+                inherentRiskRatingOther = model.inherentRiskRatingOther,
+                futureRiskRating = model.futureRiskRating,
+                futureRiskRatingOther = model.futureRiskRatingOther,
+                currentMitigation = model.currentMitigation ?: "",
+                futureMitigation = model.futureMitigation,
+                residualRisk = model.residualRisk,
+                residualRiskOther = model.residualRiskOther,
+                futureControl = model.futureControl,
+                riskOwner = model.riskOwner,
+                riskOwnerOther = model.riskOwnerOther,
+                riskOwnerLinks = emptyList(),
+                notes = model.notes,
+                actionLinks = mutableListOf(),
+                dateIssued = model.dateIssued,
+                dateExpiry = model.dateExpiry,
+                createdBy = null,
+                tzDateCreated = null,
+                dateCompleted = model.dateCompleted,
+                control = null,
+                dateCreated = null,
+                task = null,
+                _for = null,
+                complete = model.complete,
+                dateDue = model.dateDue,
+                description = model.description,
+                reviewNotes = model.reviewNotes,
+                recurrent = model.recurrent,
+                tzDateSignedoff = model.tzDateSignedoff,
+                attachments = model.attachments,
+                signatures = model.signatures,
+                cusvals = model.cusvals,
+                subcategoryCusvals = model.subcategoryCusvals,
+                pendingActions = model.pendingActions
+            )
+
+            // TODO("Need to review again")
         }
     }
 

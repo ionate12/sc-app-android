@@ -59,17 +59,17 @@ class MainActivity : AppCompatActivity() {
         "Get Action SignOff" to suspend { viewModel.getActionSignOff(actionId = sampleData.getActionId(), id = sampleData.getSampleTask()._id, index = ++counter) },
         "Edit Action" to suspend {
             viewModel.editAction(
-                actionPL = sampleData.getEditAction(),
-                id = sampleData.getEditAction()._id!!,
+                actionPL = sampleData.getNewAction().copy(comment = "I like edit"),
+                id = "sampleData.getEditAction()._id!!", // TODO("Update new id")
                 index = ++counter
             )
         },
         "Get List Banner" to suspend { viewModel.getListBanner(++counter) },
         "Edit Action" to suspend {
             viewModel.editAction(
-                actionPL = sampleData.getEditAction(),
-                id = sampleData.getEditAction()._id!!,
-                index = 11
+                actionPL = sampleData.getNewAction().copy(comment = "I like edit"),
+                id = "sampleData.getEditAction()._id!!", // TODO("Update new id")
+                index = ++counter
             )
         },
         "Refresh GHS code" to suspend { viewModel.refreshGHS(++counter) },
@@ -81,26 +81,6 @@ class MainActivity : AppCompatActivity() {
                 index = ++counter
             )
         },
-
-//        "Signoff Action" to suspend {
-//            viewModel.signOffAction(
-//                actionId = sampleData.getActionId(),
-//                attachments = emptyList(),
-//                payload = sampleData.getActionTask(),
-//                pendingAction = sampleData.getPendingActionPL(),
-//                index = 15
-//            )
-//        },
-//        "Signoff Chemical" to suspend {
-//            viewModel.signoffChemical(
-//                taskId = "61ad7aedb3ea32726aac3522",
-//                moduleId = "61ad7aedb3ea32726aac3523",
-//                task = sampleData.getChemicalTask(),
-//                attachments = emptyList(),
-//                index = 16
-//
-//            )
-//        },
         "Fetch Contractor" to suspend {
             viewModel.fetchContractor(
                 index = ++counter,
@@ -136,12 +116,12 @@ class MainActivity : AppCompatActivity() {
         "QR CODE Visitor" to suspend {
             viewModel.signIn(qrCode = "/org/5efbeb98c6bac31619e11bc9/site/616f824aee1dfb288ad8cf55", index = ++counter)
         },
-        "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", ++counter)},
+        "Fetch Copy source" to suspend { viewModel.copySource("63ec866dde4d671748fe6a91", ++counter) },
         "Fetch List Document" to suspend { viewModel.fetchListDoc("63ec866dde4d671748fe6a91", ++counter) },
         "Fetch Document" to suspend { viewModel.fetchDoc("63ec866dde4d671748fe6a91", ++counter) },
         "Get Announcement" to suspend { viewModel.getAnnouncement(++counter) },
         "Get Version Mobile Admin" to suspend { viewModel.getVersionMobileAdmin("3.25.3", index = ++counter) },
-        "Setup notification (will crash)" to suspend { viewModel.setUpNotification(++counter) },
+//        "Setup notification (will crash)" to suspend { viewModel.setUpNotification(++counter) },
         "Fetch Hr Detail (hr/{hrId}/fetch)" to suspend {
             viewModel.fetchHrDetail(
                 moduleId = "628b4ce2539b0c6b9760b38a",
@@ -149,18 +129,34 @@ class MainActivity : AppCompatActivity() {
             )
         },
         "Get List Hr (hr/list)" to suspend {
-            viewModel.getListHr(index = 24)
+            viewModel.getListHr(index = ++counter)
         },
         "Get List Linked Incidents (hr/{hrId}/listLinkedIncidents)" to suspend {
             viewModel.getListLinkedIncidents(
                 moduleId = "getListLinkedIncidents",
                 index = ++counter
             )
-        }
+        },
+        "Create incident" to suspend { viewModel.createIncident(payload = sampleData.getNewIncident(), ++counter) },
+        "Fetch Incident" to suspend { viewModel.fetchIncident(moduleId = "630d5de6ca562f742c1a2988", ++counter) },
+        "List Incident" to suspend { viewModel.fetchListIncident(++counter) },
+        "Lookup incident" to suspend { viewModel.lookupIncident(++counter) }, // TODO("crash hrLookUp, have not consistent in response, maybe need custom adapter")
+        "Prepare Incident" to suspend { viewModel.prepareIncident(moduleId = "630d5de6ca562f742c1a2988", taskId = "630d5de6ca562f742c1a2988", ++counter) },
+//
 //        "Signoff Document" to suspend { viewModel.signoffDoc(payload = sampleData.getSignoffChemical(), 26) } TODO("Add valid sample signoff")
         "Available Inspection" to suspend { viewModel.availableInspections(++counter) },
         "Get Inspection (\"63f51afcf662ba4785de073a\")" to suspend { viewModel.getInspection(++counter) },
-        "New Child Inspection" to suspend { viewModel.newChildInspection(++counter) }
+        "New Child Inspection" to suspend { viewModel.newChildInspection(++counter) },
+        "fetchBlock" to suspend { viewModel.fetchBlock("62ecff3130e68b29607353f9", ++counter) },
+        "fetchBoards" to suspend { viewModel.fetchBoards(++counter) },
+        "fetchVdocNoticeboard" to suspend { viewModel.fetchVdocNoticeboard("62ecff3130e68b29607353f9", ++counter) },
+        "fetchNoticeboardForms" to suspend { viewModel.fetchNoticeboardForms(listOf(), ++counter) }, // TODO("Need add more form in u3_2@minh1.co")
+//      "Submit form" to suspend { viewModel.submitNoticeboardForms() } //,
+        // required login as demomanager@safetychampion.online or change data
+        "actionsWithReviewPlanIdUseCase" to suspend { viewModel.actionsWithReviewPlanIdUseCase(reviewPlanId = "6101f80b86c7cc29f6c0e2a1", index = ++counter) },
+        "getListRVPlan" to suspend { viewModel.getListRVPlan(index = ++counter) },
+        "prepareRVPlan" to suspend { viewModel.prepareRVPlan(moduleId = "6101f80b86c7cc29f6c0e2a1", taskId = "620485e98c1cf5052a828ffb", ++counter) },
+        "fetchRVPlanEvidences" to suspend { viewModel.fetchRVPlanEvidences(reviewPlanId = "6101f80b86c7cc29f6c0e2a1", ++counter) }
     )
 
     val items = {
@@ -240,9 +236,9 @@ class MainActivity : AppCompatActivity() {
             )
             mAdpater.notifyDataSetChanged()
 
-            loadAllJob = lifecycleScope.launch(Dispatchers.Default) {
+            loadAllJob = lifecycleScope.launch(dispatchers) {
                 listUseCase.forEach {
-                    launch { it.second.invoke() }
+                    it.second.invoke()
                 }
             }
         }

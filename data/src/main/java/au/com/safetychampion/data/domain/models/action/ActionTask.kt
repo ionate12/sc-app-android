@@ -11,6 +11,7 @@ import au.com.safetychampion.data.domain.models.auth.LoginUser
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
 
 data class ActionTask(
+    val attachment: MutableList<Attachment>?,
     val controlLevel: String?,
     val controlLevelOther: String?,
     val completionNotes: String?,

@@ -3,7 +3,9 @@ package au.com.safetychampion.data.domain.usecase
 import au.com.safetychampion.data.data.local.SyncableRepository
 import au.com.safetychampion.data.domain.base.BaseSignOff
 import au.com.safetychampion.data.domain.base.BaseTask
-import au.com.safetychampion.data.domain.core.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.core.Result
+import au.com.safetychampion.data.domain.core.SCError
+import au.com.safetychampion.data.domain.core.flatMapError
 import au.com.safetychampion.data.util.extension.koinInject
 
 abstract class BaseSignoffUseCase<R : BaseTask, T : BaseSignOff<R>> : BaseUseCase() {

@@ -28,7 +28,7 @@ class SignoffDocumentUseCase : BaseSignoffUseCase<DocumentTask, DocumentSignoff>
                 subcategory = null
                 subcategoryOther = null
                 dateIssued = null
-                attachments = mutableListOf()
+                attachments.clear()
                 upVersionFrom = null
                 copy = null
                 customVersion = null

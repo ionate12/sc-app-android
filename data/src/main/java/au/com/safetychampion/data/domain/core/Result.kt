@@ -14,30 +14,29 @@ fun Result<*>.errorOrNull(): SCError? {
     return (this as? Result.Error)?.err
 }
 
-suspend fun <T> Result<T>.flatMapError(
-    action: suspend (SCError) -> Result<T>?
-): Result<T> {
+inline fun <T> Result<T>.flatMapError(action: (SCError) -> Result<T>): Result<T> {
     if (this is Result.Success<*>) return this
-    return action.invoke(errorOrNull()!!) ?: this
+    return action.invoke(errorOrNull()!!)
 }
 
-suspend fun <T, R> Result<T>.flatMap(
-    action: suspend (T) -> Result<R>
-): Result<R> {
+inline fun <T, R> Result<T>.flatMap(action: (T) -> Result<R>): Result<R> {
     if (this is Result.Error) return this
     val data = dataOrNull() ?: return Result.Error(SCError.EmptyResult)
     return action.invoke(data)
 }
 
-suspend fun <T, R> Result<T>.map(block: suspend (T) -> R): Result<R> {
-    return when (this) {
-        is Result.Error -> return this
-        is Result.Success -> {
-            return data?.let {
-                Result.Success(block(it))
-            } ?: Result.Error(SCError.EmptyResult)
-        }
-        else -> TODO("TO BE REMOVED")
+/**
+ * Mapping a [Result.Success] to another one by applying the given block on the data value.
+ * @param block A high order function that takes the parameter is [Result.Success.data] and returns a value of type [R].
+ * @return [Result.Success] with new data is the return value of [block]
+ * @throws IllegalStateException*/
+
+inline fun <T, R> Result<T>.map(block: (T) -> R): Result<R> {
+    if (this is Result.Error) return this
+    this as Result.Success
+    return when (val result = block(data)) {
+        is SCError, is Result.Error -> error("Not supported yet with SCError and Result.Error")
+        else -> Result.Success(result)
     }
 }
 
@@ -46,9 +45,7 @@ suspend fun <T, R> Result<T>.map(block: suspend (T) -> R): Result<R> {
  * @return self
  */
 
-suspend fun <T> Result<T>.doOnSucceed(
-    action: suspend (T) -> Unit
-): Result<T> {
+inline fun <T> Result<T>.doOnSuccess(action: (T) -> Unit): Result<T> {
     dataOrNull()?.let {
         action.invoke(it)
     }

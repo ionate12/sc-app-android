@@ -13,30 +13,32 @@ import au.com.safetychampion.data.domain.usecase.chemical.GetGhsCodeUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.GetListChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.PerpareSignoffChemicalUseCase
 import au.com.safetychampion.data.domain.usecase.chemical.SignoffChemicalUseCase
-import au.com.safetychampion.data.domain.usecase.crisk.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.usecase.contractor.FetchContractorUseCase
-import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
 import au.com.safetychampion.data.domain.usecase.contractor.GetLinkedTaskUseCase
+import au.com.safetychampion.data.domain.usecase.contractor.GetListContractorUseCase
 import au.com.safetychampion.data.domain.usecase.crisk.*
 import au.com.safetychampion.data.domain.usecase.document.*
-import au.com.safetychampion.data.domain.usecase.inspection.GetAvailableListInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.GetInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.NewChildAndStartInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.PrepareSignoffInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.SignoffInspectionUseCase
-import au.com.safetychampion.data.domain.usecase.inspection.StartTaskInspectionUseCase
 import au.com.safetychampion.data.domain.usecase.hr.FetchHrDetailUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListHrUseCase
 import au.com.safetychampion.data.domain.usecase.hr.GetListLinkedIncidentsUseCase
+import au.com.safetychampion.data.domain.usecase.incident.*
+import au.com.safetychampion.data.domain.usecase.inspection.*
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetAnnouncementUseCase
 import au.com.safetychampion.data.domain.usecase.mobileadmin.GetVersionUseCase
+import au.com.safetychampion.data.domain.usecase.noticeboard.*
 import au.com.safetychampion.data.domain.usecase.pushnotification.*
+import au.com.safetychampion.data.domain.usecase.reviewplan.*
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 internal val useCasesModule = module {
-
     // Auth
+    factoryOf(::ChallengeUserUseCase)
+
+    factoryOf(::ConfirmEnrollAuthenticatorUseCase)
+
+    factoryOf(::EnrollAuthenticatorUseCase)
+
     factoryOf(::UserLoginUseCase)
 
     factoryOf(::UserMultiLoginUseCase)
@@ -85,15 +87,6 @@ internal val useCasesModule = module {
 
     factoryOf(::GetGhsCodeUseCase)
 
-    // Inspection
-
-    factoryOf(::GetAvailableListInspectionUseCase)
-    factoryOf(::NewChildAndStartInspectionUseCase)
-    factoryOf(::PrepareSignoffInspectionUseCase)
-    factoryOf(::SignoffInspectionUseCase)
-    factoryOf(::StartTaskInspectionUseCase)
-    factoryOf(::GetInspectionUseCase)
-
     // Banner
 
     factoryOf(::GetListBannerUseCase)
@@ -114,22 +107,60 @@ internal val useCasesModule = module {
 
     factoryOf(::ArchiveCriskUseCase)
 
-    // Hr
-
-    factoryOf(::FetchHrDetailUseCase)
-
-    factoryOf(::GetListHrUseCase)
-
     // Document
 
     factoryOf(::FetchCopySourceUseCase)
 
     factoryOf(::FetchDocumentUseCase)
 
-    factoryOf(::PrepareDocumentSignoffUseCase)
+    factoryOf(::PrepareSignoffDocumentUseCase)
 
-    factoryOf(::FetchListDocumentUseCase)
+    factoryOf(::GetListDocumentUseCase)
 
+    // Hr
+
+    factoryOf(::FetchHrDetailUseCase)
+
+    factoryOf(::GetListHrUseCase)
+
+    // Inspection
+
+    factoryOf(::GetAvailableListInspectionUseCase)
+
+    factoryOf(::NewChildAndStartInspectionUseCase)
+
+    factoryOf(::PrepareSignoffInspectionUseCase)
+
+    factoryOf(::SignoffInspectionUseCase)
+
+    factoryOf(::StartTaskInspectionUseCase)
+
+    factoryOf(::GetInspectionUseCase)
+
+    // Incident *_*
+
+    factoryOf(::CreateIncidentUseCase)
+
+    factoryOf(::FetchIncidentUseCase)
+
+    factoryOf(::FetchListIncidentUseCase)
+
+    factoryOf(::FetchLocationConfigUseCase)
+
+    factoryOf(::LookUpIncidentUseCase)
+
+    factoryOf(::PrepareIncidentSignoffUseCase)
+
+    // Noticeboard -[ ^^ ] -
+    factoryOf(::FetchListVdocUseCase)
+
+    factoryOf(::FetchNoticeboardFormsUseCase)
+
+    factoryOf(::SubmitNoticeboardFormUseCase)
+
+    factoryOf(::FetchListNoticeboardBlockUseCase)
+
+    factoryOf(::FetchListNoticeboardUseCase)
 
     // contractor
     factoryOf(::FetchContractorUseCase)
@@ -160,13 +191,26 @@ internal val useCasesModule = module {
 
     factoryOf(::GetListLinkedIncidentsUseCase)
 
-    // Signoff
+    // Review_Plan
+    factoryOf(::FetchActionsWithReviewPlanIdUseCase)
 
-    factoryOf(::SignoffChemicalUseCase)
+    factoryOf(::FetchListReviewPlanUseCase)
+
+    factoryOf(::FetchReviewPlanEvidencesUseCase)
+
+    factoryOf(::PrepareReviewPlanSignoffUseCase)
+
+    factoryOf(::SignoffReviewPlanUseCase)
+
+    // Signoff @_@
 
     factoryOf(::SignoffActionUseCase)
 
-    factoryOf(::SignoffCriskUseCase)
+    factoryOf(::SignoffChemicalUseCase)
 
     factoryOf(::SignoffDocumentUseCase)
+
+    factoryOf(::SignoffCriskUseCase)
+
+    factoryOf(::SignoffIncidentUseCase)
 }

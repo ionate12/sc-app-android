@@ -26,7 +26,22 @@ data class ActionTaskPL(
 ) : BasePL(), ICusval, ICategoryCusval, IPendingActionPL {
     companion object {
         fun fromModel(model: ActionTask): ActionTaskPL {
-            TODO("Implement Action Task -> ActionTaskPL")
+            return ActionTaskPL(
+                dateCompleted = model.dateCompleted ?: "",
+                completionNotes = model.completionNotes ?: "",
+                hazardCategory = model.hazardCategory ?: "",
+                complete = model.complete ?: false,
+                tzDateSignedoff = model.tzDateSignedoff ?: "",
+                attachments = model.attachment ?: listOf(),
+                severity = model.severity ?: "",
+                controlLevel = model.controlLevel ?: "",
+                controlLevelOther = model.controlLevelOther,
+                links = mutableListOf(),
+                cusvals = model.cusvals,
+                categoryCusvals = model.categoryCusvals,
+                pendingActions = mutableListOf()
+            )
+            // TODO("pendingActions shouldn't empty list ")
         }
     }
 

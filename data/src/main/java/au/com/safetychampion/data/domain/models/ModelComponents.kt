@@ -28,6 +28,10 @@ interface ISubcategoryCusval : IBaseCusval {
     var subcategoryCusvals: MutableList<CustomValue>
 }
 
+interface IEnvCusval : IBaseCusval {
+    var propOrEnvDamageCusvals: MutableList<CustomValue>
+}
+
 interface IForceNullValues {
     val forceNullKeys: List<String>
 }
