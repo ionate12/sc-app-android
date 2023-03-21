@@ -1,11 +1,7 @@
 package au.com.safetychampion.data.data.chemical
 
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.GHSCode
-import au.com.safetychampion.data.domain.models.chemical.Chemical
-import au.com.safetychampion.data.domain.models.chemical.ChemicalSignoffPL
-import au.com.safetychampion.data.domain.models.chemical.ChemicalTask
-import au.com.safetychampion.data.domain.models.chemical.ChemicalTaskPL
+import au.com.safetychampion.data.domain.models.chemical.*
 
 interface IChemicalRepository {
 

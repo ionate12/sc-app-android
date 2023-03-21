@@ -5,8 +5,6 @@ import au.com.safetychampion.data.domain.Attachment
 import au.com.safetychampion.data.domain.base.BaseModuleImpl
 import au.com.safetychampion.data.domain.base.BaseTask
 import au.com.safetychampion.data.domain.core.Signature
-import au.com.safetychampion.data.domain.models.CreatedBy
-import au.com.safetychampion.data.domain.models.GeoLatLng
 import au.com.safetychampion.data.domain.models.IAttachment
 import au.com.safetychampion.data.domain.models.IExtraRequest
 import au.com.safetychampion.data.domain.models.IPendingAction
@@ -15,6 +13,8 @@ import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.TimeField
 import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.PendingActionPL
+import au.com.safetychampion.data.domain.models.location.GeoLatLng
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 import com.google.gson.annotations.SerializedName
 
 data class InspectionTask(

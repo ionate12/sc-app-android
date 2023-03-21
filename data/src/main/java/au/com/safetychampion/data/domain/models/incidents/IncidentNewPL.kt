@@ -6,6 +6,8 @@ import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Signature
 import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.location.GeoLatLng
+import au.com.safetychampion.data.domain.models.workplace.UpdateLog
 
 /** Represents a [IncidentAPI.New] as the payload, old name is IncidentPojo*/
 data class IncidentNewPL(

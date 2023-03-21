@@ -2,9 +2,9 @@ package au.com.safetychampion.data.domain.models.hr
 
 import androidx.lifecycle.MutableLiveData
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.incidents.LinkedIncident
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class HRProfile(

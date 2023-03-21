@@ -1,8 +1,8 @@
 package au.com.safetychampion.data.domain.models.noticeboard
 
-import au.com.safetychampion.data.domain.models.AllocationOf
-import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.workplace.AllocationOf
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 
 data class Noticeboard(
     val allocationOf: AllocationOf? = null,

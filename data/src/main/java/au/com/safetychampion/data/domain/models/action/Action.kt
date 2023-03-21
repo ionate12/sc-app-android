@@ -1,12 +1,12 @@
 package au.com.safetychampion.data.domain.models.action
 
 import au.com.safetychampion.data.domain.core.ModuleType
-import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.ICategoryCusval
 import au.com.safetychampion.data.domain.models.ICusval
 import au.com.safetychampion.data.domain.models.Tier
-import au.com.safetychampion.data.domain.models.UpdateLog
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
+import au.com.safetychampion.data.domain.models.workplace.UpdateLog
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class Action(

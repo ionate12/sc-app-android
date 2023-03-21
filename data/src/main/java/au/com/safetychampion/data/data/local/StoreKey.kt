@@ -1,10 +1,6 @@
 package au.com.safetychampion.data.data.local
 
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.core.stringSetPreferencesKey
+import androidx.datastore.preferences.core.*
 
 sealed class StoreKey<T : Any>(open val key: String) {
     abstract fun prefKey(): Preferences.Key<T>
@@ -37,6 +33,8 @@ sealed class StoreKey<T : Any>(open val key: String) {
     // endregion
 
     // region String Set
+    object VersionBoard : AsObject("version_board")
+    object FirebaseToken : AsString("firebase_token")
 
 // endregion
 }

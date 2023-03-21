@@ -1,13 +1,12 @@
 package au.com.safetychampion.data.domain.models.contractor
 
-import au.com.safetychampion.data.domain.models.SCHolderLink
 import au.com.safetychampion.data.domain.uncategory.TaskType
 import java.util.*
 
 interface LookupItem {
     val _id: String?
     fun query(str: String): Boolean {
-        return queryString().contains(str.toLowerCase().trim())
+        return queryString().contains(str.lowercase(Locale.getDefault()).trim())
     }
     fun queryString(): String
 

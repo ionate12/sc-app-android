@@ -1,6 +1,10 @@
 package au.com.safetychampion.data.domain.models.contractor
 
-import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.models.Address
+import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.location.Location
+import au.com.safetychampion.data.domain.models.workplace.AllocationOf
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 
 data class ContractorProfile(

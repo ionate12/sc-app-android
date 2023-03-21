@@ -3,11 +3,11 @@ package au.com.safetychampion.data.data.common
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.TaskAPI
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.action.network.ActiveTaskPL
 import au.com.safetychampion.data.domain.models.action.network.AssignTaskStatusManyPL
 import au.com.safetychampion.data.domain.models.action.network.AssignTaskStatusPL
 import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.task.TaskAssignStatusItem
 
 class TaskRepository : BaseRepository(), ITaskRepository {
     override suspend fun getAllActiveTask(body: ActiveTaskPL): Result<List<Task>> {

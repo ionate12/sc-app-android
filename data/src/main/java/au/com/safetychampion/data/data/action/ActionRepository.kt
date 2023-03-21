@@ -6,7 +6,7 @@ import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
 import au.com.safetychampion.data.domain.core.SCError
 import au.com.safetychampion.data.domain.core.dataOrNull
-import au.com.safetychampion.data.domain.core.errorOrNull
+import au.com.safetychampion.data.domain.core.handleResultErrors
 import au.com.safetychampion.data.domain.models.action.Action
 import au.com.safetychampion.data.domain.models.action.ActionTask
 import au.com.safetychampion.data.domain.models.action.ActionTaskPL
@@ -45,25 +45,20 @@ class ActionRepository : BaseRepository(), IActionRepository {
             val fetch = actionFetch.await()
             val task = taskFetch.await()
 
-            // TODO: Need refactor precondition checks!!
-            return@withContext when {
-                fetch.errorOrNull() is SCError.NoNetwork || task.errorOrNull() is SCError.NoNetwork -> Result.Error(
-                    SCError.NoNetwork
-                )
-                fetch is Result.Error || task is Result.Error -> {
-                    Result.Error(err = fetch.errorOrNull() ?: task.errorOrNull()!!)
-                }
-                else -> {
-                    val _task = task.dataOrNull()!!
-                    val _fetch = fetch.dataOrNull()!!
-                    Result.Success(
-                        data = ActionSignOff(
-                            body = _fetch,
-                            task = _task
+            handleResultErrors(
+                fetch,
+                task,
+                errors = {
+                    if (it.isNullOrEmpty()) {
+                        Result.Success(
+                            data = ActionSignOff(
+                                body = fetch.dataOrNull()!!,
+                                task = task.dataOrNull()!!
+                            )
                         )
-                    )
+                    } else Result.Error(SCError.FailedInCombineFetchAndTask(it))
                 }
-            }
+            )
         }
     }
 

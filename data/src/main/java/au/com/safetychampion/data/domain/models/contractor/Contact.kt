@@ -1,5 +1,7 @@
 package au.com.safetychampion.data.domain.models.contractor
 
+import java.util.*
+
 data class Contact(
     var phones: List<String>? = listOf(),
     var emails: List<String> = listOf(),
@@ -10,7 +12,7 @@ data class Contact(
     var quickView: Boolean = false
 ) {
     fun displayRole(): String? {
-        if (role?.toLowerCase() == "other") {
+        if (role?.lowercase(Locale.getDefault()) == "other") {
             return "Other ($roleOther)"
         }
         return role

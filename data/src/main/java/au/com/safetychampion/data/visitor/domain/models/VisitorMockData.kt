@@ -1,7 +1,5 @@
 package au.com.safetychampion.data.visitor.domain.models
 
-import au.com.safetychampion.data.domain.models.ManualQRCodeInputModel
-
 /**
  * Created by Minh Khoi MAI on 24/11/20.
  */

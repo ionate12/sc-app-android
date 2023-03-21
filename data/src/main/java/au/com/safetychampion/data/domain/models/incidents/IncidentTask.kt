@@ -8,6 +8,7 @@ import au.com.safetychampion.data.domain.models.action.ActionLink
 import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.auth.LoginUser
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.workplace.UpdateLog
 import au.com.safetychampion.data.domain.uncategory.DocAttachment
 import com.google.gson.annotations.SerializedName
 

@@ -1,15 +1,15 @@
 package au.com.safetychampion.data.domain.uncategory.gsonTypeConverter.typeAdapter
 
+import au.com.safetychampion.data.domain.manager.IGsonManager
 import au.com.safetychampion.data.domain.models.SCBaseMessage
 import au.com.safetychampion.data.domain.models.SCQuillDeltaMessage
-import au.com.safetychampion.data.domain.uncategory.GsonHelper
-import au.com.safetychampion.data.domain.uncategory.getGson
+import au.com.safetychampion.data.util.extension.koinInject
 import au.com.safetychampion.data.visitor.domain.models.SCTextMessage
-import com.google.gson.* // ktlint-disable no-wildcard-imports
+import com.google.gson.*
 import java.lang.reflect.Type
 
 class SCBaseMessageTypeAdapter : JsonDeserializer<SCBaseMessage>, JsonSerializer<SCBaseMessage> {
-    private val gson by lazy { getGson() }
+    private val gson by koinInject<IGsonManager>()
 
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): SCBaseMessage? {
         if (json == null || !json.isJsonObject) return null
@@ -32,6 +32,6 @@ class SCBaseMessageTypeAdapter : JsonDeserializer<SCBaseMessage>, JsonSerializer
         typeOfSrc: Type?,
         context: JsonSerializationContext?
     ): JsonElement {
-        return GsonHelper.CLEAN_INSTANCE.toJsonTree(src)
+        return gson.cleanGson.toJsonTree(src)
     }
 }

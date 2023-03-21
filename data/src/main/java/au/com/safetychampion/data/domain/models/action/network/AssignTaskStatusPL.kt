@@ -1,8 +1,8 @@
 package au.com.safetychampion.data.domain.models.action.network
 
 import au.com.safetychampion.data.domain.base.BasePL
-import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 import com.google.gson.annotations.SerializedName
 
 class AssignTaskStatusPL(
@@ -21,7 +21,7 @@ class AssignTaskStatusPL(
     ) : this(
         _id = task._id,
         _for = CreatedBy(
-            type = task._for.type ?: "",
+            type = task._for.type,
             _id = task._for._id
         ),
         to = userId?.let { AssignUser(it) },

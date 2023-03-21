@@ -36,7 +36,7 @@ sealed class SCError(val code: String, val errDescription: String) {
     )
 
     class FailedInCombineFetchAndTask(
-        scError: List<SCError>
+        val scError: List<SCError>
     ) : SCError(
         code = "can_not_combine_fetch_and_task",
         errDescription = "can_not_combine_fetch_and_task"

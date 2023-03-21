@@ -1,9 +1,9 @@
 package au.com.safetychampion.data.domain.models.inspections
 
 import au.com.safetychampion.data.domain.core.ModuleType
-import au.com.safetychampion.data.domain.models.CreatedBy
 import au.com.safetychampion.data.domain.models.Tier
 import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 
 data class Inspection(
     val type: ModuleType = ModuleType.INSPECTION,

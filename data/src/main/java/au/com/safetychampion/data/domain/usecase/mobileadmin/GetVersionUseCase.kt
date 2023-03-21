@@ -3,7 +3,7 @@ package au.com.safetychampion.data.domain.usecase.mobileadmin
 import au.com.safetychampion.data.data.mobileadmin.IMobileAdminRepository
 import au.com.safetychampion.data.domain.base.BasePL
 import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.models.VersionBoard
+import au.com.safetychampion.data.domain.models.mobileadmin.VersionBoard
 
 class VersionPL(
     val versionName: String? = null,

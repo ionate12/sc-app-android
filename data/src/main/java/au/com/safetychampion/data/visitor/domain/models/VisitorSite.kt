@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.visitor.domain.models
 
-import au.com.safetychampion.data.domain.models.CreatedBy
-import au.com.safetychampion.data.domain.models.GeoLatLng
+import au.com.safetychampion.data.domain.models.location.GeoLatLng
+import au.com.safetychampion.data.domain.models.workplace.CreatedBy
 import au.com.safetychampion.data.visitor.data.VisitorEntityMapper
 import au.com.safetychampion.data.visitor.data.VisitorSiteEntity
 

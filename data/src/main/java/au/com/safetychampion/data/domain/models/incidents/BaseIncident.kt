@@ -2,6 +2,8 @@ package au.com.safetychampion.data.domain.models.incidents
 
 import au.com.safetychampion.data.domain.models.* // ktlint-disable no-wildcard-imports
 import au.com.safetychampion.data.domain.models.customvalues.CustomValue
+import au.com.safetychampion.data.domain.models.location.GeoLatLng
+import au.com.safetychampion.data.domain.models.workplace.UpdateLog
 
 /** Sharing properties between [IncidentNewPL] and [Incident]*/
 sealed interface BaseIncident : ICusval, ICategoryCusval, IEnvCusval, ISignature {

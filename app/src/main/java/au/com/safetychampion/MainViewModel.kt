@@ -4,7 +4,6 @@ import PrepareSignoffActionUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import au.com.safetychampion.data.domain.core.*
-import au.com.safetychampion.data.domain.models.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.models.TierType
 import au.com.safetychampion.data.domain.models.action.network.ActionNewPL
 import au.com.safetychampion.data.domain.models.auth.LoginPL
@@ -14,6 +13,7 @@ import au.com.safetychampion.data.domain.models.document.DocumentSignoff
 import au.com.safetychampion.data.domain.models.incidents.IncidentNewPL
 import au.com.safetychampion.data.domain.models.noticeboard.NoticeboardFormPL
 import au.com.safetychampion.data.domain.models.task.Task
+import au.com.safetychampion.data.domain.models.task.TaskAssignStatusItem
 import au.com.safetychampion.data.domain.usecase.action.CreateActionUseCase
 import au.com.safetychampion.data.domain.usecase.action.EditActionUseCase
 import au.com.safetychampion.data.domain.usecase.action.GetListActionUseCase
@@ -164,7 +164,7 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun loadActiveTasksReViewPlan(index: Int) {
-        val result = getActiveTaskUseCase.invoke("core.module.reviewplan")
+        val result = getActiveTaskUseCase.invoke(ModuleName.valueOf("core.module.reviewplan"))
         _apiCallStatus.emit(index to result)
     }
 

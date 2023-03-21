@@ -1,7 +1,7 @@
 package au.com.safetychampion.data.domain.models.document
 
-import au.com.safetychampion.data.domain.models.AllocationOf
 import au.com.safetychampion.data.domain.models.Tier
+import au.com.safetychampion.data.domain.models.workplace.AllocationOf
 import au.com.safetychampion.data.domain.uncategory.Queryable
 import java.util.*
 

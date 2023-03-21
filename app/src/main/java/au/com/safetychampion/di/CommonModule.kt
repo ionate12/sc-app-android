@@ -2,15 +2,14 @@ package au.com.safetychampion.di
 
 import android.content.Context
 import androidx.room.Room
-import au.com.safetychampion.data.data.common.FakeDAO
-import au.com.safetychampion.data.data.common.FakeMasterDAO
-import au.com.safetychampion.data.data.common.MasterDAO
-import au.com.safetychampion.data.data.common.TaskDAO
 import au.com.safetychampion.data.data.local.BaseAppDataStore
 import au.com.safetychampion.data.data.local.room.AppDatabase
-import au.com.safetychampion.data.domain.manager.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.data.domain.manager.*
 import au.com.safetychampion.local.AppDataStore
-import au.com.safetychampion.util.* // ktlint-disable no-wildcard-imports
+import au.com.safetychampion.util.FileContentManager
+import au.com.safetychampion.util.GsonManager
+import au.com.safetychampion.util.NetworkManager
+import au.com.safetychampion.util.TokenManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
@@ -38,12 +37,6 @@ internal val commonModule = module {
     single<BaseAppDataStore> { AppDataStore(androidApplication()) }
 
     single<IFileManager> { FileContentManager(androidApplication().contentResolver, androidApplication().getExternalFilesDir("")?.path ?: "") }
-
-    singleOf<IOfflineConverter> (::OfflineTaskManager)
-
-    singleOf<TaskDAO>(::FakeDAO)
-
-    singleOf<MasterDAO>(::FakeMasterDAO)
 
     single<AppDatabase> { initRoomDB(androidApplication()) }
 }
