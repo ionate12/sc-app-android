@@ -29,6 +29,4 @@ open class ContractorLink(
     var dateIssued: String? = null,
     var dateExpiry: String? = null,
     var notes: String? = null
-) {
-    // TODO: Extends UniversalCell()?
-}
+)

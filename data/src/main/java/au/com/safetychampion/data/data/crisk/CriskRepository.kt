@@ -2,18 +2,9 @@ package au.com.safetychampion.data.data.crisk
 
 import au.com.safetychampion.data.data.BaseRepository
 import au.com.safetychampion.data.data.api.CriskAPI
-import au.com.safetychampion.data.domain.core.Result
-import au.com.safetychampion.data.domain.core.SCError
-import au.com.safetychampion.data.domain.core.dataOrNull
-import au.com.safetychampion.data.domain.core.errorOrNull
-import au.com.safetychampion.data.domain.core.flatMap
+import au.com.safetychampion.data.domain.core.*
 import au.com.safetychampion.data.domain.models.contractor.ContractorLookup
-import au.com.safetychampion.data.domain.models.crisk.Crisk
-import au.com.safetychampion.data.domain.models.crisk.CriskArchivePayload
-import au.com.safetychampion.data.domain.models.crisk.CriskEvidenceTask
-import au.com.safetychampion.data.domain.models.crisk.CriskSignoff
-import au.com.safetychampion.data.domain.models.crisk.CriskTask
-import au.com.safetychampion.data.domain.models.crisk.CriskTaskPL
+import au.com.safetychampion.data.domain.models.crisk.*
 import au.com.safetychampion.data.domain.models.hr.HrLookupItem
 import au.com.safetychampion.data.domain.models.task.UpdateLogListItem
 import com.google.gson.JsonObject
@@ -97,7 +88,7 @@ class CriskRepository : BaseRepository(), ICriskRepository {
                 fetch is Result.Error || task is Result.Error -> { Result.Error(err = fetch.errorOrNull() ?: task.errorOrNull()!!) }
                 else -> {
                     val _task = task.dataOrNull()!!
-                    val _fetch = fetch.dataOrNull()!! // TODO("this is notnull, fix bug in cusval first")
+                    val _fetch = fetch.dataOrNull()!!
                     Result.Success(
                         data = CriskSignoff(
                             body = _fetch,

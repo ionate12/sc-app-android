@@ -4,6 +4,7 @@ import au.com.safetychampion.data.domain.models.contractor.LookupItem
 import au.com.safetychampion.data.domain.models.contractor.SCHolderLink
 import au.com.safetychampion.data.domain.models.incidents.InjuredPersonLink
 import au.com.safetychampion.data.domain.uncategory.TaskType
+import java.util.*
 
 data class HrLookupItem(
     override var _id: String? = null,
@@ -27,8 +28,8 @@ data class HrLookupItem(
     }
 
     override fun queryString(): String {
-        return "${orgName?.toLowerCase()?.trim()}${hrId?.toLowerCase()?.trim()}" +
-            "${name?.toLowerCase()?.trim()}${position?.toLowerCase()?.trim()}"
+        return "${orgName?.lowercase(Locale.getDefault())?.trim()}${hrId?.lowercase(Locale.getDefault())?.trim()}" +
+            "${name?.lowercase(Locale.getDefault())?.trim()}${position?.lowercase(Locale.getDefault())?.trim()}"
     }
 
     fun toInjuredPersonLink(): InjuredPersonLink {

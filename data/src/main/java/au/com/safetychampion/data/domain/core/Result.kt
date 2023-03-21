@@ -14,6 +14,13 @@ fun Result<*>.errorOrNull(): SCError? {
     return (this as? Result.Error)?.err
 }
 
+inline fun <T> handleResultErrors(
+    vararg result: Result<*>,
+    errors: (List<SCError>?) -> Result<T>
+): Result<T> {
+    return result.mapNotNull { it.errorOrNull() }.let(errors)
+}
+
 inline fun <T> Result<T>.flatMapError(action: (SCError) -> Result<T>): Result<T> {
     if (this is Result.Success<*>) return this
     return action.invoke(errorOrNull()!!)

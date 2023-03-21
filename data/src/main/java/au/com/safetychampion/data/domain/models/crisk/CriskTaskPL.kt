@@ -118,7 +118,6 @@ data class CriskTaskPL(
                 subcategoryCusvals = model.subcategoryCusvals,
                 pendingActions = model.pendingActions
             )
-
             // TODO("Need to review again")
         }
     }

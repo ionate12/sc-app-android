@@ -164,7 +164,7 @@ class MainViewModel : ViewModel() {
     }
 
     suspend fun loadActiveTasksReViewPlan(index: Int) {
-        val result = getActiveTaskUseCase.invoke("core.module.reviewplan")
+        val result = getActiveTaskUseCase.invoke(ModuleName.valueOf("core.module.reviewplan"))
         _apiCallStatus.emit(index to result)
     }
 
